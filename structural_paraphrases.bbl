@@ -1,0 +1,270 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Bannard and Callison-Burch}2005]{Callison-Burch2005}
+Colin Bannard and Chris Callison-Burch.
+\newblock 2005.
+\newblock Paraphrasing with bilingual parallel corpora.
+\newblock In {\em Proceedings of ACL}.
+
+\bibitem[\protect\citename{Barzilay and Lee}2003]{Barzilay2003}
+Regina Barzilay and Lillian Lee.
+\newblock 2003.
+\newblock Learning to paraphrase: An unsupervised approach using
+  multiple-sequence alignment.
+\newblock In {\em Proceedings of HLT/NAACL}.
+
+\bibitem[\protect\citename{Barzilay and McKeown}2001]{Barzilay2001}
+Regina Barzilay and Kathleen McKeown.
+\newblock 2001.
+\newblock Extracting paraphrases from a parallel corpus.
+\newblock In {\em Proceedings of ACL}.
+
+\bibitem[\protect\citename{Bhagat and Ravichandran}2008]{Bhagat2008}
+Rahul Bhagat and Deepak Ravichandran.
+\newblock 2008.
+\newblock Large scale acquisition of paraphrases for learning surface patterns.
+\newblock In {\em Proceedings of ACL/HLT}.
+
+\bibitem[\protect\citename{Bosma and Callison-Burch}2006]{Bosma2006}
+Wauter Bosma and Chris Callison-Burch.
+\newblock 2006.
+\newblock Paraphrase substitution for recognizing textual entailment.
+\newblock In {\em Proceedings of CLEF}.
+
+\bibitem[\protect\citename{Callison-Burch \bgroup et al.\egroup
+  }2006]{Callison-Burch2006b}
+Chris Callison-Burch, Philipp Koehn, and Miles Osborne.
+\newblock 2006.
+\newblock Improved statistical machine translation using paraphrases.
+\newblock In {\em Proceedings of HLT/NAACL}.
+
+\bibitem[\protect\citename{Callison-Burch}2008]{Callison-Burch2008}
+Chris Callison-Burch.
+\newblock 2008.
+\newblock Syntactic constraints on paraphrases extracted from parallel corpora.
+\newblock In {\em Proceedings of EMNLP}.
+
+\bibitem[\protect\citename{Chiang}2007]{Chiang2007}
+David Chiang.
+\newblock 2007.
+\newblock Hierarchical phrase-based translation.
+\newblock {\em Computational Linguistics}, 33(2):201--228.
+
+\bibitem[\protect\citename{Cohn and Lapata}2007]{Cohn2007}
+Trevor Cohn and Mirella Lapata.
+\newblock 2007.
+\newblock Large margin synchronous generation and its application to sentence
+  compression.
+\newblock In {\em Proceedings of EMNLP-CoLing}.
+
+\bibitem[\protect\citename{Cohn and Lapata}2009]{Cohn2009}
+Trevor Cohn and Mirella Lapata.
+\newblock 2009.
+\newblock Sentence compression as tree transduction.
+\newblock {\em Journal of Artificial Intelligence Research (JAIR)},
+  34:637--674.
+
+\bibitem[\protect\citename{Cohn \bgroup et al.\egroup }to appear]{Cohn2008}
+Trevor Cohn, Chris Callison-Burch, and Mirella Lapata.
+\newblock to appear.
+\newblock Constructing corpora for the development and evaluation of paraphrase
+  systems.
+\newblock {\em Computational Linguistics}.
+
+\bibitem[\protect\citename{Dolan and Brockett}2005]{Dolan2005}
+Bill Dolan and Chris Brockett.
+\newblock 2005.
+\newblock Automatically constructing a corpus of sentential paraphrases.
+\newblock In {\em Proceedings of 3rd International Workshop on Paraphrasing}.
+
+\bibitem[\protect\citename{Dolan \bgroup et al.\egroup }2004]{Dolan2004}
+Bill Dolan, Chris Quirk, and Chris Brockett.
+\newblock 2004.
+\newblock Unsupervised construction of large paraphrase corpora: Exploiting
+  massively parallel news sources.
+\newblock In {\em Proceedings of the 20th International Conference on
+  Computational Linguistics}.
+
+\bibitem[\protect\citename{Dras}1997a]{Dras1997b}
+Mark Dras.
+\newblock 1997a.
+\newblock Reluctant paraphrase: Textual restructuring under an optimization
+  model.
+\newblock In {\em PACLING-97}, pages 184--191.
+
+\bibitem[\protect\citename{Dras}1997b]{Dras1997}
+Mark Dras.
+\newblock 1997b.
+\newblock Representing paraphrases using synchronous tree adjoining grammars.
+\newblock In {\em Proceedings of ACL}.
+
+\bibitem[\protect\citename{Dras}1998]{Dras1998}
+Mark Dras.
+\newblock 1998.
+\newblock Search in constraint-based paraphrasing.
+\newblock In {\em Proceedings of the Second International Conference on Natural
+  Language Processing and Industrial Applications}, Moncton, Canada.
+
+\bibitem[\protect\citename{Dras}1999a]{Dras1999b}
+Mark Dras.
+\newblock 1999a.
+\newblock A meta-level grammar: Redefining synchronous {TAG}s for translation
+  and paraphrase.
+\newblock In {\em Proceedings of ACL}, pages 98--104.
+
+\bibitem[\protect\citename{Dras}1999b]{Dras1999}
+Mark Dras.
+\newblock 1999b.
+\newblock {\em Tree Adjoining Grammar and the Reluctant Paraphrasing of Text}.
+\newblock {Ph.D.} thesis, Macquarie University, Australia.
+
+\bibitem[\protect\citename{Eisner}2003]{Eisner2003}
+Jason Eisner.
+\newblock 2003.
+\newblock Learning non-isomorphic tree mappings for machine translation.
+\newblock In {\em Proceedings of ACL}.
+
+\bibitem[\protect\citename{Galley \bgroup et al.\egroup }2004]{Galley2004}
+Michel Galley, Mark Hopkins, Kevin Knight, and Daniel Marcu.
+\newblock 2004.
+\newblock What's in a translation rule?
+\newblock In {\em Proceedings of HLT/NAACL}.
+
+\bibitem[\protect\citename{Ibrahim \bgroup et al.\egroup }2003]{Ibrahim2003}
+Ali Ibrahim, Boris Katz, and Jimmy Lin.
+\newblock 2003.
+\newblock Extracting structural paraphrases from aligned monolingual corpora.
+\newblock In {\em Proceedings of the Second International Workshop on
+  Paraphrasing (ACL 2003)}.
+
+\bibitem[\protect\citename{Iordanskaja \bgroup et al.\egroup
+  }1991]{Iordanskaja1991}
+Lidija Iordanskaja, Richard Kittredge, and Alain Polg\'{e}re.
+\newblock 1991.
+\newblock Lexical selection and paraphrase in a meaning text generation model.
+\newblock In C\'{e}cile~L. Paris, William~R. Swartout, and William~C. Mann,
+  editors, {\em Natural Language Generation in Artificial Intelligence and
+  Computational Linguistics}. Kluwer Academic.
+
+\bibitem[\protect\citename{Kauchak and Barzilay}2006]{Kauchak2006}
+David Kauchak and Regina Barzilay.
+\newblock 2006.
+\newblock Paraphrasing for automatic evaluation.
+\newblock In {\em Proceedings of EMNLP}.
+
+\bibitem[\protect\citename{Koehn \bgroup et al.\egroup }2003]{Koehn2003}
+Philipp Koehn, Franz~Josef Och, and Daniel Marcu.
+\newblock 2003.
+\newblock Statistical phrase-based translation.
+\newblock In {\em Proceedings of HLT/NAACL}.
+
+\bibitem[\protect\citename{Langkilde and Knight}1998]{Langkilde1998}
+Irene Langkilde and Kevin Knight.
+\newblock 1998.
+\newblock The practical value of n-grams in generation.
+\newblock In {\em Workshop On Natural Language Generation}, Ontario, Canada.
+
+\bibitem[\protect\citename{Li \bgroup et al.\egroup }2009]{Joshua-WMT}
+Zhifei Li, Chris Callison-Burch, Chris Dyer, Juri Ganitkevitch, Sanjeev
+  Khudanpur, Lane Schwartz, Wren Thornton, Jonathan Weese, and Omar Zaidan.
+\newblock 2009.
+\newblock Joshua: An open source toolkit for parsing-based machine translation.
+\newblock In {\em Proceedings of the Fourth Workshop on Statistical Machine
+  Translation (WMT09)}.
+
+\bibitem[\protect\citename{Lin and Pantel}2001]{Lin2001}
+Dekang Lin and Patrick Pantel.
+\newblock 2001.
+\newblock Discovery of inference rules from text.
+\newblock {\em Natural Language Engineering}, 7(3):343--360.
+
+\bibitem[\protect\citename{Madnani and Dorr}2010]{Madnani2010}
+Nitin Madnani and Bonnie Dorr.
+\newblock 2010.
+\newblock Generating phrasal and sentential paraphrases: A survey of
+  data-driven methods.
+\newblock {\em Computational Linguistics}, ?(?).
+
+\bibitem[\protect\citename{Madnani \bgroup et al.\egroup }2007]{Madnani2007}
+Nitin Madnani, Necip~Fazil Ayan, Philip Resnik, and Bonnie Dorr.
+\newblock 2007.
+\newblock Using paraphrases for parameter tuning in statistical machine
+  translation.
+\newblock In {\em Proceedings of the ACL Workshop on Statistical Machine
+  Translation}.
+
+\bibitem[\protect\citename{Marton and Resnik}2008]{Marton2008}
+Yuval Marton and Philip Resnik.
+\newblock 2008.
+\newblock Soft syntactic constraints for hierarchical phrased-based
+  translation.
+\newblock In {\em Proceedings of ACL/HLT}.
+
+\bibitem[\protect\citename{Matthew~Snover and Schwartz}2009]{Snover2009}
+Bonnie~Dorr Matthew~Snover, Nitin~Madnani and Richard Schwartz.
+\newblock 2009.
+\newblock Ter-plus: Paraphrase, semantic, and alignment enhancements to
+  translation edit rate.
+\newblock {\em Machine Translation Journal}.
+
+\bibitem[\protect\citename{Pang \bgroup et al.\egroup }2003]{Pang2003}
+Bo~Pang, Kevin Knight, and Daniel Marcu.
+\newblock 2003.
+\newblock Syntax-based alignment of multiple translations: Extracting
+  paraphrases and generating new sentences.
+\newblock In {\em Proceedings of HLT/NAACL}.
+
+\bibitem[\protect\citename{Quirk \bgroup et al.\egroup }2004]{Quirk2004}
+Chris Quirk, Chris Brockett, and William Dolan.
+\newblock 2004.
+\newblock Monolingual machine translation for paraphrase generation.
+\newblock In {\em Proceedings of EMNLP}.
+
+\bibitem[\protect\citename{Ravichandran and Hovy}2002]{Ravichandran2002}
+Deepak Ravichandran and Eduard Hovy.
+\newblock 2002.
+\newblock Learning sufrace text patterns for a question answering system.
+\newblock In {\em Proceedings of ACL}.
+
+\bibitem[\protect\citename{Riezler \bgroup et al.\egroup }2007]{Riezler2007}
+Stefan Riezler, Alexander Vasserman, Ioannis Tsochantaridis, Vibhu Mittal, and
+  Yi~Liu.
+\newblock 2007.
+\newblock Statistical machine translation for query expansion in answer
+  retrieval.
+\newblock In {\em Proceedings of ACL}.
+
+\bibitem[\protect\citename{Zhao \bgroup et al.\egroup }2008a]{Zhao2008b}
+Shiqi Zhao, Cheng Niu, Ming Zhou, Ting Liu, and Sheng Li.
+\newblock 2008a.
+\newblock Combining multiple resources to improve {SMT}-based paraphrasing
+  model.
+\newblock In {\em Proceedings of ACL/HLT}.
+
+\bibitem[\protect\citename{Zhao \bgroup et al.\egroup }2008b]{Zhao2008}
+Shiqi Zhao, Haifeng Wang, Ting Liu, and Sheng Li.
+\newblock 2008b.
+\newblock Pivot approach for extracting paraphrase patterns from bilingual
+  corpora.
+\newblock In {\em Proceedings of ACL/HLT}.
+
+\bibitem[\protect\citename{Zhou \bgroup et al.\egroup }2006a]{Zhou2006}
+Liang Zhou, Chin-Yew Lin, and Eduard Hovy.
+\newblock 2006a.
+\newblock Re-evaluating machine translation results with paraphrase support.
+\newblock In {\em Proceedings of EMNLP}.
+
+\bibitem[\protect\citename{Zhou \bgroup et al.\egroup }2006b]{Zhou2006b}
+Liang Zhou, Chin-Yew Lin, Dragos~Stefan Munteanu, and Eduard Hovy.
+\newblock 2006b.
+\newblock Paraeval: Using paraphrases to evaluate summaries automatically.
+\newblock In {\em Proceedings of HLT/NAACL}.
+
+\bibitem[\protect\citename{Zollmann and Venugopal}2006]{Zollmann2006}
+Andreas Zollmann and Ashish Venugopal.
+\newblock 2006.
+\newblock Syntax augmented machine translation via chart parsing.
+\newblock In {\em Proceedings of the NAACL-2006 Workshop on Statistical Machine
+  Translation ({WMT-06})}, New York, New York.
+
+\end{thebibliography}

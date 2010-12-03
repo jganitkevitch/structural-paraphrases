@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2010)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: structural_paraphrases.aux
+The style file: acl.bst
+Database file #1: paraphrasing.bib
+You've used 40 entries,
+            2490 wiz_defined-function locations,
+            934 strings with 17360 characters,
+and the built_in function-call counts, 14763 in all, are:
+= -- 1446
+> -- 633
+< -- 2
++ -- 213
+- -- 207
+* -- 992
+:= -- 2402
+add.period$ -- 161
+call.type$ -- 40
+change.case$ -- 261
+chr.to.int$ -- 36
+cite$ -- 40
+duplicate$ -- 711
+empty$ -- 1250
+format.name$ -- 263
+if$ -- 3093
+int.to.chr$ -- 5
+int.to.str$ -- 0
+missing$ -- 39
+newline$ -- 243
+num.names$ -- 122
+pop$ -- 382
+preamble$ -- 1
+purify$ -- 302
+quote$ -- 0
+skip$ -- 462
+stack$ -- 0
+substring$ -- 336
+swap$ -- 125
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 320
+warning$ -- 0
+while$ -- 93
+width$ -- 47
+write$ -- 534

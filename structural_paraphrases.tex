@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage{acl2010}
+\usepackage{times}
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage{graphicx}
+%\setlength\titlebox{6.5cm}    
+% You can expand the title box if you really have to
+
+\title{Learning Structural and Sentential Paraphrases from Parallel Corpora}
+
+\author{Juri Ganitkevitch \and Chris Callison-Burch\\ 
+Center for Language and Speech\\ 
+Johns Hopkins University}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Later.
+\end{abstract}
+
+\section{Introduction} \label{introduction}
+
+Motivate paraphrasing within the field (same meaning, transformations,
+entailment).
+
+\section{Related Work} \label{related_work}
+
+There have been many proposed approaches to paraphrase induction, most
+of which can be placed in two groups, according to what data they use
+to source their method. Monolingual approaches typically make use of
+vast amounts of English text to extract paraphrases. Due to the
+availability of good syntactic and dependency parsers, these methods
+are often able to infer \emph{structural} paraphrases, i.e.\
+paraphrastic patterns that capture either syntactic or semantic
+information and can be generalize via ``slots''. However, the coverage
+of such systems tends to be low.
+
+\ldots
+
+Bilingually sourced approaches, on the other hand make use of the
+relative abundance of sentence-parallel corpora and extract bilingual
+tables of phrases (cite Chris) or patterns (cite Nitin, Zhao) from
+which paraphrases can be extracted by pivoting over the non-English
+side of the table. However, due to the nature of bilingual phrase
+tables, the resulting paraphrases are often restricted to
+surface-level.
+\emph{not quite true, since Zhao does extract labled pattern based on
+  dependency graphs. need to look into that and categorize, organize
+  prior work properly.}
+
+
+Should distinguish between phrasal and structural paraphrases, as well
+as bilingually and monolingually sourced approaches to extraction.
+
+Perhaps: translation as bilingual paraphrasing, and how that thought
+brings about the pivot approach.
+
+Reference monolingual approaches that are structural, pivot-based
+approaches that are phrasal, Nitin's stuff.
+
+Note how our approach sort-of unifies the two; there's an analogy to
+Chris' syntactic constraints as well as the obvious step from Hiero to
+SAMT.
+
+\section{Sentential Paraphrasing} \label{sentential_paraphrasing}
+
+move to analysis?
+
+We are interested in sentential paraphrases. Why are we interested?
+More powerful than locally constrained, gives us large-scale changes
+to sentential structure, which can be cruicial to applications such as
+detecting entailment or automatically creating significantly differing
+references. \emph{However, phrasal decoder-based approaches should be
+  able to achieve similar re-ordering effects (if not the generality,
+  which we only implicitely achieve, really). Maybe we should add a
+  phrase-based baseline in addition to Hiero? Did Nitin talk about
+  this?}
+
+While the definition of a phrasal paraphrase is intuitively clear,
+sentential paraphrases are much harder to define. When paraphrasing a
+sentence $s$ into a new sentence $t$, the term suggests that we expect
+the changes to $s$ to be above a certain threshold for $t$ to be
+considered a sentential paraphrase. 
+
+\section{To Add}
+
+Formal: Synchronous grammars, with the usual examples (one phrasal, one
+structural).
+
+Formal: Log-linear model for features, weights will be optimized to some
+objective, we discuss those in later section.
+
+Diagram for grammar extraction (two sentence pairs with trees and
+alignments, show how that gets us a paraphrase pattern). 
+
+\section{Paraphrase Acquisition} \label{acquisition}
+
+The method we present in this work extends Nitin's pivot-based Hiero
+paraphrasing approach to the richer, syntax-informed SAMT
+formalism. Starting with a bilingual parallel corpus, we use the
+familiar MT and parsing (cite!) machinery to word-align the data and
+extract an SAMT-style grammar.
+
+Elaborate on this, reference the appropriate work. This is more about
+the pivoting than it is about the MT-style application of the
+paraphrases.
+
+In Section~\ref{data_collection} we give a brief description of the
+data sets used in our experiments and outline the tools used to
+process them. Section~\ref{extraction} elaborates on the extraction
+of the bilingual translation grammars and their transformation into
+monolingual paraphrasing grammars.
+
+\subsection{Paraphrase Grammar Extraction} \label{extraction}
+
+Some talk about the SAMT approach needs to go here. 
+
+We extract SAMT translation grammars for nine languages. Give some
+details on the pipeline, mention that the grammars are
+\emph{gargantuan} (this word needs to be in the paper!), but that the
+whole process is very well-suited for MapReduce (even though, we
+didn't use it).
+
+\subsection{Creating Paraphrase Rules} \label{rule_creation}
+
+\subsubsection{Rule Body} \label{rule_body}
+
+To create paraphrase rules from bilingual translation rules, we pivot
+over the foreign side of the translation rule, with the additional
+constraint that the rule's head, i.e.\ the label that governs the
+rule.
+
+Mention the proper mapping and flipping of nonterminals.
+
+\subsubsection{Rule Features} \label{rule_features}
+
+The SAMT grammars our paraphrasing system is based on provide a rich
+feature set that takes into account source- and target-side
+frequencies, reordering of NTs and lexical translation probablities
+for each rule. When transforming the bilingual grammars into a
+monolingual paraphrase grammar we preseve the feature set and
+
+Shouldn't give details on every single feature, but point out some key
+approaches:
+\begin{itemize}
+\item probablistic features multiply 
+\item target-side indicator features are inherited
+\item actually state what happens with other indicator features
+  (re-ordering, punctuation, rareness etc)
+\end{itemize}
+
+
+\section{Analysis} \label{analysis}
+
+one of the motivations for our approach was the expectation of being
+able to acquire structural paraphrases, especially paraphrases taht
+are capable of learning long-distance transformations such as
+passivization, dative shift, possessive something and prepositional
+paraphrases.
+
+\section{Paraphrasing System} \label{approach}
+
+The paraphrase extraction described in the precious section yields an
+English-to-English paraphrase grammar
+
+\subsection{Training}
+
+We use MERT. It's great.
+
+\subsection{Objective Function} \label{features}
+
+Och (MERT) has shown that it is best to tune to the objective function
+that will be used for evaluation..
+
+\subsubsection{Paraphrase BLEU}
+
+\subsubsection{Summarization BLEU}
+yet to be thought out, but another example here
+would be great
+
+get some data for summarization? other task?
+
+\section{Experimental Results} \label{results}
+
+
+\subsection{Data Collection} \label{data_collection}
+
+We use Europarl v. 5. Align with Berlekey and parse with The Parser.
+
+
+\subsection{Reference Expansion for SMT} \label{smt_application}
+
+A straightforward way to evaluate a paraphrasing system is by using to
+improve an SMT system's performance. Cite Chris and Nitin. Compare to Hiero
+baseline.  
+
+\subsection{Possibly Another Paraphrase
+  Application} \label{other_application}
+
+Maybe summarization with examples? Is there any ``hard'' eval to be had? Human via MTurk?
+
+\section{Conclusion} \label{conclusion}
+
+Look, we unified everything in the field and made all this stuff from
+the previous section much better. Or did we?
+
+\bibliographystyle{acl}
+\bibliography{paraphrasing}
+
+\nocite{*}
+
+\end{document}
+
