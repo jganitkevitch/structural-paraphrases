@@ -10,7 +10,7 @@
 \title{Learning Structural and Sentential Paraphrases from Parallel Corpora}
 
 \author{Juri Ganitkevitch \and Chris Callison-Burch\\ 
-Center for Language and Speech\\ 
+Center for Language and Speech Processing\\ 
 Johns Hopkins University}
 
 \date{}
@@ -24,10 +24,19 @@ Later.
 
 \section{Introduction} \label{introduction}
 
-Motivate paraphrasing within the field (same meaning, transformations,
-entailment).
+The generation and detection of paraphrases, i.e.\ textual expressions
+that convey the same meaning, is crucial to many tasks in NLP and has
+been shown to improve performance in others. In document summarization
+systems, for instance, the ability the recognize redundancies by way
+of finding segments that are paraphrases of one another is of great
+importance \cite{Barzilay1999}. In machine translation, paraphrases can improve both the
+coverage of phrase tables \cite{Callison-Burch2006b} as well as lead
+to better results in parameter tuning \cite{Madnani2007}.  
 
 \section{Related Work} \label{related_work}
+
+Approaches to paraphrase induction typically differ in the nature of
+the corpora they are sourced by.
 
 There have been many proposed approaches to paraphrase induction, most
 of which can be placed in two groups, according to what data they use
@@ -66,27 +75,14 @@ Note how our approach sort-of unifies the two; there's an analogy to
 Chris' syntactic constraints as well as the obvious step from Hiero to
 SAMT.
 
-\section{Sentential Paraphrasing} \label{sentential_paraphrasing}
+\section{Paraphrase Acquisition} \label{acquisition}
 
-move to analysis?
 
-We are interested in sentential paraphrases. Why are we interested?
-More powerful than locally constrained, gives us large-scale changes
-to sentential structure, which can be cruicial to applications such as
-detecting entailment or automatically creating significantly differing
-references. \emph{However, phrasal decoder-based approaches should be
-  able to achieve similar re-ordering effects (if not the generality,
-  which we only implicitely achieve, really). Maybe we should add a
-  phrase-based baseline in addition to Hiero? Did Nitin talk about
-  this?}
 
-While the definition of a phrasal paraphrase is intuitively clear,
-sentential paraphrases are much harder to define. When paraphrasing a
-sentence $s$ into a new sentence $t$, the term suggests that we expect
-the changes to $s$ to be above a certain threshold for $t$ to be
-considered a sentential paraphrase. 
+\subsection{The SAMT Formalism}
 
-\section{To Add}
+The \emph{Syntax Augmented Machine Translation} (SAMT,
+\cite{Zollmann2006})
 
 Formal: Synchronous grammars, with the usual examples (one phrasal, one
 structural).
@@ -97,7 +93,7 @@ objective, we discuss those in later section.
 Diagram for grammar extraction (two sentence pairs with trees and
 alignments, show how that gets us a paraphrase pattern). 
 
-\section{Paraphrase Acquisition} \label{acquisition}
+
 
 The method we present in this work extends Nitin's pivot-based Hiero
 paraphrasing approach to the richer, syntax-informed SAMT
@@ -161,6 +157,26 @@ able to acquire structural paraphrases, especially paraphrases taht
 are capable of learning long-distance transformations such as
 passivization, dative shift, possessive something and prepositional
 paraphrases.
+
+\section{Sentential Paraphrasing} \label{sentential_paraphrasing}
+
+move to analysis?
+
+We are interested in sentential paraphrases. Why are we interested?
+More powerful than locally constrained, gives us large-scale changes
+to sentential structure, which can be cruicial to applications such as
+detecting entailment or automatically creating significantly differing
+references. \emph{However, phrasal decoder-based approaches should be
+  able to achieve similar re-ordering effects (if not the generality,
+  which we only implicitely achieve, really). Maybe we should add a
+  phrase-based baseline in addition to Hiero? Did Nitin talk about
+  this?}
+
+While the definition of a phrasal paraphrase is intuitively clear,
+sentential paraphrases are much harder to define. When paraphrasing a
+sentence $s$ into a new sentence $t$, the term suggests that we expect
+the changes to $s$ to be above a certain threshold for $t$ to be
+considered a sentential paraphrase. 
 
 \section{Paraphrasing System} \label{approach}
 
