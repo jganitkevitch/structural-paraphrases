@@ -24,14 +24,53 @@ Later.
 
 \section{Introduction} \label{introduction}
 
-The generation and detection of paraphrases, i.e.\ textual expressions
-that convey the same meaning, is crucial to many tasks in NLP and has
-been shown to improve performance in others. In document summarization
-systems, for instance, the ability the recognize redundancies by way
-of finding segments that are paraphrases of one another is of great
-importance \cite{Barzilay1999}. In machine translation, paraphrases can improve both the
-coverage of phrase tables \cite{Callison-Burch2006b} as well as lead
-to better results in parameter tuning \cite{Madnani2007}.  
+Paraphrases are differing textual entities that convey the same
+meaning. The generation and detection of paraphrases is crucial to
+many tasks in NLP and has been shown to improve performance in
+others. In multi-document summarization systems, paraphrase detection
+can be used to recognize and collapse redundancies
+\cite{Barzilay1999}. Paraphrasing is also used to improve the coverage
+of question answering systems \cite{Ravichandran2002} and for query
+expansion in information retrieval systems \cite{Anick1999}. In
+machine translation, paraphrases can improve both the coverage of
+phrase tables \cite{Callison-Burch2006b} as well as to generate
+additional reference translations, leading to better results in
+parameter tuning \cite{Madnani2007}.
+
+The notion of a paraphrase typically denotes a set of surface text
+forms with the same meaning:
+\begin{center}
+\begin{tabular}{c}
+the committee's proposal \\
+the proposal of the committee
+\end{tabular}
+\end{center}
+These can be generalized into paraphrase patterns such as:
+\begin{center}
+\begin{tabular}{c}
+the $X_1$'s $X_2$ \\
+the $X_2$ of the $X_1$
+\end{tabular}
+\end{center}
+Where the $X_i$ are variables or \emph{slots}. In order to achieve
+more well-formed results, the slots may be augmented with syntactic
+constraints, yielding syntactic paraphrases.
+\begin{center}
+\begin{tabular}{c}
+the $NP_1$'s $NP_2$ \\
+the $NP_2$ of the $NP_1$
+\end{tabular}
+\end{center}
+
+Many approaches to the extraction of paraphrases have been presented
+in the past. The methods typically differ in the data and additional
+annotations or information they use. Some approaches employ
+monolingual collections of text and rely on distributional similarity
+features to extract parahrase patterns, using dependency parses
+\cite{Lin2001} or part-of-speech tags \cite{Bhagat2008} to further
+inform their algorithms. Another branch of paraphrase research employs
+sentence-aligned monolingual parallel corpora 
+\cite{Barzilay2001,Quirk2004} to 
 
 \section{Related Work} \label{related_work}
 
