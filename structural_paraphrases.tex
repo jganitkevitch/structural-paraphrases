@@ -62,20 +62,29 @@ the $NP_2$ of the $NP_1$
 \end{tabular}
 \end{center}
 
-Many approaches to the extraction of paraphrases have been presented
-in the past. The methods typically differ in the data and additional
-annotations or information they use. Some approaches employ
-monolingual collections of text and rely on distributional similarity
-features to extract parahrase patterns, using dependency parses
-\cite{Lin2001} or part-of-speech tags \cite{Bhagat2008} to further
-inform their algorithms. Another branch of paraphrase research employs
-sentence-aligned monolingual parallel corpora 
-\cite{Barzilay2001,Quirk2004} to 
+Need some motivation for patterns, perhaps?
 
 \section{Related Work} \label{related_work}
 
-Approaches to paraphrase induction typically differ in the nature of
-the corpora they are sourced by.
+A number of approaches to corpus-based English paraphrase extraction
+have been presented in the past. Typically, the methods differ in the
+nature of the data and additional annotations or information they
+use. Roughly, we can distinguish between three types of corpora:
+monolingual, parallel monolingual and parallel bilingual.
+
+Monolingually sourced approaches make use of the abundance of plain
+text ressources and the good quality of parsing and tagging machinery
+on English. However, lacking any in order to find paraphrases they are
+limited to distibutional similarity features.
+
+
+Some approaches employ monolingual collections of text and rely on
+distributional similarity features to extract parahrase patterns,
+using dependency parses \cite{Lin2001} or part-of-speech tags
+\cite{Bhagat2008} to further inform their algorithms.
+
+Another branch of paraphrase research employs sentence-aligned
+monolingual parallel corpora \cite{Barzilay2001,Quirk2004} to
 
 There have been many proposed approaches to paraphrase induction, most
 of which can be placed in two groups, according to what data they use
@@ -87,8 +96,6 @@ paraphrastic patterns that capture either syntactic or semantic
 information and can be generalize via ``slots''. However, the coverage
 of such systems tends to be low.
 
-\ldots
-
 Bilingually sourced approaches, on the other hand make use of the
 relative abundance of sentence-parallel corpora and extract bilingual
 tables of phrases (cite Chris) or patterns (cite Nitin, Zhao) from
@@ -96,10 +103,10 @@ which paraphrases can be extracted by pivoting over the non-English
 side of the table. However, due to the nature of bilingual phrase
 tables, the resulting paraphrases are often restricted to
 surface-level.
+
 \emph{not quite true, since Zhao does extract labled pattern based on
   dependency graphs. need to look into that and categorize, organize
   prior work properly.}
-
 
 Should distinguish between phrasal and structural paraphrases, as well
 as bilingually and monolingually sourced approaches to extraction.
@@ -116,6 +123,10 @@ SAMT.
 
 \section{Paraphrase Acquisition} \label{acquisition}
 
+The work presented in this paper falls into the category of
+bilingually-sourced pivot-based approaches. We make use of established
+machine translation machinery to extract syntactically informed
+paraphrase patterns from multiple bilingual parallel corpora.
 
 
 \subsection{The SAMT Formalism}
@@ -188,6 +199,47 @@ approaches:
   (re-ordering, punctuation, rareness etc)
 \end{itemize}
 
+\section{System Adaptation} \label{approach}
+
+After grammar extraction, the next step in the MT pipeline is tuning
+the weights of the log-linear model. Generally, this can be done by
+maximizing a given objective function using an appropriate algorithm. 
+
+While other paraphrasing apprao
+tuning step (MERT or MIRA).
+
+It is important to choose the objective function for our weight
+optimization such that we tune the system 
+
+
+Having outlined the extraction of our paraphrase grammar, we now turn
+to fitting the weights of the log-linear model to a particular
+task. 
+
+
+While typical parap
+
+\subsection{Reference Expansion}
+
+
+\subsubsection{Paraphrase BLEU} \label{pp_bleu}
+
+
+\subsubsection{Data} \label{data}
+
+We use Europarl v. 5. Align with Berlekey and parse with The Parser.
+
+\subsubsection{Evaluation} \label{evaluation}
+
+A straightforward way to evaluate a paraphrasing system is by using to
+improve an SMT system's performance. Cite Chris and Nitin. Compare to
+Hiero baseline.
+
+\subsection{Possibly Another Paraphrase
+  Application} \label{other_application}
+
+Maybe summarization or sentence compression? Is there
+any ``hard'' eval to be had? Human via MTurk?
 
 \section{Analysis} \label{analysis}
 
@@ -197,9 +249,7 @@ are capable of learning long-distance transformations such as
 passivization, dative shift, possessive something and prepositional
 paraphrases.
 
-\section{Sentential Paraphrasing} \label{sentential_paraphrasing}
-
-move to analysis?
+\subsection{Sentential Paraphrasing} \label{sentential_paraphrasing}
 
 We are interested in sentential paraphrases. Why are we interested?
 More powerful than locally constrained, gives us large-scale changes
@@ -217,51 +267,12 @@ sentence $s$ into a new sentence $t$, the term suggests that we expect
 the changes to $s$ to be above a certain threshold for $t$ to be
 considered a sentential paraphrase. 
 
-\section{Paraphrasing System} \label{approach}
-
-The paraphrase extraction described in the precious section yields an
-English-to-English paraphrase grammar
-
-\subsection{Training}
-
-We use MERT. It's great.
-
-\subsection{Objective Function} \label{features}
-
-Och (MERT) has shown that it is best to tune to the objective function
-that will be used for evaluation..
-
-\subsubsection{Paraphrase BLEU}
-
-\subsubsection{Summarization BLEU}
-yet to be thought out, but another example here
-would be great
-
-get some data for summarization? other task?
-
-\section{Experimental Results} \label{results}
-
-
-\subsection{Data Collection} \label{data_collection}
-
-We use Europarl v. 5. Align with Berlekey and parse with The Parser.
-
-
-\subsection{Reference Expansion for SMT} \label{smt_application}
-
-A straightforward way to evaluate a paraphrasing system is by using to
-improve an SMT system's performance. Cite Chris and Nitin. Compare to Hiero
-baseline.  
-
-\subsection{Possibly Another Paraphrase
-  Application} \label{other_application}
-
-Maybe summarization with examples? Is there any ``hard'' eval to be had? Human via MTurk?
-
 \section{Conclusion} \label{conclusion}
 
 Look, we unified everything in the field and made all this stuff from
 the previous section much better. Or did we?
+
+\newpage
 
 \bibliographystyle{acl}
 \bibliography{paraphrasing}
