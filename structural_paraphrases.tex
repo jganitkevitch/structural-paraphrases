@@ -7,6 +7,11 @@
 %\setlength\titlebox{6.5cm}    
 % You can expand the title box if you really have to
 
+\newcommand{\mnote}[1]{\marginpar{%
+  \vskip-\baselineskip
+  \raggedright\footnotesize
+  \itshape\hrule\smallskip\tiny{#1}\par\smallskip\hrule}}  
+
 \title{Learning Structural and Sentential Paraphrases from Parallel Corpora}
 
 \author{Juri Ganitkevitch \and Chris Callison-Burch\\ 
@@ -35,7 +40,21 @@ expansion in information retrieval systems \cite{Anick1999}. In
 machine translation, paraphrases can improve both the coverage of
 phrase tables \cite{Callison-Burch2006b} as well as to generate
 additional reference translations, leading to better results in
-parameter tuning \cite{Madnani2007}.
+parameter tuning \cite{Madnani2007}. 
+
+In practice, the nature of paraphrasing as a component of larger
+systems makes meaningful standalone evaluation difficult: \mnote{refer
+  to some attempts at eval} in many applications of paraphrasing the
+proper preservation of meaning and production of grammatical output is
+only the basis requirement. A crucially important factor in
+determining the system's quality is how well it adheres to the
+additional constraints imposed by the task at hand, i.e.\ shortening
+the input for sentence compression or generating significantly
+differing output for the generation of additional
+references. \cite{Madnani2010b}
+
+
+
 
 The notion of a paraphrase typically denotes a set of surface text
 forms with the same meaning:
@@ -62,7 +81,9 @@ the $NP_2$ of the $NP_1$
 \end{tabular}
 \end{center}
 
-Need some motivation for patterns, perhaps?
+\mnote{Need some motivation for patterns, perhaps?}
+
+\newpage
 
 \section{Related Work} \label{related_work}
 
@@ -76,7 +97,6 @@ Monolingually sourced approaches make use of the abundance of plain
 text ressources and the good quality of parsing and tagging machinery
 on English. However, lacking any in order to find paraphrases they are
 limited to distibutional similarity features.
-
 
 Some approaches employ monolingual collections of text and rely on
 distributional similarity features to extract parahrase patterns,
@@ -121,6 +141,8 @@ Note how our approach sort-of unifies the two; there's an analogy to
 Chris' syntactic constraints as well as the obvious step from Hiero to
 SAMT.
 
+\newpage
+
 \section{Paraphrase Acquisition} \label{acquisition}
 
 The work presented in this paper falls into the category of
@@ -155,7 +177,7 @@ Elaborate on this, reference the appropriate work. This is more about
 the pivoting than it is about the MT-style application of the
 paraphrases.
 
-In Section~\ref{data_collection} we give a brief description of the
+In \ldots we give a brief description of the
 data sets used in our experiments and outline the tools used to
 process them. Section~\ref{extraction} elaborates on the extraction
 of the bilingual translation grammars and their transformation into
@@ -199,27 +221,36 @@ approaches:
   (re-ordering, punctuation, rareness etc)
 \end{itemize}
 
-\section{System Adaptation} \label{approach}
+\newpage
 
-After grammar extraction, the next step in the MT pipeline is tuning
-the weights of the log-linear model. Generally, this can be done by
-maximizing a given objective function using an appropriate algorithm. 
+\section{Task-Specific Parameter Estimation} 
+\label{adaptation}
 
-While other paraphrasing apprao
-tuning step (MERT or MIRA).
+Having extracted a paraphrase grammar, we are left with the task of
+estimating the parameters $\lambda_i$ of the log-linear
+model. Generally, the $\lambda_i$ are chosen to maximize a given
+objective function. Ideally, the objective function mimics the
+system's intended use, so that parameter estimation tunes the system
+to optimal practical performance.
 
-It is important to choose the objective function for our weight
-optimization such that we tune the system 
+Many previously proposed paraphrase extraction methods focus on
+maximizing recall and precision over a manually annotated set of
+paraphrase patterns \cite{Zhao2008,Bhagat2008}.  Similarly, paraphrase
+approaches that utilize machine translation machinery do not stray
+from the usual pipeline, using MERT \cite{Och2003} to tune the
+paraphrase system to produce good English output by maximizing BLEU
+score on a set of known paraphrases \cite{Madnani2007}.
+
+While these methods may produce well-weighted collections of
+paraphrase patterns, they do not emphasize 
+
+it results in a paraphrase system that is not
+focussed on any particular task.
 
 
-Having outlined the extraction of our paraphrase grammar, we now turn
-to fitting the weights of the log-linear model to a particular
-task. 
-
-
-While typical parap
 
 \subsection{Reference Expansion}
+
 
 
 \subsubsection{Paraphrase BLEU} \label{pp_bleu}
@@ -240,6 +271,8 @@ Hiero baseline.
 
 Maybe summarization or sentence compression? Is there
 any ``hard'' eval to be had? Human via MTurk?
+
+\newpage
 
 \section{Analysis} \label{analysis}
 
@@ -266,6 +299,8 @@ sentential paraphrases are much harder to define. When paraphrasing a
 sentence $s$ into a new sentence $t$, the term suggests that we expect
 the changes to $s$ to be above a certain threshold for $t$ to be
 considered a sentential paraphrase. 
+
+\newpage
 
 \section{Conclusion} \label{conclusion}
 
