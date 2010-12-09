@@ -42,20 +42,6 @@ phrase tables \cite{Callison-Burch2006b} as well as to generate
 additional reference translations, leading to better results in
 parameter tuning \cite{Madnani2007}. 
 
-In practice, the nature of paraphrasing as a component of larger
-systems makes meaningful standalone evaluation difficult: \mnote{refer
-  to some attempts at eval} in many applications of paraphrasing the
-proper preservation of meaning and production of grammatical output is
-only the basis requirement. A crucially important factor in
-determining the system's quality is how well it adheres to the
-additional constraints imposed by the task at hand, i.e.\ shortening
-the input for sentence compression or generating significantly
-differing output for the generation of additional
-references. \cite{Madnani2010b}
-
-
-
-
 The notion of a paraphrase typically denotes a set of surface text
 forms with the same meaning:
 \begin{center}
@@ -71,9 +57,12 @@ the $X_1$'s $X_2$ \\
 the $X_2$ of the $X_1$
 \end{tabular}
 \end{center}
-Where the $X_i$ are variables or \emph{slots}. In order to achieve
-more well-formed results, the slots may be augmented with syntactic
-constraints, yielding syntactic paraphrases.
+Where the $X_i$ are variables or \emph{slots}. 
+
+say that patterns beat phrases, see if literature has examples (Madnani)
+
+In order to achieve more well-formed results, the slots may be
+augmented with syntactic constraints, yielding syntactic paraphrases.
 \begin{center}
 \begin{tabular}{c}
 the $NP_1$'s $NP_2$ \\
@@ -81,11 +70,65 @@ the $NP_2$ of the $NP_1$
 \end{tabular}
 \end{center}
 
-\mnote{Need some motivation for patterns, perhaps?}
+claim and underline how constained patterns help 
+
+give examples of their use
+
+point to CCB's paper
+
+say that we're going to incorporate that
+
+
+need to lead into evaluation a little?
+
+In practice, the nature of paraphrasing as a component of larger
+systems makes meaningful standalone evaluation difficult: \mnote{refer
+  to some attempts at eval} in many applications of paraphrasing the
+proper preservation of meaning and production of grammatical output is
+only the basis requirement. A crucially important factor in
+determining the system's quality is how well it adheres to the
+additional constraints imposed by the task at hand, i.e.\ shortening
+the input for sentence compression or generating significantly
+differing output for the generation of additional
+references. \cite{Madnani2010b}
+
+paraphrasing as rewriting is underspecified for most applications
+
+cite targeted paraphrases as example, 
+
+refer to specific properties on sentence compression as another example
+
+as part of this work, we introduce a means of training a system to
+its intended task 
 
 \newpage
 
 \section{Related Work} \label{related_work}
+
+\mnote{what is this about? work that we build on, work that tackles the same
+kind of problem}
+
+paraphrase extraction has seen quite a bit of work
+
+key characteristics of an extraction system are the nature of the data and
+additional information sources used
+
+to extract paraphrases, you need to find correspondencies
+
+correspondencies can come from two sources (or a combination thereof):
+distributional similarity and prior established parallelism
+(i.e. parallel corpora)
+
+distributional similarity features have been primarily leveraged on
+monolingual data, often coupled with dependency parses or
+part-of-speech tagging
+
+advantages of monolingual datasets are primarily in volume
+
+can be leveraged to make up for fuzziness of distributional features
+
+
+
 
 A number of approaches to corpus-based English paraphrase extraction
 have been presented in the past. Typically, the methods differ in the
@@ -226,6 +269,11 @@ approaches:
 \section{Task-Specific Parameter Estimation} 
 \label{adaptation}
 
+have to estimate parameters now
+
+general approach: decide on an objective function, choose parameters
+such that
+
 Having extracted a paraphrase grammar, we are left with the task of
 estimating the parameters $\lambda_i$ of the log-linear
 model. Generally, the $\lambda_i$ are chosen to maximize a given
@@ -251,14 +299,32 @@ focussed on any particular task.
 
 \subsection{Reference Expansion}
 
+We present an examplary application of our paraphrasing system
 
+Using paraphrases for reference expansion, cite Madnani
+
+idea behind reference expansion: create additional ``reference''
+translations to tune a machine translation system
+
+however, tuning our paraphrase system to BLEU results in a paraphraser
+that generates only minimal changes \mnote{if so, how did Madnani deal
+with that?}
+
+We therefore implement a paraphrase-specific metric, ppBLEU, that aims
+to amend this issue.
 
 \subsubsection{Paraphrase BLEU} \label{pp_bleu}
+
+the familiar BLEU metric (cite BLEU) quantifies the quality of a
+translation by measuring the n-gram overlap between the generated
+translation and a set of  reference translation
+
+for paraphrasing, this means that we tune the system to generate
 
 
 \subsubsection{Data} \label{data}
 
-We use Europarl v. 5. Align with Berlekey and parse with The Parser.
+We use Europarl v. 5. Align with Berkeley and parse with The Parser.
 
 \subsubsection{Evaluation} \label{evaluation}
 
