@@ -29,18 +29,19 @@ Later.
 
 \section{Introduction} \label{introduction}
 
-Paraphrases are differing textual entities that convey the same
-meaning. The generation and detection of paraphrases is crucial to
-many tasks in NLP and has been shown to improve performance in
-others. In multi-document summarization systems, paraphrase detection
-can be used to recognize and collapse redundancies
-\cite{Barzilay1999}. Paraphrasing is also used to improve the coverage
-of question answering systems \cite{Ravichandran2002} and for query
-expansion in information retrieval systems \cite{Anick1999}. In
-machine translation, paraphrases can improve both the coverage of
-phrase tables \cite{Callison-Burch2006b} as well as to generate
-additional reference translations, leading to better results in
-parameter tuning \cite{Madnani2007}. 
+Paraphrases are alternative ways to express the same meaning. The
+automated generation and detection of paraphrases is crucial to many
+tasks in NLP and has been shown to improve performance in others. In
+multi-document summarization systems, paraphrase detection can be used
+to recognize and collapse redundancies \cite{Barzilay1999}. Used for
+query expansion, paraphrasing improves the performance of question
+answering \cite{Ravichandran2002,Riezler2007} and information
+retrieval systems \cite{Anick1999}. In machine translation,
+paraphrases have been used to extend phrase tables in order to achieve
+broader source language coverage \cite{Callison-Burch2006b}, as well
+as to automatically generate additional reference translations,
+leading to better results in minimum error rate training
+\cite{Madnani2007}.
 
 The notion of a paraphrase typically denotes a set of surface text
 forms with the same meaning:
@@ -50,68 +51,81 @@ the committee's proposal \\
 the proposal of the committee
 \end{tabular}
 \end{center}
-These can be generalized into paraphrase patterns such as:
+Introducing non-terminals or \emph{slots}, lexical paraphrases are
+commonly generalized into paraphrase patterns such as:
 \begin{center}
 \begin{tabular}{c}
 the $X_1$'s $X_2$ \\
 the $X_2$ of the $X_1$
 \end{tabular}
 \end{center}
-Where the $X_i$ are variables or \emph{slots}. 
-
-say that patterns beat phrases, see if literature has examples (Madnani)
-
-In order to achieve more well-formed results, the slots may be
-augmented with syntactic constraints, yielding syntactic paraphrases.
+It is evident that, compared to plain phrases, paraphrase patterns
+have a much higher potential at generalization. However, the
+unconstrained nature of the slots also bears the risk of producing
+nonsensical or ungrammatical output. Thus, in order to achieve more
+well-formed results, the slots are typically augmented with syntactic
+constraints, yielding syntactic paraphrases.
 \begin{center}
 \begin{tabular}{c}
 the $NP_1$'s $NP_2$ \\
 the $NP_2$ of the $NP_1$
 \end{tabular}
 \end{center}
+While retaining the generalization capabilities of unconstrained
+patterns, the application of syntactic paraphrases is more controlled
+and yields higher quality output.
 
-claim and underline how constained patterns help 
+In this paper, we demonstrate the integration of syntactic paraphrases
+into a machine translation-based paraphrasing system. The use of MT
+machinery and models to extract and apply paraphrases from bilingual
+parallel corpora by pivoting over foreign language phrases is a
+well-known technique. \newcite{Zhao2008b} have presented results that
+indicate that bilingually sourced paraphrase extraction significantly
+outperforms monolingual approaches in both recall and
+precision. However, while in monolingually sourced paraphrase
+extraction linguistically informed paraphrase patterns are
+commonplace, MT-based paraphrase systems mostly have been limited to
+lexical paraphrases \cite{Quirk2004,Callison-Burch2005} or
+unconstrained patterns \cite{Madnani2007}. In recent efforts to enrich
+pivot-based paraphrase extraction with linguistic information
+\newcite{Callison-Burch2008} showed that enforcing syntactic
+constraints can drastically improve the quality of a lexical
+paraphrase system. \newcite{Zhao2008} used dependency parses on the
+English side of a large bilingual corpus to procude syntactic
+parapharse patterns. Our approach goes beyond these two and produces a
+fully syntactically informed synchronous paraphrasing CFG.
 
-give examples of their use
+An addition focus of this paper are the closely tied topics of model
+parameter estimation and system evaluation. In practice, the nature of
+paraphrasing as a component of larger systems makes meaningful
+standalone evaluation difficult: in many applications of paraphrasing
+the proper preservation of meaning and production of grammatical
+output is only a basis requirement. Additional constraints imposed by
+the task at hand, be it shortening the input for sentence compression
+or generating significantly differing output for the generation of
+additional references, are crucially important factor for the system's
+quality. However, this is often not reflected when estimating the
+parameters of a paraphrasing system. We leverage the rich feature set
+present in our approach and the flexibily of minimum error rate
+training to specifically adapt our paraphrase system to the task of
+reference expansion for MT and demonstrate how it outperforms the
+commonly used approach.
 
-point to CCB's paper
-
-say that we're going to incorporate that
-
-
-need to lead into evaluation a little?
-
-In practice, the nature of paraphrasing as a component of larger
-systems makes meaningful standalone evaluation difficult: \mnote{refer
-  to some attempts at eval} in many applications of paraphrasing the
-proper preservation of meaning and production of grammatical output is
-only the basis requirement. A crucially important factor in
-determining the system's quality is how well it adheres to the
-additional constraints imposed by the task at hand, i.e.\ shortening
-the input for sentence compression or generating significantly
-differing output for the generation of additional
-references. \cite{Madnani2010b}
-
-paraphrasing as rewriting is underspecified for most applications
-
-cite targeted paraphrases as example, 
-
-refer to specific properties on sentence compression as another example
-
-as part of this work, we introduce a means of training a system to
-its intended task 
-
-\newpage
+This paper is structured as follows: we present related work on
+paraphrase acquisition in
+Section~\ref{related_work}. Section~\ref{formalism} introduces the
+machine translation formalism used in our work. In
+Section~\ref{acquisition} we describe our paraphrase acquisition
+approach. Sections~\ref{adaptation} and \ref{analysis} present our
+parametere estimation setup, experimental and an analysis
+thereof. Finally, we conclude in Section~\ref{conclusion}.
 
 \section{Related Work} \label{related_work}
 
-\mnote{what is this about? work that we build on, work that tackles the same
-kind of problem}
-
-paraphrase extraction has seen quite a bit of work
-
-key characteristics of an extraction system are the nature of the data and
-additional information sources used
+The paraphrase extraction task has received a fair amount of attention
+in the past. While methods differ substantially in the nature of
+the data they operate on and the approach they take to extract and
+judge paraphrases, 
 
 to extract paraphrases, you need to find correspondencies
 
@@ -120,8 +134,10 @@ distributional similarity and prior established parallelism
 (i.e. parallel corpora)
 
 distributional similarity features have been primarily leveraged on
-monolingual data, often coupled with dependency parses or
-part-of-speech tagging
+monolingual data, often coupled with additional annotations such as
+dependency parses or part-of-speech tagging
+
+\newcite{Lin2001} 
 
 advantages of monolingual datasets are primarily in volume
 
@@ -129,75 +145,21 @@ can be leveraged to make up for fuzziness of distributional features
 
 
 
-
-A number of approaches to corpus-based English paraphrase extraction
-have been presented in the past. Typically, the methods differ in the
-nature of the data and additional annotations or information they
-use. Roughly, we can distinguish between three types of corpora:
-monolingual, parallel monolingual and parallel bilingual.
-
-Monolingually sourced approaches make use of the abundance of plain
-text ressources and the good quality of parsing and tagging machinery
-on English. However, lacking any in order to find paraphrases they are
-limited to distibutional similarity features.
-
-Some approaches employ monolingual collections of text and rely on
-distributional similarity features to extract parahrase patterns,
-using dependency parses \cite{Lin2001} or part-of-speech tags
-\cite{Bhagat2008} to further inform their algorithms.
-
-Another branch of paraphrase research employs sentence-aligned
-monolingual parallel corpora \cite{Barzilay2001,Quirk2004} to
-
-There have been many proposed approaches to paraphrase induction, most
-of which can be placed in two groups, according to what data they use
-to source their method. Monolingual approaches typically make use of
-vast amounts of English text to extract paraphrases. Due to the
-availability of good syntactic and dependency parsers, these methods
-are often able to infer \emph{structural} paraphrases, i.e.\
-paraphrastic patterns that capture either syntactic or semantic
-information and can be generalize via ``slots''. However, the coverage
-of such systems tends to be low.
-
-Bilingually sourced approaches, on the other hand make use of the
-relative abundance of sentence-parallel corpora and extract bilingual
-tables of phrases (cite Chris) or patterns (cite Nitin, Zhao) from
-which paraphrases can be extracted by pivoting over the non-English
-side of the table. However, due to the nature of bilingual phrase
-tables, the resulting paraphrases are often restricted to
-surface-level.
-
-\emph{not quite true, since Zhao does extract labled pattern based on
-  dependency graphs. need to look into that and categorize, organize
-  prior work properly.}
-
-Should distinguish between phrasal and structural paraphrases, as well
-as bilingually and monolingually sourced approaches to extraction.
-
-Perhaps: translation as bilingual paraphrasing, and how that thought
-brings about the pivot approach.
-
-Reference monolingual approaches that are structural, pivot-based
-approaches that are phrasal, Nitin's stuff.
-
-Note how our approach sort-of unifies the two; there's an analogy to
-Chris' syntactic constraints as well as the obvious step from Hiero to
-SAMT.
-
-\newpage
-
-\section{Paraphrase Acquisition} \label{acquisition}
-
-The work presented in this paper falls into the category of
-bilingually-sourced pivot-based approaches. We make use of established
-machine translation machinery to extract syntactically informed
-paraphrase patterns from multiple bilingual parallel corpora.
-
-
-\subsection{The SAMT Formalism}
+\section{The SAMT Formalism} \label{formalism}
 
 The \emph{Syntax Augmented Machine Translation} (SAMT,
 \cite{Zollmann2006})
+
+
+\section{Paraphrase Acquisition} \label{acquisition}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.99\linewidth]{figures/tree_placeholder.pdf}
+\end{center}
+\caption{A figure I stole from Trevor \& Mirella}
+\end{figure}
+
 
 Formal: Synchronous grammars, with the usual examples (one phrasal, one
 structural).
@@ -209,22 +171,6 @@ Diagram for grammar extraction (two sentence pairs with trees and
 alignments, show how that gets us a paraphrase pattern). 
 
 
-
-The method we present in this work extends Nitin's pivot-based Hiero
-paraphrasing approach to the richer, syntax-informed SAMT
-formalism. Starting with a bilingual parallel corpus, we use the
-familiar MT and parsing (cite!) machinery to word-align the data and
-extract an SAMT-style grammar.
-
-Elaborate on this, reference the appropriate work. This is more about
-the pivoting than it is about the MT-style application of the
-paraphrases.
-
-In \ldots we give a brief description of the
-data sets used in our experiments and outline the tools used to
-process them. Section~\ref{extraction} elaborates on the extraction
-of the bilingual translation grammars and their transformation into
-monolingual paraphrasing grammars.
 
 \subsection{Paraphrase Grammar Extraction} \label{extraction}
 
@@ -264,7 +210,6 @@ approaches:
   (re-ordering, punctuation, rareness etc)
 \end{itemize}
 
-\newpage
 
 \section{Task-Specific Parameter Estimation} 
 \label{adaptation}
@@ -319,12 +264,19 @@ the familiar BLEU metric (cite BLEU) quantifies the quality of a
 translation by measuring the n-gram overlap between the generated
 translation and a set of  reference translation
 
-for paraphrasing, this means that we tune the system to generate
+for paraphrasing, this can be a problem, since the reference
+translations typically have a rather high overlap with one another
+\mnote{get some numbers to back that up}
 
 
 \subsubsection{Data} \label{data}
 
 We use Europarl v. 5. Align with Berkeley and parse with The Parser.
+
+we use the SAMT pipeline to extract the grammar
+
+however, the pivoting approach makes it impossible to apply the common pre-emptive
+grammar filtering, hence the grammar grows very large
 
 \subsubsection{Evaluation} \label{evaluation}
 
@@ -332,21 +284,44 @@ A straightforward way to evaluate a paraphrasing system is by using to
 improve an SMT system's performance. Cite Chris and Nitin. Compare to
 Hiero baseline.
 
-\subsection{Possibly Another Paraphrase
-  Application} \label{other_application}
 
-Maybe summarization or sentence compression? Is there
-any ``hard'' eval to be had? Human via MTurk?
-
-\newpage
 
 \section{Analysis} \label{analysis}
 
-one of the motivations for our approach was the expectation of being
-able to acquire structural paraphrases, especially paraphrases taht
-are capable of learning long-distance transformations such as
-passivization, dative shift, possessive something and prepositional
-paraphrases.
+There are two main motivations to impose syntactic contraints on
+paraphrase patterns: firstly, we aim for an increase in paraphrase
+quality. I.e.\ we expect our training procedure to learn properly
+labeled patterns that properly reflect well-know paraphrastic
+transformations such as passivization, dative shift or the possessive
+rule. Secondly, we hope to find structural paraphrases that capture
+long-distance reorderings, leading to sentential paraphrases.
+
+\subsection{Comparison of Paraphrase
+  Patterns} \label{pattern_comparison}
+
+To analyze the paraphrase patterns produced by our system, we reduce
+the grammar to only patterns that apply to an example sentence and
+take a closer look at the most likely pattern pairs. We contrast our
+extracted paraphrases with a Hiero-style baseline that mirrors the
+approach of \newcite{Madnani2007}. 
+
+\begin{table*}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  \multicolumn{2}{|c|}{Hiero baseline} & \multicolumn{2}{c|}{SAMT
+    paraphrase} \\
+  \hline
+  blah & blah & blah & blah \\
+  blah & blah & blah & blah \\
+  blah & blah & blah & blah \\
+  blah & blah & blah & blah \\
+  \hline
+\end{tabular}
+\end{center}
+\caption{This table shows some example paraphrases}
+\end{table*}
+
 
 \subsection{Sentential Paraphrasing} \label{sentential_paraphrasing}
 
@@ -366,14 +341,10 @@ sentence $s$ into a new sentence $t$, the term suggests that we expect
 the changes to $s$ to be above a certain threshold for $t$ to be
 considered a sentential paraphrase. 
 
-\newpage
-
 \section{Conclusion} \label{conclusion}
 
 Look, we unified everything in the field and made all this stuff from
 the previous section much better. Or did we?
-
-\newpage
 
 \bibliographystyle{acl}
 \bibliography{paraphrasing}
