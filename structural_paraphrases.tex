@@ -161,10 +161,10 @@ to rank them:
 % \end{equation}
 % where
 \begin{eqnarray}
-  % p(e_2|e_1)&=&\sum_f p(e_2,f|e_1)\\
-  p(e_2|e_1) 	&=&			\sum_f p(f|e_1) p(e_2|f,e_1)\\
-  &\approx& 	\sum_f p(f|e_1) p(e_2|f)
-  \label{paraphrase-prob-eqn}
+p(e_2|e_1)&=&\sum_f p(e_2,f|e_1)\\
+p(e_2|e_1) 	&=&			\sum_f p(f|e_1) p(e_2|f,e_1)\\
+			&\approx& 	\sum_f p(f|e_1) p(e_2|f)
+\label{paraphrase-prob-eqn}
 \end{eqnarray}
 Additionally, the resulting paraphrases are further re-ranked using
 contextual features such as a language model.
