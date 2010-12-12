@@ -241,12 +241,11 @@ paraphrases. \mnote{Need better tie-in with the overall theme of structural
 paraphrases.}
 
 
-\section{The SAMT Formalism} \label{formalism}
+\section{SCFGs in Translation} \label{formalism}
 
 Similar to \newcite{Madnani2007}, our paraphrasing system heavily
 relies on established statistical machine translation
-machinery. \mnote{Should we assume familiarity with the whole
-  source-target stuff? Probably not. Need to introduce.} The model we
+machinery. \mnote{Spin this towards the section title.} The model we
 use in our approach is \emph{Syntax Augmented Machine Translation} or
 \emph{SAMT} \cite{Zollmann2006}, which is based on \emph{probabilistic
   synchronous context-free grammar} (PSCFG) formalism and allows for
@@ -296,15 +295,18 @@ non-terminal symbol for the sub-phrases on both sides. \mnote{Tie this
   back to $\gamma$ and $\alpha$?} The synchronous substitution applied
 to $t$ and $s$ yields the correspondency $\sim$.
 
-To compute the weight $w$ for the extracted rules, SAMT relies on a
-log-linear model:
+To compute the weight $w_r$ for an extracted rule $r$, SAMT relies on
+a log-linear model:
 \begin{equation}
-r \in \mathcal{R}; ~~ w_r = \sum_i^N \lambda_i \varphi_i(r)
-\end{equation} \mnote{This isn't very nice, formally. Rethink.}
+  w_r = \sum_i^N \lambda_i \varphi_i(r)
+\end{equation}
 Here, the $\varphi_i$ are a set of feature functions with
-corresponding model weights $\lambda_i$.
+corresponding model weights $\lambda_i$. The feature set of the SAMT
+model by default consists of 23 feature functions and covers a diverse
+set of rule characteristics. We discuss our task-specific extensions
+to the SAMT feature set in Section~\ref{adaptation}.
 
-\section{Paraphrase Acquisition} \label{acquisition}
+\section{SCFGs in Paraphrasing} \label{acquisition}
 
 
 Formal: Synchronous grammars, with the usual examples (one phrasal, one
