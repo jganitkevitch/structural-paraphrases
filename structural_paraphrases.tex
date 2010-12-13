@@ -164,7 +164,7 @@ to rank them:
   p(e_2|e_1) &=& \sum_f p(e_2,f|e_1)\\
                   &=& \sum_f p(e_2|f,e_1) p(f|e_1) \\
                   &\approx& \sum_f p(e_2|f) p(f|e_1)
-\label{paraphrase-prob-eqn}
+\label{paraphrase_prob_eqn}
 \end{eqnarray}
 Additionally, the resulting paraphrases are further re-ranked using
 contextual features such as a language model.
@@ -247,9 +247,9 @@ Similar to \newcite{Madnani2007}, our paraphrasing system heavily
 relies on established statistical machine translation
 machinery. \mnote{Spin this towards the section title.} The model we
 use in our approach is \emph{Syntax Augmented Machine Translation} or
-\emph{SAMT} \cite{Zollmann2006}, which is based on the \emph{weighted
-  synchronous context-free grammar} (WSCFG) formalism and allows for
-an arbitrary number of non-terminals.
+\emph{SAMT} \cite{Zollmann2006}, which is based on the \emph{
+  synchronous context-free grammar} (SCFG) formalism and allows for an
+arbitrary number of non-terminals.
 
 Formally, a PSCFG $\mathcal{G}$ is defined by specifying
 \[
@@ -316,6 +316,13 @@ feature set in Section~\ref{adaptation}.
 
 \section{SCFGs in Paraphrasing} \label{acquisition}
 
+\begin{figure*}[!t]
+\begin{center}
+\includegraphics[width=0.99\linewidth]{figures/pivot.pdf}
+\end{center}
+\caption{Let's see if we need this}
+\end{figure*}
+
 To create a paraphrase grammar from a translation grammar, we extend
 the pivot approach of \newcite{Callison-Burch2005} to the SAMT
 model. For this purpose, we assume a grammar that translates from a
@@ -334,17 +341,66 @@ reflect the combined non-terminal alignment
 \begin{equation*}
 \sim ~ = ~ \sim_1^{-1} \circ \sim_2 .
 \end{equation*}
+
+\subsection{Feature Computation}
+
 The computation of $\vec{\varphi}$ from $\vec{\varphi}_1$ and
-$\vec{\varphi}_2$ occurs on feature level. A significant portion of
-our features are probabilities 
+$\vec{\varphi}_2$ occurs on feature level. For this purpose, the SAMT
+feature set can be roughly partitioned into three groups.
+
+The first group consists of features that depend solely on the rule
+itself. This includes features based on number or nature of terminals
+or non-terminals in $\alpha_1$ or $\alpha_2$, features that indicate
+non-terminal reordering or deletion of punctuation and pseudo-features
+like a glue rule indicator or the application count feature. Since
+none of these features require additional information, their
+computation for $\vec{\varphi}$ is straightforward.
+
+The features in the second group additionally depend on aggregate
+counts over the bitext and thus cannot be computed from the rule
+alone. However, the information contained in $\vec{\varphi}_1$ and
+$\vec{\varphi}_2$ allows us to apply the pivot approach as shown in
+Equation~\ref{paraphrase_prob_eqn} to approxate the real feature value
+for $\vec{\varphi}$. In the SAMT feature set, this group only includes
+the four lexical translation probability features.
+
+The remainder of the feature set falls into the third group. These
+features depend on information that we cannot reconstruct from
+$\vec{\varphi}_1$ and $\vec{\varphi}_2$. Features in this group
+include the rule's probability conditioned on the left-hand-side, its
+source side with and without non-terminal labels as well as rareness
+and unbalancedness penalties. For these we fall back to a black-box
+approach, treating the value for a given features as an indication of
+the rule's quality in some particular aspect. To combine the feature
+values, we multiply for the relative frequencies and add for the
+penalty functions.
+
+In addition to combining $\vec{\varphi}_1$ and $\vec{\varphi}_2$, we
+extend $\vec{\varphi}$ by a paraphrasing-specific boolean feature
+$\varphi_{\mathit{ident}}$, that is $1$ when $\alpha_1 = \alpha_2$ and
+$0$ otherwise. This allows us to tune our system to prefer or
+dis-prefer identity paraphrases.
+
+\subsection{Grammar Pruning}
+
+Due to the large number of extracted non-terminals, SAMT grammars tend
+to be very large.
+
+Paraphrase grammars are even larger
+
+three thresholds
+
+Only rules that have been seen more than $x$ times and have a
+probability larger than $y$ are considered for pivot recombination. In
+addition to this, we only keep the top 20 parapharses for each pattern
+(according to translation and lexical probablity).
 
 
-\begin{figure*}[!t]
-\begin{center}
-\includegraphics[width=0.99\linewidth]{figures/pivot.pdf}
-\end{center}
-\caption{Let's see if we need this}
-\end{figure*}
+The result of this process is a paraphrase grammar with syntactic
+annotations and a feature set which (approximately) mirrors that of
+the initial translation grammar. We now move to estimating the
+feature weights.
+
 
 
 \section{Task-Specific Parameter Estimation} 
@@ -441,7 +497,7 @@ take a closer look at the most likely pattern pairs. We contrast our
 extracted paraphrases with a Hiero-style baseline that mirrors the
 approach of \newcite{Madnani2007}. 
 
-\begin{table*}[ht]
+\begin{table*}[t]
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
   \hline
