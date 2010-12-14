@@ -29,18 +29,22 @@ Johns Hopkins University}
 \maketitle
 
 \begin{abstract}
-Damn it feels good to be a gangsta.
-A real gangsta-ass nigga plays his cards right.
-A real gangsta-ass nigga never runs his fuckin mouth.
-'cause real gangsta-ass niggas don't start fights.
-And niggas always gotta high cap.
-Showin' all his boys how he shot em.
-But real gangsta-ass niggas don't flex nuts.
-'cause real gangsta-ass niggas know they got em.
-And everythings cool in the mind of a gangsta.
-'cause gangsta-ass niggas think deep.
-Up three-sixty-five a year 24/7.
-'cause real gangsta ass niggas don't sleep.
+  \begin{itemize}
+  \item ``in this work'' stuff is implied
+  \item newcites rather than cites 
+  \item put a little brag claim at the end, summarizing the outcome
+  \item abstract should tell you whether paper is interesting, whether
+    your results are interesting
+  \item motivate the problem
+  \item briefly motivate choices
+  \item be clear, sell the paper to the reviewers
+  \item be direct, motivate and explain instead of saying ``we
+    motivate/explain''
+  \item briefly tie back to previous work
+  \item concrete numbers
+  \end{itemize}
+  Paraphrase extraction approaches based on richly annotated
+  monolingual parallel corpora have been
 \end{abstract}
 
 \section{Introduction} \label{introduction}
@@ -383,18 +387,20 @@ dis-prefer identity paraphrases.
 
 \subsection{Grammar Pruning}
 
-Due to the large number of extracted non-terminals, SAMT grammars tend
-to be very large.
+Due to the diverse set of non-terminals allowed in our model, the
+grammars we extract tend to become extremely large. This, combined
+with the multiplicative effect of pivoting, quickly makes the
+resulting paraphrase grammars grow too large too handle.
 
-Paraphrase grammars are even larger
-
-three thresholds
-
-Only rules that have been seen more than $x$ times and have a
-probability larger than $y$ are considered for pivot recombination. In
-addition to this, we only keep the top 20 parapharses for each pattern
-(according to translation and lexical probablity).
-
+To keep the grammars at a manageable size while retaining good
+paraphrases, we implement a the following pruning approach. We only
+consider translation rules that have been seen more than a given
+number of times and exceed a given translation probability threshold
+for pivot recombination. In addition to this, we rank the generated
+paraphrases for each pattern according to a combination of translation
+and lexical probablity and only retain the top $n$
+alternatives. \mnote{This is a little wonky, maybe drop the top-$n$
+  pruning?}
 
 The result of this process is a paraphrase grammar with syntactic
 annotations and a feature set which (approximately) mirrors that of
@@ -403,26 +409,31 @@ feature weights.
 
 
 
-\section{Task-Specific Parameter Estimation} 
+\section{Task-Specific System Adaptation} 
 \label{adaptation}
 
-have to estimate parameters now
+As we demonstrate in Section~\ref{analysis}, \mnote{Swap the sections
+  after all?} our model produces good quality syntactic paraphrases
+and is capable of sentential transformations. However, this alone may
+not be sufficient when deploying the system for a particular task such
+as sentence compression (which calls for paraphrases that shorten the
+text) or references expansion for machine translation tuning (where it
+is of interest to diversify the reference set by producing sentential
+paraphrases that differ significantly from the input).
+
+To specialize our system to given tasks, 
+In parameter estimation, we strive to tune our model to achieve best
+performance 
 
 general approach: decide on an objective function, choose parameters
 such that
-
-Having extracted a paraphrase grammar, we are left with the task of
-estimating the parameters $\lambda_i$ of the log-linear
-model. Generally, the $\lambda_i$ are chosen to maximize a given
-objective function. Ideally, the objective function mimics the
-system's intended use, so that parameter estimation tunes the system
-to optimal practical performance.
 
 Many previously proposed paraphrase extraction methods focus on
 maximizing recall and precision over a manually annotated set of
 paraphrase patterns \cite{Zhao2008,Bhagat2008}.  Similarly, paraphrase
 approaches that utilize machine translation machinery do not stray
 from the usual pipeline, using MERT \cite{Och2003} to tune the
+\mnote{Is this more of a Related Work kind of thing?}
 paraphrase system to produce good English output by maximizing BLEU
 score on a set of known paraphrases \cite{Madnani2007}.
 
@@ -458,7 +469,8 @@ translation and a set of  reference translation
 
 for paraphrasing, this can be a problem, since the reference
 translations typically have a rather high overlap with one another
-\mnote{get some numbers to back that up}
+\mnote{get some numbers to back that up} and the decoder has to beat
+that first
 
 
 \subsubsection{Data} \label{data}
