@@ -405,47 +405,53 @@ alternatives. \mnote{This is a little wonky, maybe drop the top-$n$
 The result of this process is a paraphrase grammar with syntactic
 annotations and a feature set which (approximately) mirrors that of
 the initial translation grammar. We now move to estimating the
-feature weights.
+feature weights. \mnote{This is awful. Needs better intro into
+  estimation part.}
 
 
-
-\section{Task-Specific System Adaptation} 
+\section{Parameter Estimation} 
 \label{adaptation}
 
-As we demonstrate in Section~\ref{analysis}, \mnote{Swap the sections
-  after all?} our model produces good quality syntactic paraphrases
-and is capable of sentential transformations. However, this alone may
-not be sufficient when deploying the system for a particular task such
-as sentence compression (which calls for paraphrases that shorten the
-text) or references expansion for machine translation tuning (where it
-is of interest to diversify the reference set by producing sentential
-paraphrases that differ significantly from the input).
+need to estimate parameters for both, paraphrase ranking and 
 
-To specialize our system to given tasks, 
-In parameter estimation, we strive to tune our model to achieve best
-performance 
+we use mert
 
-general approach: decide on an objective function, choose parameters
-such that
+like nitin, we tune on ref-to-ref translation
 
-Many previously proposed paraphrase extraction methods focus on
-maximizing recall and precision over a manually annotated set of
-paraphrase patterns \cite{Zhao2008,Bhagat2008}.  Similarly, paraphrase
-approaches that utilize machine translation machinery do not stray
-from the usual pipeline, using MERT \cite{Och2003} to tune the
-\mnote{Is this more of a Related Work kind of thing?}
-paraphrase system to produce good English output by maximizing BLEU
-score on a set of known paraphrases \cite{Madnani2007}.
-
-While these methods may produce well-weighted collections of
-paraphrase patterns, they do not emphasize 
-
-it results in a paraphrase system that is not
-focussed on any particular task.
+however BLEU is bad
 
 
+We estimate the parameters of our log-linear model using minimum error
+rate training \cite{Och2003}.
 
-\subsection{Reference Expansion}
+\subsection{Paraphrase BLEU} \label{pp_bleu}
+
+The familiar BLEU metric \cite{Papineni2002} quantifies the quality of
+a translation by measuring the n-gram overlap between the generated
+translation and a set of reference translation
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  & BLEU & ppBLEU \\
+  \hline
+  Identity & good & bad \\
+  Oracle & good & good \\
+  \hline
+\end{tabular}
+\end{center}
+\caption{Oracle experiment with references: ``translate'' ref onto
+  itself score; ``translate'' ref onto heldout ref, score}
+\end{table}
+
+for paraphrasing, this can be a problem, since the reference
+translations typically have a rather high overlap with one another
+\mnote{get some numbers to back that up} and the decoder has to beat
+that first
+
+
+\section{Reference Expansion}
 
 We present an examplary application of our paraphrasing system
 
@@ -461,19 +467,8 @@ with that?}
 We therefore implement a paraphrase-specific metric, ppBLEU, that aims
 to amend this issue.
 
-\subsubsection{Paraphrase BLEU} \label{pp_bleu}
 
-the familiar BLEU metric (cite BLEU) quantifies the quality of a
-translation by measuring the n-gram overlap between the generated
-translation and a set of  reference translation
-
-for paraphrasing, this can be a problem, since the reference
-translations typically have a rather high overlap with one another
-\mnote{get some numbers to back that up} and the decoder has to beat
-that first
-
-
-\subsubsection{Data} \label{data}
+\subsection{Data} \label{data}
 
 We use Europarl v. 5. Align with Berkeley and parse with The Parser.
 
@@ -482,7 +477,7 @@ we use the SAMT pipeline to extract the grammar
 however, the pivoting approach makes it impossible to apply the common pre-emptive
 grammar filtering, hence the grammar grows very large
 
-\subsubsection{Evaluation} \label{evaluation}
+\subsection{Evaluation} \label{evaluation}
 
 A straightforward way to evaluate a paraphrasing system is by using to
 improve an SMT system's performance. Cite Chris and Nitin. Compare to
@@ -499,6 +494,33 @@ labeled patterns that properly reflect well-know paraphrastic
 transformations such as passivization, dative shift or the possessive
 rule. Secondly, we hope to find structural paraphrases that capture
 long-distance reorderings, leading to sentential paraphrases.
+
+\begin{table*}
+  \begin{center}
+  \begin{tabular}{|c|c|}
+    \hline
+    Possessive rule & $\mathit{NP}$ $\rightarrow$  the $\mathit{NNP}_1$'s
+    $\mathit{NN}_2$ $\mid$ the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+    \\
+
+    Dative shift & $\mathit{VP}$ $\rightarrow$ give $\mathit{NN}$ to
+    $\mathit{NP}$ $\mid$ give $\mathit{NP}$ the $\mathit{NN}$ \\
+
+    Passivization &
+    $\mathit{SBAR}$ $\rightarrow$ that $\mathit{NP}$ had
+    $\mathit{VBN}$ $\mid$ which was $\mathit{VBN}$ by $\mathit{NP}$ \\
+
+    Adverbial phrase move & 
+    $\mathit{VP}$ $\rightarrow$ $\mathit{VBN}$ $\mathit{ADVP}$ $\mid$ is
+    $\mathit{ADVP}$ being $\mathit{VBN}$ \\
+
+    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ in order to $\mathit{VB}$ that
+    $\mid$ in order to $\mathit{VB}$ \\
+    \hline
+\end{tabular}
+\end{center}
+\caption{Examples of structural paraphrasing rules extracted by our system}
+\end{table*}
 
 \subsection{Comparison of Paraphrase
   Patterns} \label{pattern_comparison}

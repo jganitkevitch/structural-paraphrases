@@ -1,0 +1,19 @@
+Possessive rule:
+[NP] ||| the [NNP,1] 's [NN,2] ||| the [NN,2] of the [NNP,1]
+
+Dative shift:
+give @NN to @NP # give @2 the @1 # @VP #
+
+Passivization:
+that @NP had @VBN#which was @2 by @1#@SBAR
+which was @VBN by @NNP#that the @2 has @1#@SBAR
+
+Adverbial phrase move:
+@VBN @ADVP#is @2 being @1#@VP
+
+Prepositional (can't generalize the transformation further due to SCFG):
+the @NN by the @NN#the @2 @1#@NP
+the @NNS from the @NNP#@2 @1#@NP
+
+Reduced relative clause:
+in order to @VB that#in order to @1#@SBAR/S
