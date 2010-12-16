@@ -6,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{url}
+\usepackage{multirow}
+\usepackage{rotating}
 %\setlength\titlebox{6.5cm}    
 % You can expand the title box if you really have to
 
@@ -412,13 +414,13 @@ feature weights. \mnote{This is awful. Needs better intro into
 \section{Parameter Estimation} 
 \label{adaptation}
 
-need to estimate parameters for both, paraphrase ranking and 
+need to estimate parameters for both, paraphrase ranking and paraphrasing
 
-we use mert
+since we use  mert
 
 like nitin, we tune on ref-to-ref translation
 
-however BLEU is bad
+however BLEU is bad, leads to identity paraphrases
 
 
 We estimate the parameters of our log-linear model using minimum error
@@ -497,25 +499,25 @@ long-distance reorderings, leading to sentential paraphrases.
 
 \begin{table*}
   \begin{center}
-  \begin{tabular}{|c|c|}
+  \begin{tabular}{|c|rrcl|}
     \hline
-    Possessive rule & $\mathit{NP}$ $\rightarrow$  the $\mathit{NNP}_1$'s
-    $\mathit{NN}_2$ $\mid$ the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+    Possessive rule & $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+    $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
     \\
 
-    Dative shift & $\mathit{VP}$ $\rightarrow$ give $\mathit{NN}$ to
-    $\mathit{NP}$ $\mid$ give $\mathit{NP}$ the $\mathit{NN}$ \\
+    Dative shift & $\mathit{VP}$ $\rightarrow$ & give $\mathit{NN}$ to
+    $\mathit{NP}$ & $\mid$ & give $\mathit{NP}$ the $\mathit{NN}$ \\
 
     Passivization &
-    $\mathit{SBAR}$ $\rightarrow$ that $\mathit{NP}$ had
-    $\mathit{VBN}$ $\mid$ which was $\mathit{VBN}$ by $\mathit{NP}$ \\
+    $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
+    $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
 
     Adverbial phrase move & 
-    $\mathit{VP}$ $\rightarrow$ $\mathit{VBN}$ $\mathit{ADVP}$ $\mid$ is
+    $\mathit{VP}$ $\rightarrow$ & $\mathit{VBN}$ $\mathit{ADVP}$ & $\mid$ & is
     $\mathit{ADVP}$ being $\mathit{VBN}$ \\
 
-    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ in order to $\mathit{VB}$ that
-    $\mid$ in order to $\mathit{VB}$ \\
+    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ & in order
+    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
     \hline
 \end{tabular}
 \end{center}
@@ -533,19 +535,70 @@ approach of \newcite{Madnani2007}.
 
 \begin{table*}[t]
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|rrcl|}
   \hline
-  \multicolumn{2}{|c|}{Hiero baseline} & \multicolumn{2}{c|}{SAMT
-    paraphrase} \\
+  Input phrase & \multicolumn{5}{c|}{Best extracted paraphrases} \\
   \hline
-  blah & blah & blah & blah \\
-  blah & blah & blah & blah \\
-  blah & blah & blah & blah \\
-  blah & blah & blah & blah \\
+  \multirow{6}{*}{the dog's tail} &
+  \multirow{3}{*}{H}
+  &
+  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+  \\
+  &&
+  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+  \\
+  &&
+  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$ \\
+  \cline{2-6}
+  & \multirow{3}{*}{S}
+  &
+  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+  \\
+  &&
+  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+  \\
+  &&
+  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
+  $\mathit{NNP}_1$ \\
+  \hline
+  \multirow{6}{*}{the dog's tail} &
+  \multirow{3}{*}{H}
+  &
+  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+  \\
+  &&
+  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$  \\
+  &&
+  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+  \\
+  \cline{2-6}
+  & \multirow{3}{*}{S}
+  &
+  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+  \\
+  &&
+  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+  \\
+  &&
+  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
+  $\mathit{NNP}_1$ \\
   \hline
 \end{tabular}
 \end{center}
-\caption{This table shows some example paraphrases}
+\caption{This table shows the top paraphrase rules matching an input
+  phrase as ranked by our (S) and the baseline system (H).}
 \end{table*}
 
 
