@@ -284,7 +284,7 @@ non-terminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 
 \begin{figure*}[t]
 \begin{center}
-\includegraphics[width=0.99\linewidth]{figures/scfg_grid.pdf}
+\includegraphics[width=0.99\linewidth]{figures/scfg_grid_revamp.pdf}
 \end{center}
 \caption{Make this prettier later on.}
 \label{samt_extraction}
@@ -411,91 +411,22 @@ feature weights. \mnote{This is awful. Needs better intro into
   estimation part.}
 
 
-\section{Parameter Estimation} 
-\label{adaptation}
-
-need to estimate parameters for both, paraphrase ranking and paraphrasing
-
-since we use  mert
-
-like nitin, we tune on ref-to-ref translation
-
-however BLEU is bad, leads to identity paraphrases
-
-
-We estimate the parameters of our log-linear model using minimum error
-rate training \cite{Och2003}.
-
-\subsection{Paraphrase BLEU} \label{pp_bleu}
-
-The familiar BLEU metric \cite{Papineni2002} quantifies the quality of
-a translation by measuring the n-gram overlap between the generated
-translation and a set of reference translation
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-  \hline
-  & BLEU & ppBLEU \\
-  \hline
-  Identity & good & bad \\
-  Oracle & good & good \\
-  \hline
-\end{tabular}
-\end{center}
-\caption{Oracle experiment with references: ``translate'' ref onto
-  itself score; ``translate'' ref onto heldout ref, score}
-\end{table}
-
-for paraphrasing, this can be a problem, since the reference
-translations typically have a rather high overlap with one another
-\mnote{get some numbers to back that up} and the decoder has to beat
-that first
-
-
-\section{Reference Expansion}
-
-We present an examplary application of our paraphrasing system
-
-Using paraphrases for reference expansion, cite Madnani
-
-idea behind reference expansion: create additional ``reference''
-translations to tune a machine translation system
-
-however, tuning our paraphrase system to BLEU results in a paraphraser
-that generates only minimal changes \mnote{if so, how did Madnani deal
-with that?}
-
-We therefore implement a paraphrase-specific metric, ppBLEU, that aims
-to amend this issue.
-
-
-\subsection{Data} \label{data}
-
-We use Europarl v. 5. Align with Berkeley and parse with The Parser.
-
-we use the SAMT pipeline to extract the grammar
-
-however, the pivoting approach makes it impossible to apply the common pre-emptive
-grammar filtering, hence the grammar grows very large
-
-\subsection{Evaluation} \label{evaluation}
-
-A straightforward way to evaluate a paraphrasing system is by using to
-improve an SMT system's performance. Cite Chris and Nitin. Compare to
-Hiero baseline.
-
-
-
 \section{Analysis} \label{analysis}
 
-There are two main motivations to impose syntactic contraints on
-paraphrase patterns: firstly, we aim for an increase in paraphrase
-quality. I.e.\ we expect our training procedure to learn properly
-labeled patterns that properly reflect well-know paraphrastic
+When introducing syntactic information into our paraphrase extraction
+model, a key aim is the acquisition of structural paraphrases. We
+expect our training procedure to learn generalized, properly labeled
+patterns that, ideally, will reflect well-know paraphrastic
 transformations such as passivization, dative shift or the possessive
-rule. Secondly, we hope to find structural paraphrases that capture
-long-distance reorderings, leading to sentential paraphrases.
+rule. Representing such transforms in a generic fashion, our
+paraphrasing grammar would be capable of awesome things.
+
+In examining a parpharse grammar obtained from a French-English
+bitext, we find that this is indeed the
+case. Table~\ref{example_rules} shows a selection of paraphrase rules
+found in our grammar, labeled with the paraphrastic transformation the
+effect.
+
 
 \begin{table*}
   \begin{center}
@@ -521,7 +452,9 @@ long-distance reorderings, leading to sentential paraphrases.
     \hline
 \end{tabular}
 \end{center}
-\caption{Examples of structural paraphrasing rules extracted by our system}
+\caption{Examples of structural paraphrasing rules extracted by our
+  system}
+\label{example_rules}
 \end{table*}
 
 \subsection{Comparison of Paraphrase
@@ -618,7 +551,84 @@ While the definition of a phrasal paraphrase is intuitively clear,
 sentential paraphrases are much harder to define. When paraphrasing a
 sentence $s$ into a new sentence $t$, the term suggests that we expect
 the changes to $s$ to be above a certain threshold for $t$ to be
-considered a sentential paraphrase. 
+considered a sentential paraphrase.
+
+
+\section{Parameter Estimation} 
+\label{adaptation}
+
+need to estimate parameters for both, paraphrase ranking and paraphrasing
+
+since we use  mert
+
+like nitin, we tune on ref-to-ref translation
+
+however BLEU is bad, leads to identity paraphrases
+
+
+We estimate the parameters of our log-linear model using minimum error
+rate training \cite{Och2003}.
+
+\subsection{Paraphrase BLEU} \label{pp_bleu}
+
+The familiar BLEU metric \cite{Papineni2002} quantifies the quality of
+a translation by measuring the n-gram overlap between the generated
+translation and a set of reference translation
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  & BLEU & ppBLEU \\
+  \hline
+  Identity & good & bad \\
+  Oracle & good & good \\
+  \hline
+\end{tabular}
+\end{center}
+\caption{Oracle experiment with references: ``translate'' ref onto
+  itself score; ``translate'' ref onto heldout ref, score}
+\end{table}
+
+for paraphrasing, this can be a problem, since the reference
+translations typically have a rather high overlap with one another
+\mnote{get some numbers to back that up} and the decoder has to beat
+that first
+
+
+\section{Reference Expansion}
+
+We present an examplary application of our paraphrasing system
+
+Using paraphrases for reference expansion, cite Madnani
+
+idea behind reference expansion: create additional ``reference''
+translations to tune a machine translation system
+
+however, tuning our paraphrase system to BLEU results in a paraphraser
+that generates only minimal changes \mnote{if so, how did Madnani deal
+with that?}
+
+We therefore implement a paraphrase-specific metric, ppBLEU, that aims
+to amend this issue.
+
+
+\subsection{Data} \label{data}
+
+We use Europarl v. 5. Align with Berkeley and parse with The Parser.
+
+we use the SAMT pipeline to extract the grammar
+
+however, the pivoting approach makes it impossible to apply the common pre-emptive
+grammar filtering, hence the grammar grows very large
+
+\subsection{Evaluation} \label{evaluation}
+
+A straightforward way to evaluate a paraphrasing system is by using to
+improve an SMT system's performance. Cite Chris and Nitin. Compare to
+Hiero baseline
+
+
 
 \section{Conclusion} \label{conclusion}
 
