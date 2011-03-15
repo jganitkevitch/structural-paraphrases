@@ -45,8 +45,6 @@ Johns Hopkins University}
   \item briefly tie back to previous work
   \item concrete numbers
   \end{itemize}
-  Paraphrase extraction approaches based on richly annotated
-  monolingual parallel corpora have been
 \end{abstract}
 
 \section{Introduction} \label{introduction}
@@ -58,92 +56,73 @@ multi-document summarization systems, paraphrase detection can be used
 to recognize and collapse redundancies \cite{Barzilay1999}. Used for
 query expansion, paraphrasing improves the performance of question
 answering \cite{Ravichandran2002,Riezler2007} and information
-retrieval systems \cite{Anick1999}. In statistical machine translation (SMT),
-paraphrases have been used to extend phrase tables in order to achieve
-broader source language coverage \cite{Callison-Burch2006b}, as well
-as to automatically generate additional reference translations,
-leading to better results in minimum error rate training
-\cite{Madnani2007}.
+retrieval systems \cite{Anick1999}. In statistical machine translation
+(SMT), paraphrases have been used to extend phrase table coverage
+\cite{Callison-Burch2006b} as well as to automatically generate
+additional reference translations, leading to better results in
+parameter estimation \cite{Madnani2007}.
 
-The notion of a paraphrase typically denotes a set of surface text
-forms with the same meaning:
+Coarsly, we can distinguish two forms of paraphrases: \emph{phrasal
+  paraphrases} denote a set of surface text forms with the same
+meaning:
 \begin{center}
 \begin{tabular}{c}
 the committee's proposal \\
-the proposal of the committee
+the proposal of the committee ,
 \end{tabular}
 \end{center}
-Introducing non-terminals or \emph{slots}, lexical paraphrases are
-commonly generalized into paraphrase patterns such as:
+while \emph{syntactic paraphrases} augment the surface forms by
+introducing non-terminals (or \emph{slots}) that are annotated with
+syntactic constraints:
 \begin{center}
 \begin{tabular}{c}
-the $X_1$'s $X_2$ \\
-the $X_2$ of the $X_1$
+the $\mathit{NP}_1$'s $\mathit{NP}_2$ \\
+the $\mathit{NP}_2$ of the $\mathit{NP}_1$
 \end{tabular}
 \end{center}
-It is evident that, compared to plain phrases, paraphrase patterns
-have a much higher potential at generalization. However, the
-unconstrained nature of the slots also bears the risk of producing
-nonsensical or ungrammatical output. Thus, in order to achieve more
-well-formed results, the slots are typically augmented with syntactic
-constraints, yielding syntactic paraphrases.
-\begin{center}
-\begin{tabular}{c}
-the $NP_1$'s $NP_2$ \\
-the $NP_2$ of the $NP_1$
-\end{tabular}
-\end{center}
-While retaining the generalization capabilities of unconstrained
-patterns, the application of syntactic paraphrases is more controlled
-and yields higher quality output.
+It is evident that the latter have a much higher potential at
+generalization and capturing interesting paraphrastic transformations.
 
-\mnote{Sentential paraphrases, and all the transforms we want to
-  learn. Unclear whether we can get them from bitexts.. ..let's find out.}
+A variety of different types of corpora (and semantic correspondency
+cues), have been used to automatically induce paraphrase collections
+for English. The perhaps most natural type of corpus for this task is
+a monolingual parallel text, from which paraphrases can be extracted
+by leveraging the knowledge that the given sentence pairs are perfect
+paraphrases of each other \cite{Pang2003}. While rich syntactic
+paraphrases have been learned from such corpora, they suffer from very
+limited data availability and are thus limited to poor coverage.
 
-In this paper, we demonstrate the integration of syntactic paraphrases
-into an SMT-based paraphrasing system. The use of SMT machinery and
-models to extract and apply paraphrases from bilingual parallel
-corpora by pivoting over foreign language phrases is a well-known
-technique. \newcite{Zhao2008b} have presented results that indicate
-that bilingually sourced paraphrase extraction significantly
-outperforms monolingual approaches in both recall and
-precision. However, while in monolingually sourced paraphrase
-extraction linguistically informed paraphrase patterns are
-commonplace, SMT-based paraphrase systems mostly have been limited to
-lexical paraphrases \cite{Quirk2004,Callison-Burch2005} or
-unconstrained patterns \cite{Madnani2007}. In recent efforts to enrich
-pivot-based paraphrase extraction with linguistic information
-\newcite{Callison-Burch2008} showed that enforcing syntactic
-constraints can drastically improve the quality of a lexical
-paraphrase system. \newcite{Zhao2008} used dependency parses on the
-English side of a large bilingual corpus to produce syntactic
-parapharse patterns. Our approach goes beyond these two and produces a
-fully syntactically informed synchronous paraphrasing CFG.
+Other methods strive to obtain paraphrases from monolingual text only,
+replacing the hard correspondency relation of parallel corpora by
+distributional similarity features \cite{Lin2001,Bhagat2008}. While
+these approaches dispose of vast amounts of data, the correspondency
+information they employ is weaker and suffers from problems such as
+mistaking cousin expressions or antonyms (such as $\{\mathit{boy},
+\mathit{girl}\}$ or $\{\mathit{rise}, \mathit{fall}\}$) for
+paraphrases.
 
-An additional focus of this paper are the closely tied topics of model
-parameter estimation and system evaluation. In practice, the nature of
-paraphrasing as a component of larger systems makes meaningful
-standalone evaluation difficult: in many applications of paraphrasing
-the proper preservation of meaning and production of grammatical
-output is only a basis requirement. Additional constraints imposed by
-the task at hand, be it shortening the input for sentence compression
-or generating significantly differing output for the generation of
-additional references, are a crucially important factor for the
-system's quality. However, this is often not reflected when estimating
-the parameters of a paraphrasing system. We leverage the rich feature
-set present in our approach and the flexibily of minimum error rate
-training to specifically adapt our paraphrase system to the task of
-reference expansion for SMT and demonstrate how it outperforms the
-commonly used approach.
+Abundantly available bilingual parallel corpora have been shown to
+address both these issues, obtaining paraphrases via a pivoting step
+over foreign language phrases \cite{Callison-Burch2005}. The coverage
+of paraphrase lexica extracted from bitexts has been shown to
+outperform that obtained from other sources \cite{Zhao2008b}. However,
+despite existing work on the extraction of more powerful paraphrases
+\cite{Madnani2007,Callison-Burch2008,Zhao2008}, it is not clear that
+rich syntactic paraphrases can be induced from bitexts. In this paper
+we:
+\begin{itemize}
+\item Extend the bilingual pivoting approach to paraphrase induction
+  to produce syntactic paraphrases.
+\item Analyze the types of paraphrases we obtain discuss the
+  paraphrastic transformations we are capable of capturing.
+\item Show the resulting paraphrase grammars' fitness and adaptability
+  for a variety of text-to-text generation tasks including text
+  simplification, sentence compression, poetry generation and
+  reference/query expansion and recognition of textual entailment.
+\item Describe training paradigms for text-to-text generation with
+  syntactic paraphrases. 
+\end{itemize}
 
-This paper is structured as follows: we present related work on
-paraphrase acquisition in
-Section~\ref{related_work}. Section~\ref{formalism} introduces the
-machine translation model used in our work. In
-Section~\ref{acquisition} we describe our paraphrase acquisition
-approach. Sections~\ref{adaptation} and \ref{analysis} present our
-parametere estimation setup, experimental and an analysis
-thereof. Finally, we conclude in Section~\ref{conclusion}.
 
 \section{Related Work} \label{related_work}
 
@@ -286,7 +265,7 @@ non-terminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 \begin{center}
 \includegraphics[width=0.99\linewidth]{figures/scfg_grid_revamp.pdf}
 \end{center}
-\caption{Make this prettier later on.}
+\caption{TODO: adjust colors, check example.}
 \label{samt_extraction}
 \end{figure*}
 
@@ -388,6 +367,7 @@ $0$ otherwise. This allows us to tune our system to prefer or
 dis-prefer identity paraphrases.
 
 \subsection{Grammar Pruning}
+\label{pruning}
 
 Due to the diverse set of non-terminals allowed in our model, the
 grammars we extract tend to become extremely large. This, combined
@@ -413,19 +393,20 @@ feature weights. \mnote{This is awful. Needs better intro into
 
 \section{Analysis} \label{analysis}
 
-When introducing syntactic information into our paraphrase extraction
-model, a key aim is the acquisition of structural paraphrases. We
-expect our training procedure to learn generalized, properly labeled
-patterns that, ideally, will reflect well-know paraphrastic
+When injecting syntactic information into our paraphrase extraction
+process, a key aim is the acquisition of structural paraphrases. We
+expect our training procedure to be able to extract generalized,
+properly labeled patterns that will reflect well-known paraphrastic
 transformations such as passivization, dative shift or the possessive
-rule. Representing such transforms in a generic fashion, our
-paraphrasing grammar would be capable of awesome things.
+rule. A paraphrase grammar that, in addition to high lexical coverage,
+can represent such transforms in a generic fashion can be used as a
+powerful base for a diverse set of text-to-text generation tasks. 
 
-In examining a parpharse grammar obtained from a French-English
+In examining a paraphrase grammar obtained from a French-English
 bitext, we find that this is indeed the
 case. Table~\ref{example_rules} shows a selection of paraphrase rules
-found in our grammar, labeled with the paraphrastic transformation the
-effect.
+found in our grammar, labeled with the paraphrastic transformation
+they effect. 
 
 
 \begin{table*}
@@ -557,6 +538,15 @@ considered a sentential paraphrase.
 \section{Parameter Estimation} 
 \label{adaptation}
 
+When tuning the parameters for a paraphrasing system, two separate
+tasks can be identified: the paraphrase ranking problem and the
+paraphrasing process itself. Due to the structure of our system, our
+model integrates both these tasks into one\footnote{In the grammar
+  pruning step described in Section~\ref{pruning} we do, in fact,
+  implement a coarse separate paraphrase ranking step that is distinct
+  from the otherwise integrated parameter estimation. This is done to keep
+  the size of the paraphrase grammar manageable.}
+
 need to estimate parameters for both, paraphrase ranking and paraphrasing
 
 since we use  mert
@@ -581,7 +571,7 @@ translation and a set of reference translation
   \hline
   & BLEU & ppBLEU \\
   \hline
-  Identity & good & bad \\
+  Identity & 52.7 & bad \\
   Oracle & good & good \\
   \hline
 \end{tabular}
