@@ -19,7 +19,8 @@
   \raggedright\footnotesize
   \itshape\hrule\smallskip\footnotesize{#1}\par\smallskip\hrule}}  
 
-\title{Learning Structural and Sentential Paraphrases from Parallel Corpora}
+\title{Text-to-Text Generation with Syntactic Paraphrases Learned from
+  Bilingual Parallel Corpora}
 
 \author{Juri Ganitkevitch \and Chris Callison-Burch\\ 
 Center for Language and Speech Processing\\ 
@@ -126,25 +127,20 @@ we:
 
 \section{Related Work} \label{related_work}
 
-The paraphrase extraction task has received a fair amount of attention
-in the past. In this paper we extend a method for extracting
-paraphrases from bilingual parallel corpora that was introduced by
-\newcite{Callison-Burch2005}. \newcite{Callison-Burch2005} generate
-paraphrases using techniques from {\it phrase-based} statistical
-machine translation \cite{Koehn2003}. After extracting a bilingual
-phrase table, English paraphrases can be extracted by pivoting through
-foreign language phrases. The phrase table contains phrase pairs $(e,
-f)$ (where the $e$ and $f$ stand for English and foreign phrases,
-respectively) as well as bi-directional translation probabilities
-$p(f | e)$ and $p(e | f)$, computed from the relative frequencies of
-$e$ and $f$. From this table, they compute a paraphrasing phrase table
-with entries $(e, e')$. Since many paraphrases can be extracted for a
-phrase, \newcite{Callison-Burch2005} define a paraphrase probability
-to rank them:
-% \begin{equation}
-%   \hat{e_2} = \argmax_{e_2:e_2 \neq e_1} p(e_2|e_1)
-% \end{equation}
-% where
+Paraphrase extraction using bilingual parallel corpora has received a
+fair amount of attention in the past. \newcite{Callison-Burch2005}
+first induced paraphrases using techniques from {\it phrase-based}
+statistical machine translation \cite{Koehn2003}. After extracting a
+bilingual phrase table, English paraphrases can be obtained by
+pivoting through foreign language phrases. The phrase table contains
+phrase pairs $(e, f)$ (where the $e$ and $f$ stand for English and
+foreign phrases, respectively) as well as bi-directional translation
+probabilities $p(f | e)$ and $p(e | f)$, computed from the relative
+frequencies of $e$ and $f$. From this table, they compute a
+paraphrasing phrase table with entries $(e, e')$. Since many
+paraphrases can be extracted for a phrase,
+\newcite{Callison-Burch2005} define a paraphrase probability to rank
+them:
 \begin{eqnarray}
   p(e_2|e_1) &=& \sum_f p(e_2,f|e_1)\\
                   &=& \sum_f p(e_2|f,e_1) p(f|e_1) \\
@@ -327,6 +323,46 @@ reflect the combined non-terminal alignment
 \sim ~ = ~ \sim_1^{-1} \circ \sim_2 .
 \end{equation*}
 
+\begin{table*}[!ht]
+  \begin{center}
+  \begin{tabular}{|c|rrcl|}
+    \hline
+    Possessive rule & $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}$'s
+    $\mathit{NN}$ & $\mid$ & the $\mathit{NN}$ of the $\mathit{NNP}$
+    \\
+
+    Dative shift & $\mathit{VP}$ $\rightarrow$ & give $\mathit{NN}$ to
+    $\mathit{NP}$ & $\mid$ & give $\mathit{NP}$ the $\mathit{NN}$ \\
+
+    \hline
+
+    Passivization &
+    $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
+    $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
+
+    Adverbial phrase move & 
+    $\mathit{VP}$ $\rightarrow$ & $\mathit{VBN}$ $\mathit{ADVP}$ & $\mid$ & is
+    $\mathit{ADVP}$ being $\mathit{VBN}$ \\
+
+    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ & in order
+    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
+
+    \hline
+
+    Light verbs & $\mathit{SBAR/S}$ $\rightarrow$ & in order
+    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
+
+    Topicalization  & $\mathit{SBAR/S}$ $\rightarrow$ & in order
+    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
+
+    \hline
+\end{tabular}
+\end{center}
+\caption{Examples of meaning-preserving transformations and syntactic
+  paraphrases that our system extracts to capture them.}
+\label{example_rules}
+\end{table*}
+
 \subsection{Feature Computation}
 
 The computation of $\vec{\varphi}$ from $\vec{\varphi}_1$ and
@@ -366,6 +402,7 @@ $\varphi_{\mathit{ident}}$, that is $1$ when $\alpha_1 = \alpha_2$ and
 $0$ otherwise. This allows us to tune our system to prefer or
 dis-prefer identity paraphrases.
 
+
 \subsection{Grammar Pruning}
 \label{pruning}
 
@@ -391,52 +428,47 @@ feature weights. \mnote{This is awful. Needs better intro into
   estimation part.}
 
 
+\section{Experimental Setup} \label{setup}
+
+\begin{itemize}
+\item The following examples and discussions are based on a paraphrase
+  grammar we extraced from the French-English bitext that is part of
+  EuroParl version 5.
+\item We used the Berkely aligner and The Parser
+\item SAMT pipeline
+\end{itemize}
+
+
 \section{Analysis} \label{analysis}
 
-When injecting syntactic information into our paraphrase extraction
-process, a key aim is the acquisition of structural paraphrases. We
-expect our training procedure to be able to extract generalized,
-properly labeled patterns that will reflect well-known paraphrastic
-transformations such as passivization, dative shift or the possessive
-rule. A paraphrase grammar that, in addition to high lexical coverage,
-can represent such transforms in a generic fashion can be used as a
-powerful base for a diverse set of text-to-text generation tasks. 
+A key motivation for the use of syntactic paraphrases over their
+phrasal counterparts is their potential to capture meaning-preserving
+linguistic transformations in a general fashion. In many cases a
+phrasal system will be limited to memorizing the fully lexicalized
+variants of such a transfomation in its paraphrase table, resulting in
+poor generalization capabilities. A syntactic paraphrasing system
+should be able to address this issue by learning syntactically
+well-formed and generic patterns that can be easily applied to unseen
+data.
 
-In examining a paraphrase grammar obtained from a French-English
-bitext, we find that this is indeed the
-case. Table~\ref{example_rules} shows a selection of paraphrase rules
-found in our grammar, labeled with the paraphrastic transformation
-they effect. 
+To put this expectation to the test, we investigate how our grammar
+captures a number of well-known paraphrastic
+transformations. Table~\ref{example_rules} shows the transformations
+along with the generic representations our system is able to extract
+for them. Among our example transformations we can discern three
+groups that differ in how easily we can find generalizing patterns for
+them.
 
+The first group encompasses transformations such as the
+\emph{possessive rule} or the \emph{dative shift}. These typically
+operate on nouns and noun phrases and do not require much lexical
+evidence to determine their applicability. This renders these
+transforms well-suited to be captured with our synchronous CFG-based
+approach.
 
-\begin{table*}
-  \begin{center}
-  \begin{tabular}{|c|rrcl|}
-    \hline
-    Possessive rule & $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-    $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-    \\
+The second group of paraphrases 
 
-    Dative shift & $\mathit{VP}$ $\rightarrow$ & give $\mathit{NN}$ to
-    $\mathit{NP}$ & $\mid$ & give $\mathit{NP}$ the $\mathit{NN}$ \\
-
-    Passivization &
-    $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
-    $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
-
-    Adverbial phrase move & 
-    $\mathit{VP}$ $\rightarrow$ & $\mathit{VBN}$ $\mathit{ADVP}$ & $\mid$ & is
-    $\mathit{ADVP}$ being $\mathit{VBN}$ \\
-
-    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ & in order
-    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
-    \hline
-\end{tabular}
-\end{center}
-\caption{Examples of structural paraphrasing rules extracted by our
-  system}
-\label{example_rules}
-\end{table*}
+\emph{THINK OUT ARGUMENTATION!} 
 
 \subsection{Comparison of Paraphrase
   Patterns} \label{pattern_comparison}
@@ -516,26 +548,27 @@ approach of \newcite{Madnani2007}.
 \end{table*}
 
 
-\subsection{Sentential Paraphrasing} \label{sentential_paraphrasing}
+\section{Text-to-Text Applications} \label{sentential_paraphrasing}
 
-We are interested in sentential paraphrases. Why are we interested?
-More powerful than locally constrained, gives us large-scale changes
-to sentential structure, which can be cruicial to applications such as
-detecting entailment or automatically creating significantly differing
-references. \emph{However, phrasal decoder-based approaches should be
-  able to achieve similar re-ordering effects (if not the generality,
-  which we only implicitely achieve, really). Maybe we should add a
-  phrase-based baseline in addition to Hiero? Did Nitin talk about
-  this?}
+\begin{itemize}
+\item the formalism we use makes sentential paraphrasing straighforward
+\item this is good because most text-to-text tasks operate on
+  sentence-level
+\item the inclusion of high-level syntactic information makes our
+  grammar a powerful tool to reshape sentential structures according
+  to the task at hand
+\item there are several points of application for the adaptation of
+  our grammar to a specific task
+\item rule feature functions, objective function in parameter tuning
+  and data used for tuning (contrast to old approaches, mostly
+  precision on gold paraphrase set and BLEU)
+\item injection of appropriate rules into the grammar 
+\item in the following we discuss a number of tasks and give examples
+  on how to adapt the system to them.
 
-While the definition of a phrasal paraphrase is intuitively clear,
-sentential paraphrases are much harder to define. When paraphrasing a
-sentence $s$ into a new sentence $t$, the term suggests that we expect
-the changes to $s$ to be above a certain threshold for $t$ to be
-considered a sentential paraphrase.
+\end{itemize}
 
-
-\section{Parameter Estimation} 
+\section{Training Paradigms} 
 \label{adaptation}
 
 When tuning the parameters for a paraphrasing system, two separate
