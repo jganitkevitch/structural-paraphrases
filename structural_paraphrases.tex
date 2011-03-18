@@ -1,5 +1,5 @@
 \documentclass[11pt]{article}
-\usepackage{acl2010}
+\usepackage{acl-hlt2011}
 \usepackage{times}
 \usepackage{url}
 \usepackage{latexsym}
@@ -73,7 +73,7 @@ the proposal of the committee ,
 \end{tabular}
 \end{center}
 while \emph{syntactic paraphrases} augment the surface forms by
-introducing non-terminals (or \emph{slots}) that are annotated with
+introducing nonterminals (or \emph{slots}) that are annotated with
 syntactic constraints:
 \begin{center}
 \begin{tabular}{c}
@@ -230,31 +230,31 @@ machinery. \mnote{Spin this towards the section title.} The model we
 use in our approach is \emph{Syntax Augmented Machine Translation} or
 \emph{SAMT} \cite{Zollmann2006}, which is based on the \emph{
   synchronous context-free grammar} (SCFG) formalism and allows for an
-arbitrary number of non-terminals.
+arbitrary number of nonterminals.
 
 Formally, a PSCFG $\mathcal{G}$ is defined by specifying
 \[
 \mathcal{G} = \langle \mathcal{N}, \mathcal{T}_S, \mathcal{T}_T,
 \mathcal{R}, S \rangle ,
 \]
-where $\mathcal{N}$ is a set of non-terminal symbols, $\mathcal{T}_S$
+where $\mathcal{N}$ is a set of nonterminal symbols, $\mathcal{T}_S$
 and $\mathcal{T}_T$ are the source and target language vocabularies,
 $\mathcal{R}$ is a set of rules and $S \in \mathcal{N}$ is the root
 symbol. The rules in $\mathcal{R}$ take the form
 \begin{equation*}
   C \rightarrow \langle \gamma, \alpha, \sim, w \rangle ,
 \end{equation*}
-where the rule's left-hand side $C \in \mathcal{N}$ is a non-terminal,
+where the rule's left-hand side $C \in \mathcal{N}$ is a nonterminal,
 $\gamma \in (\mathcal{N} \cup \mathcal{T}_S)^*$ and $\alpha \in
 (\mathcal{N} \cup \mathcal{T}_T)^*$ are strings of terminal and
-non-terminal symbols with an equal number of non-terminals
+nonterminal symbols with an equal number of nonterminals
 $c_{\mathit{NT}}(\gamma) = c_{\mathit{NT}}(\alpha)$ and 
 $$
 \sim : \{1 \ldots c_{\mathit{NT}}(\gamma)\} \rightarrow \{1 \ldots
 c_{\mathit{NT}}(\alpha)\}
 $$ 
 constitutes a one-to-one correspondency function between the
-non-terminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
+nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 0$ is assigned to each rule, reflecting the likelihood of the rule.
 
 \begin{figure*}[t]
@@ -271,14 +271,14 @@ with syntactic parses. Figure~\ref{samt_extraction} shows an example
 of rules obtained for one phrase pair. To extract a rule, we first
 choose a target span $t$. The left-hand side of the rule is then given
 by the syntactic constituent governing $t$. In addition to single
-constituent non-terminals, SAMT allows for the concatenation of
-constituents as well as for CCG-style non-terminal labels
+constituent nonterminals, SAMT allows for the concatenation of
+constituents as well as for CCG-style nonterminal labels
 \cite{Steedman1999}, which increases the grammar's coverage by
-allowing for non-syntactic phases in the grammar. The source side of
+allowing for non-syntactic phrases in the grammar. The source side of
 the rule, $s$, is obtained by projecting $t$ over the word
-alignment. To introduce non-terminals into the rule's source and
+alignment. To introduce nonterminals into the rule's source and
 target sides, we can apply rules extracted over sub-phrases of $t$,
-synchronously substituting the corresponding non-terminal symbol for
+synchronously substituting the corresponding nonterminal symbol for
 the sub-phrases on both sides. \mnote{Tie this back to $\alpha$ and
   $\gamma$?} The synchronous substitution applied to $t$ and $s$
 yields the correspondency $\sim$.
@@ -317,51 +317,11 @@ we create a paraphrase rule
 \begin{equation*}
 C \rightarrow \langle \alpha_1, \alpha_2, \sim, \vec{\varphi} \rangle ,
 \end{equation*}
-where the non-terminal correspondency relation $\sim$ has been set to
-reflect the combined non-terminal alignment
+where the nonterminal correspondency relation $\sim$ has been set to
+reflect the combined nonterminal alignment
 \begin{equation*}
 \sim ~ = ~ \sim_1^{-1} \circ \sim_2 .
 \end{equation*}
-
-\begin{table*}[!ht]
-  \begin{center}
-  \begin{tabular}{|c|rrcl|}
-    \hline
-    Possessive rule & $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}$'s
-    $\mathit{NN}$ & $\mid$ & the $\mathit{NN}$ of the $\mathit{NNP}$
-    \\
-
-    Dative shift & $\mathit{VP}$ $\rightarrow$ & give $\mathit{NN}$ to
-    $\mathit{NP}$ & $\mid$ & give $\mathit{NP}$ the $\mathit{NN}$ \\
-
-    \hline
-
-    Passivization &
-    $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
-    $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
-
-    Adverbial phrase move & 
-    $\mathit{VP}$ $\rightarrow$ & $\mathit{VBN}$ $\mathit{ADVP}$ & $\mid$ & is
-    $\mathit{ADVP}$ being $\mathit{VBN}$ \\
-
-    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ & in order
-    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
-
-    \hline
-
-    Light verbs & $\mathit{SBAR/S}$ $\rightarrow$ & in order
-    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
-
-    Topicalization  & $\mathit{SBAR/S}$ $\rightarrow$ & in order
-    to $\mathit{VB}$ that & $\mid$ & in order to $\mathit{VB}$ \\
-
-    \hline
-\end{tabular}
-\end{center}
-\caption{Examples of meaning-preserving transformations and syntactic
-  paraphrases that our system extracts to capture them.}
-\label{example_rules}
-\end{table*}
 
 \subsection{Feature Computation}
 
@@ -371,8 +331,8 @@ feature set can be roughly partitioned into three groups.
 
 The first group consists of features that depend solely on the rule
 itself. This includes features based on number or nature of terminals
-or non-terminals in $\alpha_1$ or $\alpha_2$, features that indicate
-non-terminal reordering or deletion of punctuation and pseudo-features
+or nonterminals in $\alpha_1$ or $\alpha_2$, features that indicate
+nonterminal reordering or deletion of punctuation and pseudo-features
 like a glue rule indicator or the application count feature. Since
 none of these features require additional information, their
 computation for $\vec{\varphi}$ is straightforward.
@@ -389,7 +349,7 @@ The remainder of the feature set falls into the third group. These
 features depend on information that we cannot reconstruct from
 $\vec{\varphi}_1$ and $\vec{\varphi}_2$. Features in this group
 include the rule's probability conditioned on the left-hand-side, its
-source side with and without non-terminal labels as well as rareness
+source side with and without nonterminal labels as well as rareness
 and unbalancedness penalties. For these we fall back to a black-box
 approach, treating the value for a given features as an indication of
 the rule's quality in some particular aspect. To combine the feature
@@ -406,7 +366,7 @@ dis-prefer identity paraphrases.
 \subsection{Grammar Pruning}
 \label{pruning}
 
-Due to the diverse set of non-terminals allowed in our model, the
+Due to the diverse set of nonterminals allowed in our model, the
 grammars we extract tend to become extremely large. This, combined
 with the multiplicative effect of pivoting, quickly makes the
 resulting paraphrase grammars grow too large too handle.
@@ -441,6 +401,66 @@ feature weights. \mnote{This is awful. Needs better intro into
 
 \section{Analysis} \label{analysis}
 
+\begin{table*}[!ht]
+  \begin{center}
+  \begin{tabular}{|c|rrcl|}
+    \hline
+    \multirow{2}{*}{Possessive rule} & $\mathit{NP}$ $\rightarrow$ & the
+    $\mathit{NN}$ of the $\mathit{NNP}$ & $\mid$ & the
+    $\mathit{NNP}$'s $\mathit{NN}$ \\
+    & $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNS}_1$ made by
+    $\mathit{NNS}_2$ & $\mid$ & the $\mathit{NNS}_2$'s
+    $\mathit{NNS}_1$ \\
+
+    \hline
+
+    \multirow{2}{*}{Dative shift} & $\mathit{VP}$ $\rightarrow$ & give
+    $\mathit{NN}$ to $\mathit{NP}$ & $\mid$ & give $\mathit{NP}$ the
+    $\mathit{NN}$ \\
+
+
+    & $\mathit{VP}$ $\rightarrow$ & provide $\mathit{NP}_1$ to
+    $\mathit{NP}_2$ & $\mid$ & give $\mathit{NP}_2$
+    $\mathit{NP}_1$ \\
+
+    \hline
+    \hline
+
+    Adverbial phrase move & 
+    $\mathit{S/VP}$ $\rightarrow$ & we $\mathit{VBP}$ $\mathit{ADVP}$
+    & $\mid$ & $\mathit{ADVP}$, we $\mathit{VBP}$ \\
+
+    \hline
+
+    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ &
+    although $\mathit{PRP}$ $\mathit{VBP}$ that & $\mid$ &although $\mathit{PRP}$ $\mathit{VBP}$ \\
+
+    \hline
+
+    Topicalization  & $\mathit{S}$ $\rightarrow$ & $\mathit{NP}$,
+    $\mathit{VP}$ . & $\mid$ & $\mathit{VP}$, $\mathit{NP}$ . \\
+
+    \hline
+    \hline
+
+    Passivization &
+    $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
+    $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
+
+    \hline
+
+    Light verbs & $\mathit{VP}$ $\rightarrow$ & to take action &
+    $\mid$ & to act \\
+    \hline
+
+\end{tabular}
+\end{center}
+\caption{Examples of meaning-preserving transformations and syntactic
+  paraphrases that our system extracts to capture them.}
+\label{example_rules}
+\end{table*}
+
+
 A key motivation for the use of syntactic paraphrases over their
 phrasal counterparts is their potential to capture meaning-preserving
 linguistic transformations in a general fashion. In many cases a
@@ -454,98 +474,131 @@ data.
 To put this expectation to the test, we investigate how our grammar
 captures a number of well-known paraphrastic
 transformations. Table~\ref{example_rules} shows the transformations
-along with the generic representations our system is able to extract
-for them. Among our example transformations we can discern three
-groups that differ in how easily we can find generalizing patterns for
-them.
+along with examples of the generic grammar rules our system learns to
+represent them. When given a transformation to extract a syntactic
+paraphrase for, we want to find rules that neither under- nor
+over-generalize. This means that, while replacing the maximum number
+of \emph{syntactic} arguments with nonterminals, the rules ideally
+will both retain enough lexicalization to serve as sufficient evidence
+for the applicability of the transformation and impose constraints on
+the nonterminals to ensure the arguments' well-formedness.
 
-The first group encompasses transformations such as the
-\emph{possessive rule} or the \emph{dative shift}. These typically
-operate on nouns and noun phrases and do not require much lexical
-evidence to determine their applicability. This renders these
-transforms well-suited to be captured with our synchronous CFG-based
-approach.
+The paraphrases implementing the \emph{possessive rule} and the
+\emph{dative shift} shown in Table~\ref{example_rules} are a good
+examples of this: the two noun-phrase arguments to the expressions are
+abstracted to nonterminals while the rules' lexicalization provides an
+appropriate frame of evidence. This is important for properly
+representing the dative shift, which is a reordering transformation that
+applies to certain di-transitive verbs while other verbs are uncommon
+in one of the forms\footnote{Note how our system extracts a dative
+  shift rule for \emph{to give} and a rule that both shifts and
+  substitutes a more appropriate verb for the new form for \emph{to
+    provide}}.
 
-The second group of paraphrases 
+The ability to generalize from phrasal paraphrases is also a key
+property of the work of \newcite{Madnani2007}. However, the syntactic
+information we include in our paraphrases permits us to capture more
+complex transforms and impose more stringent constraints on the
+application of our paraphrases. For instance, the formalism used by
+\newcite{Madnani2007} does not impose any constraints on the spans
+covered by nonterminals and thus, to avoid spurious ambiguity in
+partitioning a span, does not permit adjacent nonterminals. However,
+for some transformations the identification of possibly adjacent
+syntactic phrases is crucial. Examples of such transforms are the
+\emph{adverbial phrase shift}, the \emph{reduction of a relative
+  clause} and \emph{topicalization}.
 
-\emph{THINK OUT ARGUMENTATION!} 
+Unsurprisingly, syntactic information alone is not sufficient to
+capture arbitrary transformations. For instance it is hard to extract
+generic paraphrases for \emph{passivization}, since our syntactic
+model has no means of representing the morphological changes that the
+verb undergoes. Still, for the special case when the active voice form
+is already in the past participle and the verb thus does not change,
+we manage to learn a rule. Another example of the neccessity of
+morphological information are \emph{light verb} constructs. Here, a
+noun is transformed in the corresponding verb -- something our
+synchronous syntactic CFG approach is not able to capture.
 
-\subsection{Comparison of Paraphrase
-  Patterns} \label{pattern_comparison}
 
-To analyze the paraphrase patterns produced by our system, we reduce
-the grammar to only patterns that apply to an example sentence and
-take a closer look at the most likely pattern pairs. We contrast our
-extracted paraphrases with a Hiero-style baseline that mirrors the
-approach of \newcite{Madnani2007}. 
 
-\begin{table*}[t]
-\begin{center}
-\begin{tabular}{|c|c|rrcl|}
-  \hline
-  Input phrase & \multicolumn{5}{c|}{Best extracted paraphrases} \\
-  \hline
-  \multirow{6}{*}{the dog's tail} &
-  \multirow{3}{*}{H}
-  &
-  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-  \\
-  &&
-  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-  \\
-  &&
-  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$ \\
-  \cline{2-6}
-  & \multirow{3}{*}{S}
-  &
-  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-  \\
-  &&
-  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-  \\
-  &&
-  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
-  $\mathit{NNP}_1$ \\
-  \hline
-  \multirow{6}{*}{the dog's tail} &
-  \multirow{3}{*}{H}
-  &
-  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-  \\
-  &&
-  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$  \\
-  &&
-  $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-  $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-  \\
-  \cline{2-6}
-  & \multirow{3}{*}{S}
-  &
-  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-  \\
-  &&
-  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-  \\
-  &&
-  $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-  $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
-  $\mathit{NNP}_1$ \\
-  \hline
-\end{tabular}
-\end{center}
-\caption{This table shows the top paraphrase rules matching an input
-  phrase as ranked by our (S) and the baseline system (H).}
-\end{table*}
+
+
+% \subsection{Comparison of Paraphrase
+%   Patterns} \label{pattern_comparison}
+
+% To analyze the paraphrase patterns produced by our system, we reduce
+% the grammar to only patterns that apply to an example sentence and
+% take a closer look at the most likely pattern pairs. We contrast our
+% extracted paraphrases with a Hiero-style baseline that mirrors the
+% approach of \newcite{Madnani2007}. 
+
+% \begin{table*}[t]
+% \begin{center}
+% \begin{tabular}{|c|c|rrcl|}
+%   \hline
+%   Input phrase & \multicolumn{5}{c|}{Best extracted paraphrases} \\
+%   \hline
+%   \multirow{6}{*}{the dog's tail} &
+%   \multirow{3}{*}{H}
+%   &
+%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+%   \\
+%   &&
+%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+%   \\
+%   &&
+%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$ \\
+%   \cline{2-6}
+%   & \multirow{3}{*}{S}
+%   &
+%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+%   \\
+%   &&
+%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+%   \\
+%   &&
+%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
+%   $\mathit{NNP}_1$ \\
+%   \hline
+%   \multirow{6}{*}{the dog's tail} &
+%   \multirow{3}{*}{H}
+%   &
+%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+%   \\
+%   &&
+%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$  \\
+%   &&
+%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
+%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
+%   \\
+%   \cline{2-6}
+%   & \multirow{3}{*}{S}
+%   &
+%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+%   \\
+%   &&
+%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
+%   \\
+%   &&
+%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
+%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
+%   $\mathit{NNP}_1$ \\
+%   \hline
+% \end{tabular}
+% \end{center}
+% \caption{This table shows the top paraphrase rules matching an input
+%   phrase as ranked by our (S) and the baseline system (H).}
+% \end{table*}
 
 
 \section{Text-to-Text Applications} \label{sentential_paraphrasing}
