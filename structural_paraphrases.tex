@@ -299,7 +299,7 @@ feature set in Section~\ref{adaptation}.
 
 \begin{figure*}[!t]
 \begin{center}
-\includegraphics[width=0.99\linewidth]{figures/pivot.pdf}
+\includegraphics[width=0.8\linewidth]{figures/pivot.pdf}
 \end{center}
 \caption{Let's see if we need this}
 \end{figure*}
@@ -411,48 +411,33 @@ feature weights. \mnote{This is awful. Needs better intro into
     & $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNS}_1$ made by
     $\mathit{NNS}_2$ & $\mid$ & the $\mathit{NNS}_2$'s
     $\mathit{NNS}_1$ \\
-
     \hline
-
     \multirow{2}{*}{Dative shift} & $\mathit{VP}$ $\rightarrow$ & give
     $\mathit{NN}$ to $\mathit{NP}$ & $\mid$ & give $\mathit{NP}$ the
     $\mathit{NN}$ \\
-
-
     & $\mathit{VP}$ $\rightarrow$ & provide $\mathit{NP}_1$ to
     $\mathit{NP}_2$ & $\mid$ & give $\mathit{NP}_2$
     $\mathit{NP}_1$ \\
-
     \hline
     \hline
-
     Adverbial phrase move & 
     $\mathit{S/VP}$ $\rightarrow$ & we $\mathit{VBP}$ $\mathit{ADVP}$
     & $\mid$ & $\mathit{ADVP}$, we $\mathit{VBP}$ \\
-
     \hline
-
     Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ &
     although $\mathit{PRP}$ $\mathit{VBP}$ that & $\mid$ &although $\mathit{PRP}$ $\mathit{VBP}$ \\
-
     \hline
-
     Topicalization  & $\mathit{S}$ $\rightarrow$ & $\mathit{NP}$,
     $\mathit{VP}$ . & $\mid$ & $\mathit{VP}$, $\mathit{NP}$ . \\
-
     \hline
     \hline
-
     Passivization &
     $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
     $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
-
     \hline
-
-    Light verbs & $\mathit{VP}$ $\rightarrow$ & to take action &
-    $\mid$ & to act \\
+    Light verbs & $\mathit{VP}$ $\rightarrow$ & take action $\mathit{ADVP}$ &
+    $\mid$ & to act $\mathit{ADVP}$ \\
     \hline
-
 \end{tabular}
 \end{center}
 \caption{Examples of meaning-preserving transformations and syntactic
@@ -487,39 +472,72 @@ The paraphrases implementing the \emph{possessive rule} and the
 \emph{dative shift} shown in Table~\ref{example_rules} are a good
 examples of this: the two noun-phrase arguments to the expressions are
 abstracted to nonterminals while the rules' lexicalization provides an
-appropriate frame of evidence. This is important for properly
-representing the dative shift, which is a reordering transformation that
-applies to certain di-transitive verbs while other verbs are uncommon
-in one of the forms\footnote{Note how our system extracts a dative
-  shift rule for \emph{to give} and a rule that both shifts and
-  substitutes a more appropriate verb for the new form for \emph{to
-    provide}}.
+appropriate frame of evidence for the transform. This is important for
+a good representation of the dative shift, which is a reordering
+transformation that fully applies to certain di-transitive verbs while
+other verbs are uncommon in one of the forms:
+\begin{center}
+\begin{tabular}{l}
+  give \emph{decontamination equipment} to \emph{Japan} \\
+  give \emph{Japan} \emph{decontamination equipment} \\
+  \vspace{-10pt}\\
+  provide \emph{decontamination equipment} to \emph{Japan} \\
+  ? provide \emph{Japan} \emph{decontamination equipment} \\
+\end{tabular}
+\end{center}
+Note how our system extracts a dative shift rule for \emph{to give}
+and a rule that both shifts and substitutes a more appropriate verb
+for the new form for \emph{to provide}.
 
-The ability to generalize from phrasal paraphrases is also a key
-property of the work of \newcite{Madnani2007}. However, the syntactic
-information we include in our paraphrases permits us to capture more
-complex transforms and impose more stringent constraints on the
-application of our paraphrases. For instance, the formalism used by
-\newcite{Madnani2007} does not impose any constraints on the spans
-covered by nonterminals and thus, to avoid spurious ambiguity in
-partitioning a span, does not permit adjacent nonterminals. However,
-for some transformations the identification of possibly adjacent
-syntactic phrases is crucial. Examples of such transforms are the
-\emph{adverbial phrase shift}, the \emph{reduction of a relative
-  clause} and \emph{topicalization}.
+\newcite{Madnani2007} generalize from phrasal paraphrases with the
+Hiero formalism, which uses SCFG rules with a single nonterminal
+$X$. We use syntactic nonterminals in our paraphrase rules to capture
+complex transforms that also impose appropriate constraints on their
+application. Since \newcite{Madnani2007} do not impose any constraints
+on how the nonterminal $X$ can be realized, their equivalent of the
+\emph{topic} rule
+\begin{center}
+\begin{tabular}{rrcl}
+$\mathit{S}$ $\rightarrow$ & $\mathit{X}_1$,
+    $\mathit{X}_2$ . & $\mid$ & $\mathit{X}_2$, $\mathit{X}_1$ . \\
+\end{tabular}
+\end{center}
+would massively overgeneralize. Additional examples of transforms our
+use of syntax allows us to capture are the \emph{adverbial phrase
+  shift} and the \emph{reduction of a relative clause}.
 
 Unsurprisingly, syntactic information alone is not sufficient to
 capture arbitrary transformations. For instance it is hard to extract
 generic paraphrases for \emph{passivization}, since our syntactic
 model has no means of representing the morphological changes that the
-verb undergoes. Still, for the special case when the active voice form
-is already in the past participle and the verb thus does not change,
-we manage to learn a rule. Another example of the neccessity of
-morphological information are \emph{light verb} constructs. Here, a
-noun is transformed in the corresponding verb -- something our
-synchronous syntactic CFG approach is not able to capture.
+verb undergoes:
+\begin{center}
+\begin{tabular}{l}
+  the cat \emph{eats} the mouse \\
+  the mouse \emph{was eaten} by the cat \\
+  \vspace{-12pt}\\
+  the mouse that the cat had \emph{eaten} \\
+  the mouse which was \emph{eaten} by the cat \\
+\end{tabular}
+\end{center}
+Still, for the special case when the active voice form is already in
+the past participle and the verb thus does not change, we manage to
+learn a rule. Another example of the neccessity of morphological
+information are \emph{light verb} constructs such as
+\begin{center}
+\begin{tabular}{l}
+  to take a \emph{walk} \\
+  to \emph{walk} .\\
+\end{tabular}
+\end{center}
+Here, a noun is transformed into the corresponding verb -- something
+our synchronous syntactic CFG approach is not able to capture except
+through memorization.
 
-
+Overall our survey shows that we are able to extract good generic
+representations for a surprising number of paraphrastic
+transformations, far exceeding the expressiveness of previous
+approaches to paraphrase extraction from bilingual parallel corpora.
 
 
 
