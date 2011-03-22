@@ -521,21 +521,25 @@ use of syntax allows us to capture are the \emph{adverbial phrase
 Unsurprisingly, syntactic information alone is not sufficient to
 capture arbitrary transformations. For instance it is hard to extract
 generic paraphrases for \emph{passivization}, since our syntactic
-model has no means of representing the morphological changes that the
+model currently has no means of representing the morphological changes that the
 verb undergoes:
 \begin{center}
 \begin{tabular}{l}
   the cat \emph{eats} the mouse \\
   the mouse \emph{was eaten} by the cat \\
-  \vspace{-12pt}\\
-  the mouse that the cat had \emph{eaten} \\
-  the mouse which was \emph{eaten} by the cat \\
 \end{tabular}
 \end{center}
 Still, for the special case when the active voice form is already in
 the past participle and the verb thus does not change, we manage to
-learn a rule. Another example of the neccessity of morphological
-information are \emph{light verb} constructs such as
+learn a rule:
+\begin{center}
+\begin{tabular}{l}
+  the mouse that the cat had \emph{eaten} \\
+  the mouse which was \emph{eaten} by the cat \\
+\end{tabular}
+\end{center}
+%
+Another example of a deficiency in our synchronous grammar models \emph{light verb} constructs such as
 \begin{center}
 \begin{tabular}{l}
   to take a \emph{walk} \\
