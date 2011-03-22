@@ -32,20 +32,32 @@ Johns Hopkins University}
 \maketitle
 
 \begin{abstract}
-  \begin{itemize}
-  \item ``in this work'' stuff is implied
-  \item newcites rather than cites 
-  \item put a little brag claim at the end, summarizing the outcome
-  \item abstract should tell you whether paper is interesting, whether
-    your results are interesting
-  \item motivate the problem
-  \item briefly motivate choices
-  \item be clear, sell the paper to the reviewers
-  \item be direct, motivate and explain instead of saying ``we
-    motivate/explain''
-  \item briefly tie back to previous work
-  \item concrete numbers
-  \end{itemize}
+  The extraction of paraphrases from bilingual corpora has been shown
+  to outperform monolingual approaches on both precision and
+  coverage. However, the learned paraphrases lack structural
+  information beyond the lexical or part-of-speech level, which limits
+  their expressive power and their suitability for sentential
+  paraphrasing. We present an extension of bilingual paraphrase
+  extraction to syntactic paraphrases and demonstrate our system's
+  ability to express a variety of paraphrastic transformations in a
+  generic fashion. We further discuss the task-oriented adaptation of
+  our model's feature set, formalism and parameter estimation
+  procedure on the example of several text-to-text generation tasks.
+
+%   \begin{itemize}
+%   \item ``in this work'' stuff is implied
+%   \item newcites rather than cites 
+%   \item put a little brag claim at the end, summarizing the outcome
+%   \item abstract should tell you whether paper is interesting, whether
+%     your results are interesting
+%   \item motivate the problem
+%   \item briefly motivate choices
+%   \item be clear, sell the paper to the reviewers
+%   \item be direct, motivate and explain instead of saying ``we
+%     motivate/explain''
+%   \item briefly tie back to previous work
+%   \item concrete numbers
+%   \end{itemize}
 \end{abstract}
 
 \section{Introduction} \label{introduction}
@@ -498,8 +510,8 @@ on how the nonterminal $X$ can be realized, their equivalent of the
 \emph{topic} rule
 \begin{center}
 \begin{tabular}{rrcl}
-$\mathit{S}$ $\rightarrow$ & $\mathit{X}_1$,
-    $\mathit{X}_2$ . & $\mid$ & $\mathit{X}_2$, $\mathit{X}_1$ . \\
+  $\mathit{S}$ $\rightarrow$ & $\mathit{X}_1$,
+  $\mathit{X}_2$ . & $\mid$ & $\mathit{X}_2$, $\mathit{X}_1$ . \\
 \end{tabular}
 \end{center}
 would massively overgeneralize. Additional examples of transforms our
