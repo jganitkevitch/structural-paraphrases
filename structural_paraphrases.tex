@@ -96,23 +96,24 @@ the $\mathit{NP}_2$ of the $\mathit{NP}_1$
 It is evident that the latter have a much higher potential at
 generalization and capturing interesting paraphrastic transformations.
 
-A variety of different types of corpora (and semantic correspondency
+A variety of different types of corpora (and semantic equivalence
 cues), have been used to automatically induce paraphrase collections
 for English. The perhaps most natural type of corpus for this task is
 a monolingual parallel text, from which paraphrases can be extracted
 by leveraging the knowledge that the given sentence pairs are perfect
-paraphrases of each other \cite{Pang2003}. While rich syntactic
-paraphrases have been learned from such corpora, they suffer from very
-limited data availability and are thus limited to poor coverage.
+paraphrases of each other \cite{Barzilay1999,Pang2003}. While rich
+syntactic paraphrases have been learned from such corpora, they suffer
+from very limited data availability and are thus limited to poor
+coverage.
 
 Other methods strive to obtain paraphrases from monolingual text only,
-replacing the hard correspondency relation of parallel corpora by
+replacing the hard correspondency relation of parallel corpora with
 distributional similarity features \cite{Lin2001,Bhagat2008}. While
-these approaches dispose of vast amounts of data, the correspondency
-information they employ is weaker and suffers from problems such as
-mistaking cousin expressions or antonyms (such as $\{\mathit{boy},
-\mathit{girl}\}$ or $\{\mathit{rise}, \mathit{fall}\}$) for
-paraphrases.
+vast amounts of data are readily available for these approaches, the
+correspondency information they employ is weaker and suffers from
+problems such as mistaking cousin expressions or antonyms (such as
+$\{\mathit{boy}, \mathit{girl}\}$ or $\{\mathit{rise},
+\mathit{fall}\}$) for paraphrases.
 
 Abundantly available bilingual parallel corpora have been shown to
 address both these issues, obtaining paraphrases via a pivoting step
@@ -230,8 +231,8 @@ such as syntactic or dependency parses, relying only on part-of-speech
 tags to inform their approach. In their work, relations are learned by
 finding pattern clusters initially seeded by already known
 patterns. However, this method is not capable of producing syntactic
-paraphrases. \mnote{Need better tie-in with the overall theme of structural
-paraphrases.}
+paraphrases. \mnote{Need better tie-in with the overall theme of
+  structural paraphrases.}
 
 
 \section{SCFGs in Translation} \label{formalism}
@@ -313,7 +314,7 @@ feature set in Section~\ref{adaptation}.
 \begin{center}
 \includegraphics[width=0.8\linewidth]{figures/pivot.pdf}
 \end{center}
-\caption{Let's see if we need this}
+\caption{TODO: draw up figure}
 \end{figure*}
 
 To create a paraphrase grammar from a translation grammar, we extend
@@ -633,8 +634,25 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 
 \section{Text-to-Text Applications} \label{sentential_paraphrasing}
 
+Many text-to-text generation tasks such as sentence compression or
+simplification can be re-formulated as sentential paraphrasing
+problems. Since in our model, we are reusing much of the machinery
+known from statistical machine translation -- a sentential rewriting
+problem itself -- our system is well-equipped to handle those tasks.
+
+
+,
+including grammars, decoders, language models and typical feature
+functions. Like many text-to-text generation tasks, the machine
+translation problem is defined on the sentence level.
+
+
+However, there are several subtle yet important differences to
+consider when moving to text-to-text generation.
+ 
 \begin{itemize}
-\item the formalism we use makes sentential paraphrasing straighforward
+\item the formalism we use makes sentential paraphrasing
+  straighforward
 \item this is good because most text-to-text tasks operate on
   sentence-level
 \item the inclusion of high-level syntactic information makes our
@@ -645,10 +663,9 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 \item rule feature functions, objective function in parameter tuning
   and data used for tuning (contrast to old approaches, mostly
   precision on gold paraphrase set and BLEU)
-\item injection of appropriate rules into the grammar 
+\item injection of appropriate rules into the grammar
 \item in the following we discuss a number of tasks and give examples
   on how to adapt the system to them.
-
 \end{itemize}
 
 \section{Training Paradigms} 
