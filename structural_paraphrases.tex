@@ -540,7 +540,8 @@ learn a rule:
 \end{tabular}
 \end{center}
 %
-Another example of a deficiency in our synchronous grammar models \emph{light verb} constructs such as
+Another example of a deficiency in our synchronous grammar models are
+\emph{light verb} constructs such as
 \begin{center}
 \begin{tabular}{l}
   to take a \emph{walk} \\
@@ -638,39 +639,53 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 
 \section{Text-to-Text Applications} \label{sentential_paraphrasing}
 
-Many text-to-text generation tasks such as sentence compression or
-simplification can be re-formulated as sentential paraphrasing
-problems. Since in our model, we are reusing much of the machinery
-known from statistical machine translation -- a sentential rewriting
-problem itself -- our system is well-equipped to handle those tasks.
+Many text-to-text generation tasks are at their core sentential
+paraphrasing problems, augmented with specific constraints or
+goals. Since in our model we are reusing much of the machinery known
+from statistical machine translation -- a sentential rewriting problem
+itself -- our system comes with a straightforward way to apply the
+extracted paraphrase grammars in practice. The SMT setup as described
+in Section~\ref{acquisition} is well-suited for the generation of
+generally well-formed text and forms a solid basis for the adaptation
+to a given text-to-text generation task. There are several points of
+application for this adaptation: introduction of rule-level features,
+the choice of an objective function and a development set for
+parameter estimation, and the injection of addional rules into the
+paraphrase grammar. In the following, we discuss each of these in
+detail on the example of adapting our paraphrasing system to perform
+sentence compression. \mnote{..and reference expansion?}
 
-
-,
-including grammars, decoders, language models and typical feature
-functions. Like many text-to-text generation tasks, the machine
-translation problem is defined on the sentence level.
-
-
-However, there are several subtle yet important differences to
-consider when moving to text-to-text generation.
- 
+In Section~\ref{acquisition} we discussed the phrasal and lexical
+paraphrasing features $\varphi_{\mathit{lex}}$ and
+$\varphi_{\mathit{phrase}}$. While these features quantify the quality
+of a paraphrase, they do not make any statement on the change in
+language complexity or text length, nor do they bear any information
+on the degree and nature of the transformation that the rule
+effects. To make this infromation available to the decoder, we add the
+following features:
 \begin{itemize}
-\item the formalism we use makes sentential paraphrasing
-  straighforward
-\item this is good because most text-to-text tasks operate on
-  sentence-level
-\item the inclusion of high-level syntactic information makes our
-  grammar a powerful tool to reshape sentential structures according
-  to the task at hand
-\item there are several points of application for the adaptation of
-  our grammar to a specific task
-\item rule feature functions, objective function in parameter tuning
+\item $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$, which count the
+  number of words on either side of the rule.
+\item $c_{\mathit{diff}}$, the change in the number of words the rule
+  effects.
+\item $\delta_{\mathit{lex}}$, a binary indicator for whether the rule
+  is purely phrasal.
+\item $\delta_{\mathit{del}}$, a binary indicator for whether the rule
+  deletes all terminal symbols.
+
+\item $\delta_{\mathit{reorder}}$, which is 1 if the rule swaps the
+  order of two nonterminals
+
+\end{itemize}
+
+
+objective function in parameter tuning
   and data used for tuning (contrast to old approaches, mostly
   precision on gold paraphrase set and BLEU)
-\item injection of appropriate rules into the grammar
-\item in the following we discuss a number of tasks and give examples
-  on how to adapt the system to them.
-\end{itemize}
+
+Injection of appropriate rules into the grammar
+
+
 
 \section{Training Paradigms} 
 \label{adaptation}
