@@ -26,6 +26,13 @@
 Center for Language and Speech Processing\\ 
 Johns Hopkins University}
 
+
+\author{X\\ 
+x\\ 
+x\\ 
+x}
+
+
 \date{}
 
 \begin{document}
@@ -43,7 +50,6 @@ Johns Hopkins University}
   generic fashion. We further discuss the task-oriented adaptation of
   our model's feature set, formalism and parameter estimation
   procedure on the example of several text-to-text generation tasks.
-
 %   \begin{itemize}
 %   \item ``in this work'' stuff is implied
 %   \item newcites rather than cites 
@@ -62,18 +68,16 @@ Johns Hopkins University}
 
 \section{Introduction} \label{introduction}
 
-Paraphrases are alternative ways to express the same meaning. The
-automated generation and detection of paraphrases is crucial to many
-tasks in NLP and has been shown to improve performance in others. In
-multi-document summarization systems, paraphrase detection can be used
-to recognize and collapse redundancies \cite{Barzilay1999}. Used for
-query expansion, paraphrasing improves the performance of question
-answering \cite{Ravichandran2002,Riezler2007} and information
-retrieval systems \cite{Anick1999}. In statistical machine translation
-(SMT), paraphrases have been used to extend phrase table coverage
-\cite{Callison-Burch2006b} as well as to automatically generate
-additional reference translations, leading to better 
-parameter estimation \cite{Madnani2007}.
+Paraphrases are alternative ways of expressing the same information. 
+Automatically generating and detecting paraphrases is a crucial aspect of many 
+natural language processing tasks.
+In multi-document summarization, paraphrase detection is used
+to collapse redundancies \cite{Barzilay1999}. Paraphrase generation can be used 
+for query expansion in information retrieval and question
+answering systems \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}. 
+In statistical machine translation, paraphrases have been used to improve coverage
+and to generate additional reference translations
+ \cite{Callison-Burch2006b,Madnani2007}.
 
 Coarsely, we can distinguish two forms of paraphrases: \emph{phrasal
   paraphrases} denote a set of surface text forms with the same
@@ -93,7 +97,7 @@ the $\mathit{NP}_1$'s $\mathit{NP}_2$ \\
 the $\mathit{NP}_2$ of the $\mathit{NP}_1$
 \end{tabular}
 \end{center}
-It is evident that the latter have a much higher potential at
+It is evident that the latter have a much higher potential for
 generalization and capturing interesting paraphrastic transformations.
 
 A variety of different types of corpora (and semantic equivalence
