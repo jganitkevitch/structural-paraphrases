@@ -549,7 +549,7 @@ Another example of a deficiency in our synchronous grammar models are
 \begin{center}
 \begin{tabular}{l}
   to take a \emph{walk} \\
-  to \emph{walk} .\\
+  to \emph{walk} .
 \end{tabular}
 \end{center}
 Here, a noun is transformed into the corresponding verb -- something
@@ -717,28 +717,49 @@ our paraphrases with the following features:
     \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
 \end{itemize}
 
+\subsection{Grammar Injections} \label{injection}
+
+As discussed in Section~\ref{analysis}, the paraphrase grammar we
+induce is capable of representing a wide variety of
+transformations. However, the formalism and extraction method are not
+explicitely geared towards a compression application. For instance,
+the synchronous nature of our grammar does not allow us to perform
+deletions of constituents as done by \newcite{Cohn2007}.  A possible
+way to extend the grammar's capabilities in this direction is by
+injecting additional rules designed to perform particular
+functions. This can include adding rules that allow generic deletions
+of target-side nonterminals\footnote{This renders the SCFG
+  asynchronous and requires appropriate adjustments in the decoding
+  process.}, or generating rules that specifically delete particular
+adjectives from the corpus.
+\begin{center}
+\begin{tabular}{cc}
+ $\mathit{JJ} \rightarrow$ & $\mathit{JJ} \mid \varepsilon$ \\
+ $\mathit{JJ} \rightarrow$ & superfluous $\mid \varepsilon$ \\
+\end{tabular}
+\end{center}
+In our system, we implemented the injection of rules that improve our
+handling of out-of-vocabulary words. Typically an SMT system will
+generate heavily penalized identity translation rules for all words in
+an input sentence, to assure that the OOV rules will only apply when
+there is no translation rule for a particular word.
+
+
+\subsection{Evaluation} \label{evaluation}
+
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|}
   \hline
   & Hiero & Syntactic \\
   \hline
-  Core features & bad & better \\
-  Full feature set & better & best \\
+  Core features & bad & even better \\
+  Full feature set & better & awesome \\
   \hline
 \end{tabular}
 \end{center}
-\caption{Oracle experiment with references: ``translate'' ref onto
-  itself score; ``translate'' ref onto heldout ref, score}
+\caption{TODO: obtain proper scores}
 \end{table}
-
-
-\subsection{Evaluation} \label{evaluation}
-
-A straightforward way to evaluate a paraphrasing system is by using to
-improve an SMT system's performance. Cite Chris and Nitin. Compare to
-Hiero baseline
-
 
 
 \section{Conclusion} \label{conclusion}
