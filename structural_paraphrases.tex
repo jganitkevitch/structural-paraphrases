@@ -641,7 +641,7 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 % \end{table*}
 
 
-\section{Text-to-Text Applications} \label{sentential_paraphrasing}
+\section{Text-to-Text Applications} \label{adaptation}
 
 Many text-to-text generation tasks are at their core sentential
 paraphrasing problems, augmented with specific constraints or
@@ -652,83 +652,79 @@ extracted paraphrase grammars in practice. The SMT setup as described
 in Section~\ref{acquisition} is well-suited for the generation of
 generally well-formed text and forms a solid basis for the adaptation
 to a given text-to-text generation task. There are several points of
-application for this adaptation: introduction of rule-level features,
-the choice of an objective function and a development set for
-parameter estimation, and the injection of addional rules into the
-paraphrase grammar. In the following, we discuss each of these in
-detail on the example of adapting our paraphrasing system to perform
-sentence compression. \mnote{..and reference expansion?}
+application for this adaptation: the choice of an objective function
+and a development set for parameter estimation, the introduction of
+rule-level features that capture relevant information, and the
+injection of addional rules into the paraphrase grammar. In the
+following, we discuss each of these in detail on the example of
+adapting our paraphrasing system to perform sentence compression,
+i.e.\ to reduce the length of sentence while preserving its core
+meaning.
 
+\subsection{Development Data and Objective Function}
+To tune the parameters of our paraphrase system to perform sentence
+compression, we have created a corpus of compression
+paraphrases. Beginning with 9570 tuples of parallel English sentences
+obtained from translation references for various machine translation
+tasks, we obtained a parallel compression corpus by selecting the
+longest reference in each tuple as the source sentence and the
+shortest reference as the target sentence and retaining only those
+sentence pairs where the word count ratio $r$ was $0.5 < r \leq
+0.8$. From these, we then randomly selected 936 sentences for the
+development set, as well as 815 sentences for a test set that we later
+use to gauge the performance of our system.
+
+Due to the compressive nature of the resulting corpus, we deemed the
+widely used BLEU metric \cite{Papineni2002} to be sufficient to judge
+the system's compression performance in parameter estimation.
+
+\subsection{Feature Design}
 In Section~\ref{acquisition} we discussed the phrasal and lexical
 paraphrasing features $\varphi_{\mathit{lex}}$ and
 $\varphi_{\mathit{phrase}}$. While these features quantify the quality
 of a paraphrase, they do not make any statement on the change in
 language complexity or text length, nor do they bear any information
 on the degree and nature of the transformation that the rule
-effects. To make this infromation available to the decoder, we add the
-following features:
+effects. To make this infromation available to the decoder, we enhance
+our paraphrases with the following features:
 \begin{itemize}
-\item $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$, which count the
-  number of words on either side of the rule.
-\item $c_{\mathit{diff}}$, the change in the number of words the rule
-  effects.
-\item $\delta_{\mathit{lex}}$, a binary indicator for whether the rule
-  is purely phrasal.
-\item $\delta_{\mathit{del}}$, a binary indicator for whether the rule
-  deletes all terminal symbols.
+\item A boolean indicator for whether the rule is an identity
+  paraphrase, $\delta_{\mathit{identity}}$.
 
-\item $\delta_{\mathit{reorder}}$, which is 1 if the rule swaps the
-  order of two nonterminals
+\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
+  indicating the number of words on either side of the rule as well as
+  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
+  c_{\mathit{src}}$ and the analoguosly computed difference in the
+  average word length in characters, $c_{\mathit{davg}}$.
 
+\item An incidator for when a rule only contains terminal symbols
+  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
+  contains terminals, but the target side does not
+  ($\delta_{\mathit{del}}$).
+
+\item Indicators for whether the rule swaps the order of two
+  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
+  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
+
+\item A rarity penalty $\varphi_{\mathit{rarity}} =
+  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
+  a rule based on how often we have encountered it in the
+  corpus\footnote{Since we do not have an immediate rule count for a
+    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate
+    its rarity penalty as $\varphi_{\mathit{rarity}}(N
+    \rightarrow e_1 | e_2) = \max_{f} \min
+    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
+    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
 \end{itemize}
-
-
-objective function in parameter tuning
-  and data used for tuning (contrast to old approaches, mostly
-  precision on gold paraphrase set and BLEU)
-
-Injection of appropriate rules into the grammar
-
-
-
-\section{Training Paradigms} 
-\label{adaptation}
-
-When tuning the parameters for a paraphrasing system, two separate
-tasks can be identified: the paraphrase ranking problem and the
-paraphrasing process itself. Due to the structure of our system, our
-model integrates both these tasks into one\footnote{In the grammar
-  pruning step described in Section~\ref{pruning} we do, in fact,
-  implement a coarse separate paraphrase ranking step that is distinct
-  from the otherwise integrated parameter estimation. This is done to keep
-  the size of the paraphrase grammar manageable.}
-
-need to estimate parameters for both, paraphrase ranking and paraphrasing
-
-since we use  mert
-
-like nitin, we tune on ref-to-ref translation
-
-however BLEU is bad, leads to identity paraphrases
-
-
-We estimate the parameters of our log-linear model using minimum error
-rate training \cite{Och2003}.
-
-\subsection{Paraphrase BLEU} \label{pp_bleu}
-
-The familiar BLEU metric \cite{Papineni2002} quantifies the quality of
-a translation by measuring the n-gram overlap between the generated
-translation and a set of reference translation
 
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|}
   \hline
-  & BLEU & ppBLEU \\
+  & Hiero & Syntactic \\
   \hline
-  Identity & 52.7 & bad \\
-  Oracle & good & good \\
+  Core features & bad & better \\
+  Full feature set & better & best \\
   \hline
 \end{tabular}
 \end{center}
@@ -736,37 +732,6 @@ translation and a set of reference translation
   itself score; ``translate'' ref onto heldout ref, score}
 \end{table}
 
-for paraphrasing, this can be a problem, since the reference
-translations typically have a rather high overlap with one another
-\mnote{get some numbers to back that up} and the decoder has to beat
-that first
-
-
-\section{Reference Expansion}
-
-We present an examplary application of our paraphrasing system
-
-Using paraphrases for reference expansion, cite Madnani
-
-idea behind reference expansion: create additional ``reference''
-translations to tune a machine translation system
-
-however, tuning our paraphrase system to BLEU results in a paraphraser
-that generates only minimal changes \mnote{if so, how did Madnani deal
-with that?}
-
-We therefore implement a paraphrase-specific metric, ppBLEU, that aims
-to amend this issue.
-
-
-\subsection{Data} \label{data}
-
-We use Europarl v. 5. Align with Berkeley and parse with The Parser.
-
-we use the SAMT pipeline to extract the grammar
-
-however, the pivoting approach makes it impossible to apply the common pre-emptive
-grammar filtering, hence the grammar grows very large
 
 \subsection{Evaluation} \label{evaluation}
 
@@ -778,8 +743,11 @@ Hiero baseline
 
 \section{Conclusion} \label{conclusion}
 
-Look, we unified everything in the field and made all this stuff from
-the previous section much better. Or did we?
+In this work we introduced a method to learn syntactically informed
+paraphrases from bilingual parallel texts. We discuss the expressive
+power and limitations of our formalism and demonstrate its
+applicability to text-to-text generation on the example of sentence
+compression.
 
 \bibliographystyle{acl}
 \bibliography{paraphrasing}
