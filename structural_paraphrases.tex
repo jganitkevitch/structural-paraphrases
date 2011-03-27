@@ -524,25 +524,26 @@ use of syntax allows us to capture are the \emph{adverbial phrase
  
 Unsurprisingly, syntactic information alone is not sufficient to
 capture all transformations. For instance it is hard to extract
-generic paraphrases for \emph{passivization}, since our syntactic
+generic paraphrases for all instances of \emph{passivization}, since our syntactic
 model currently has no means of representing the morphological changes that the
 verb undergoes:
 \begin{center}
 \begin{tabular}{l}
-  the cat \emph{ate} the mouse \\
-  the mouse \emph{was eaten} by the cat \\
-%  the reactor spews radiation \\
-%  radiation is spewing from the reactor
+%  the cat \emph{ate} the mouse \\
+%  the mouse \emph{was eaten} by the cat \\
+  the reactor \emph{leaks} radiation \\
+  radiation \emph{is leaking} from the reactor\\
 \end{tabular}
 
 \end{center}
-Still, for the case when the active voice form is already in
-the past participle and the verb thus does not change, we manage to
+Still, for cases where verb's morphology does not change, we manage to
 learn a rule:
 \begin{center}
 \begin{tabular}{l}
-  the mouse that the cat had \emph{eaten} \\
-  the mouse which was \emph{eaten} by the cat \\
+%  the mouse that the cat had \emph{eaten} \\
+%  the mouse which was \emph{eaten} by the cat \\
+the radiation that the reactor had \emph{leaked} \\
+the radiation which \emph{leaked} from the reactor \\
 \end{tabular}
 \end{center}
 %
