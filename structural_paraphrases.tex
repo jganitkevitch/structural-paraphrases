@@ -524,20 +524,20 @@ use of syntax allows us to capture are the \emph{adverbial phrase
  shift} and the \emph{reduction of a relative clause}.
  
 Unsurprisingly, syntactic information alone is not sufficient to
-capture arbitrary transformations. For instance it is hard to extract
+capture all transformations. For instance it is hard to extract
 generic paraphrases for \emph{passivization}, since our syntactic
 model currently has no means of representing the morphological changes that the
 verb undergoes:
 \begin{center}
 \begin{tabular}{l}
-  the cat \emph{eats} the mouse \\
+  the cat \emph{ate} the mouse \\
   the mouse \emph{was eaten} by the cat \\
-%  Clinton \emph{signed} the DADT bill \\
-% the DADT bill \emph{was signed} by Clinton \\
+%  the reactor spews radiation \\
+%  radiation is spewing from the reactor
 \end{tabular}
 
 \end{center}
-Still, for the special case when the active voice form is already in
+Still, for the case when the active voice form is already in
 the past participle and the verb thus does not change, we manage to
 learn a rule:
 \begin{center}
@@ -559,7 +559,7 @@ Here, a noun is transformed into the corresponding verb -- something
 our synchronous syntactic CFG approach is not able to capture except
 through memorization.
 
-Overall our survey shows that we are able to extract good generic
+Overall our survey shows that we are able to extract appropriately generic
 representations for a surprising number of paraphrastic
 transformations, far exceeding the expressiveness of previous
 approaches to paraphrase extraction from bilingual parallel corpora.
@@ -646,40 +646,26 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 
 \section{Text-to-Text Applications} \label{adaptation}
 
-Many text-to-text generation tasks are at their core sentential
-paraphrasing problems, augmented with specific constraints or
+The core of many text-to-text generation tasks is sentential
+paraphrasing, augmented with specific constraints or
 goals. Since in our model we are reusing much of the machinery known
 from statistical machine translation -- a sentential rewriting problem
-itself -- our system comes with a straightforward way to apply the
-extracted paraphrase grammars in practice. The SMT setup as described
-in Section~\ref{acquisition} is well-suited for the generation of
-generally well-formed text and forms a solid basis for the adaptation
-to a given text-to-text generation task. There are several points of
-application for this adaptation: the choice of an objective function
-and a development set for parameter estimation, the introduction of
-rule-level features that capture relevant information, and the
-injection of addional rules into the paraphrase grammar. In the
-following, we discuss each of these in detail on the example of
+itself -- it is straightforward to use our paraphrase grammars to generate new sentences. The SMT framework  can be adapted to 
+many different text-to-text generation tasks. 
+These could include sentence compression, sentence simplification, poetry generation from prose, transforming declarative sentences into questions, etc. 
+Each individual text-to-text application requires that the SMT framework be adapted in several ways:
+\begin{itemize}
+\item A mechanism for extracting synchronous grammar rules (in this paper we argue that pivot-based paraphrasing is widely applicable)
+\item An appropriate set of rule-level features that capture pertinent information about the task
+ (i.e.\ whether a rule simplifies a phrase)
+\item An appropriate `objective function' that scores the output of the model.  This is a task-specific equivalent to the Bleu metric in SMT.
+\item A development set containing examples of the sentential transformations that we would like to model.  The dev set is used with the objective function to set the weights of the features.
+\item Optionally, a way of injecting task-specific rules that were not extracted automatically.
+\end{itemize} 
+In the following subsections, we discuss each of these in detail on the example of
 adapting our paraphrasing system to perform sentence compression,
-i.e.\ to reduce the length of sentence while preserving its core
+which is the task of reduce the length of sentence while preserving its core
 meaning.
-
-\subsection{Development Data and Objective Function}
-To tune the parameters of our paraphrase system to perform sentence
-compression, we have created a corpus of compression
-paraphrases. Beginning with 9570 tuples of parallel English sentences
-obtained from translation references for various machine translation
-tasks, we obtained a parallel compression corpus by selecting the
-longest reference in each tuple as the source sentence and the
-shortest reference as the target sentence and retaining only those
-sentence pairs where the word count ratio $r$ was $0.5 < r \leq
-0.8$. From these, we then randomly selected 936 sentences for the
-development set, as well as 815 sentences for a test set that we later
-use to gauge the performance of our system.
-
-Due to the compressive nature of the resulting corpus, we deemed the
-widely used BLEU metric \cite{Papineni2002} to be sufficient to judge
-the system's compression performance in parameter estimation.
 
 \subsection{Feature Design}
 In Section~\ref{acquisition} we discussed the phrasal and lexical
@@ -719,6 +705,26 @@ our paraphrases with the following features:
     \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
     \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
 \end{itemize}
+
+
+\subsection{Development Data and Objective Function}
+To tune the parameters of our paraphrase system to perform sentence
+compression, we have created a corpus of compression
+paraphrases. Beginning with 9570 tuples of parallel English sentences
+obtained from translation references for various machine translation
+tasks, we obtained a parallel compression corpus by selecting the
+longest reference in each tuple as the source sentence and the
+shortest reference as the target sentence and retaining only those
+sentence pairs where the word count ratio $r$ was $0.5 < r \leq
+0.8$. From these, we then randomly selected 936 sentences for the
+development set, as well as 815 sentences for a test set that we later
+use to gauge the performance of our system.
+
+Due to the compressive nature of the resulting corpus, we deemed the
+widely used BLEU metric \cite{Papineni2002} to be sufficient to judge
+the system's compression performance in parameter estimation.
+
+
 
 \subsection{Grammar Injections} \label{injection}
 
