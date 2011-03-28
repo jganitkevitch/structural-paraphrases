@@ -21,6 +21,7 @@
 @String{ACL-2006 = "Proceedings of the 21st International Conference on Computational Linguistics and 44th Annual Meeting of the Association for Computational Linguistics (ACL-CoLing-2006)"}
 @String{ACL-2007 = "Proceedings of the 45th Annual Meeting of the Association for Computational Linguistics (ACL-2007)"}
 @String{ACL-2008 = "Proceedings of the 46th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies"}
+@String{ACL-2009 = "Proceedings of the Joint Conference of the 47th Annual Meeting of the ACL and the 4th International Joint Conference on Natural Language Processing of the AFNLP"}
 
 
 
@@ -91,6 +92,9 @@
 @String{EMNLP-2008-address = "Honolulu, Hawaii"}
 @String{AMTA-2008-address = "Honolulu, Hawaii"}
 @String{EMNLP-2009-address = "Singapore"}
+@String{ACL-2009-address = "Singapore"}
+@String{ACL-2010-address = "Uppsala, Sweden"}
+
 
 
 @String{EACL-1989-address = "Manchester, England"}
@@ -140,7 +144,8 @@
 @String{ACL-2006 = "Proceedings of the ACL/Coling"}
 @String{ACL-2007 = "Proceedings of ACL"}
 @String{ACL-2008 = "Proceedings of ACL/HLT"}
-
+@String{ACL-2009 = "Proceedings of ACL"}
+@String{ACL-2010 = "Proceedings of ACL"}
 
 
 @String{EMNLP-2000 = "2000 Joint SIGDAT Conference on Empirical Methods in Natural Language Processing and Very Large Corpora"}
@@ -499,6 +504,7 @@
 #################################
 
 
+# SAMT
 @inproceedings{Zollmann2006,
 	Address = {New York, New York},
 	Author = {Andreas Zollmann and Ashish Venugopal},
@@ -519,6 +525,7 @@
 }
 
 
+# GHKM
 @inproceedings{Galley2004,
   author    = {Galley, Michel  and  Hopkins, Mark  and  Knight, Kevin  and  Marcu, Daniel},
   title     = {What's in a translation rule?},
@@ -826,4 +833,40 @@
   volume = 	 {139},
   number = 	 {},
   pages = 	 {91--107},
+}
+
+@InProceedings{zhao-EtAl:2009:ACLIJCNLP2,
+  author    = {Zhao, Shiqi  and  Lan, Xiang  and  Liu, Ting  and  Li, Sheng},
+  title     = {Application-driven Statistical Paraphrase Generation},
+  booktitle = ACL-2009,
+  year      = {2009},
+  address   =  ACL-2009-address,
+  url       = {http://www.aclweb.org/anthology/P/P09/P09-1094}
+}
+
+
+
+############################
+### Decoders
+############################
+
+
+
+@inproceedings{Dyer_etal_2010,
+  author={Chris Dyer and Adam Lopez
+         and Juri Ganitkevitch and Johnathan Weese and Ferhan Ture
+         and Phil Blunsom and Hendra Setiawan and Vladimir Eidelman and Philip Resnik},
+  title={cdec: A Decoder, Alignment, and Learning framework for finite-state and context-free translation models},
+  booktitle = ACL-2010,
+  address   = ACL-2010-address,
+  year={2010},
+}
+
+@InProceedings{li-EtAl:2010:WMT,
+  author    = {Li, Zhifei  and  Callison-Burch, Chris  and  Dyer, Chris  and  Ganitkevitch, Juri  and  Irvine, Ann  and  Khudanpur, Sanjeev  and  Schwartz, Lane  and  Thornton, Wren  and  Wang, Ziyuan  and  Weese, Jonathan  and  Zaidan, Omar},
+  title     = {Joshua 2.0: A Toolkit for Parsing-Based Machine Translation with Syntax, Semirings, Discriminative Training and Other Goodies},
+  booktitle = {Proceedings of the Joint Fifth Workshop on Statistical Machine Translation and MetricsMATR},
+  year      = {2010},
+  address   = ACL-2010-address,
+  url       = {http://www.aclweb.org/anthology/W10-1718}
 }
