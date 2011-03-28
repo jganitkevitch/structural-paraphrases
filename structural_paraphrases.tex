@@ -649,9 +649,9 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 
 The core of many text-to-text generation tasks is sentential
 paraphrasing, augmented with specific constraints or
-goals. Since in our model we are reusing much of the machinery known
+goals. Since in our model we are borrowing much of the machinery 
 from statistical machine translation -- a sentential rewriting problem
-itself -- it is straightforward to use our paraphrase grammars to generate new sentences. The SMT framework  can be adapted to 
+itself -- it is straightforward to use our paraphrase grammars to generate new sentences using its decoding and parameter optimization techniques. The SMT framework  can be adapted to 
 many different text-to-text generation tasks. 
 These could include sentence compression, sentence simplification, poetry generation from prose, transforming declarative sentences into questions, etc. 
 Each individual text-to-text application requires that the SMT framework be adapted in several ways:
@@ -666,8 +666,8 @@ Each individual text-to-text application requires that the SMT framework be adap
 \end{itemize} 
 In the remainder of this section, we illustrate how our bilingually extracted paraphrases can be adapted to perform sentence compression,
 which is the task of reducing the length of sentence while preserving its core
-meaning.  Most previous approaches to sentence compression focused only on the deletion of a subset of words from the sentence \cite{KnightMarcuAI02}.  Our approach is similar to 
-\newcite{cohn-lapata:2008}, 
+meaning.  Most previous approaches to sentence compression focused only on the deletion of a subset of words from the sentence \cite{KnightMarcuAI02}.  Our approach follows 
+\newcite{cohn-lapata:2008}, who expand the task to include substitutions, insertions and reorderings that are automatically learned from parallel texts.
 
 \subsection{Feature Design}
 In Section~\ref{acquisition} we discussed the phrasal and lexical
