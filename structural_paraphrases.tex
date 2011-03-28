@@ -39,7 +39,7 @@ x}
 \maketitle
 
 \begin{abstract}
-Previous work has shown that high quality {\it phrasal} paraphrases can be extracted from  bilingual parallel corpora.  However, it is not clear whether bitexts are an appropriate resource for extracting more sophisticated {\it structural} or {\it sentential} paraphrases, which can be learned from monolingual parallel corpora.
+Previous work has shown that high quality {\it phrasal} paraphrases can be extracted from  bilingual parallel corpora.  However, it is not clear whether bitexts are an appropriate resource for extracting more sophisticated {\it structural} or {\it sentential} paraphrases, which are more obviously learnable from monolingual parallel corpora.
 %  The extraction of paraphrases from bilingual corpora has been shown
 %  to outperform monolingual approaches on both precision and
  % coverage. However, the learned paraphrases lack structural
@@ -48,7 +48,7 @@ Previous work has shown that high quality {\it phrasal} paraphrases can be extra
  % paraphrasing. 
 We extend bilingual paraphrase extraction to syntactic paraphrases
 and demonstrate its ability to learn variety of general paraphrastic transformations, 
-including passivization, dative shift, topicalization, etc.  We discuss how our model can be adapted to many text-to-text generation tasks, by extending our model's feature set, formalism and parameter estimation.  We illustrate this adaptation by using our bilingually extracted paraphrases for the task of sentence compression. 
+including passivization, dative shift, topicalization, etc.  We discuss how our model can be adapted to many text generation tasks, by augmenting its feature set, development data and parameter estimation routine.  We illustrate this adaptation by using our bilingually extracted paraphrases for the task of sentence compression. 
 %   \begin{itemize}
 %   \item ``in this work'' stuff is implied
 %   \item newcites rather than cites 
@@ -65,6 +65,7 @@ including passivization, dative shift, topicalization, etc.  We discuss how our 
 %   \end{itemize}
 \end{abstract}
 
+
 \section{Introduction} \label{introduction}
 
 Paraphrases are alternative ways of expressing the same information. 
@@ -74,9 +75,8 @@ In multi-document summarization, paraphrase detection is used
 to collapse redundancies \cite{Barzilay1999}. Paraphrase generation can be used 
 for query expansion in information retrieval and question
 answering systems \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}. 
-In statistical machine translation, paraphrases have been used to improve coverage
-and to generate additional reference translations
- \cite{Callison-Burch2006b,Madnani2007}.
+Paraphrases allow for more flexible matching of system output against human references for tasks like machine translation and automatic summarization \cite{Zhou2006b,Kauchak2006,Owczarzak2006,Madnani2007,Snover2010}. 
+%Paraphrases are used to generate additional reference translations for statistical machine translation \cite{Madnani2007} and for more flexible matching when evaluating MT output or automatically generated summaries  \cite{Zhou2006b,Kauchak2006,Owczarzak2006}.
 
 Coarsely, we can distinguish two forms of paraphrases: \emph{phrasal
   paraphrases} denote a set of surface text forms with the same
@@ -97,21 +97,21 @@ the $\mathit{NP}_2$ of the $\mathit{NP}_1$
 \end{tabular}
 \end{center}
 It is evident that the latter have a much higher potential for
-generalization and capturing interesting paraphrastic transformations.
+generalization and for capturing interesting paraphrastic transformations.
 
 A variety of different types of corpora (and semantic equivalence
 cues), have been used to automatically induce paraphrase collections
-for English. The perhaps most natural type of corpus for this task is
+for English \cite{Madnani2010}. The perhaps most natural type of corpus for this task is
 a monolingual parallel text, from which paraphrases can be extracted
 by leveraging the knowledge that the given sentence pairs are perfect
-paraphrases of each other \cite{Barzilay1999,Pang2003}. While rich
+paraphrases of each other \cite{Barzilay2001,Pang2003}. While rich
 syntactic paraphrases have been learned from such corpora, they suffer
 from very limited data availability and are thus limited to poor
 coverage.
 
-Other methods strive to obtain paraphrases from monolingual text only,
-replacing the hard correspondency relation of parallel corpora with
-distributional similarity features \cite{Lin2001,Bhagat2008}. While
+Other methods strive to obtain paraphrases from raw monolingual text,
+replacing the exact correspondence of sentences in monolingual parallel corpora with
+distributional similarity \cite{Lin2001,Bhagat2008}. While
 vast amounts of data are readily available for these approaches, the
 correspondency information they employ is weaker and suffers from
 problems such as mistaking cousin expressions or antonyms (such as
@@ -124,20 +124,17 @@ over foreign language phrases \cite{Callison-Burch2005}. The coverage
 of paraphrase lexica extracted from bitexts has been shown to
 outperform that obtained from other sources \cite{Zhao2008b}. However,
 despite existing work on the extraction of more powerful paraphrases
-\cite{Madnani2007,Callison-Burch2008,Zhao2008}, it is not clear that
-rich syntactic paraphrases can be induced from bitexts. In this paper
+\cite{Madnani2007,Callison-Burch2008,cohn-lapata:2008,Zhao2008}, it is not clear the extent to which sentential paraphrasing can be induced from bitexts. In this paper
 we:
 \begin{itemize}
 \item Extend the bilingual pivoting approach to paraphrase induction
-  to produce syntactic paraphrases.
-\item Analyze the types of paraphrases we obtain discuss the
+  to produce rich syntactic paraphrases.
+\item Perform a thorough analysis of the types of paraphrases we obtain discuss the
   paraphrastic transformations we are capable of capturing.
 \item Show the resulting paraphrase grammars' fitness and adaptability
-  for a variety of text-to-text generation tasks including text
-  simplification, sentence compression, poetry generation and
-  reference/query expansion and recognition of textual entailment.
-\item Describe training paradigms for text-to-text generation with
-  syntactic paraphrases. 
+  for a variety of text-to-text generation tasks.
+\item Describe how training paradigms for
+  syntactic/sentential paraphrase models should be tailored to different text-to-text generation tasks. 
 \end{itemize}
 
 
@@ -654,7 +651,8 @@ goals. Since in our model we are borrowing much of the machinery
 from statistical machine translation -- a sentential rewriting problem
 itself -- it is straightforward to use our paraphrase grammars to generate new sentences using its decoding and parameter optimization techniques. The SMT framework  can be adapted to 
 many different text-to-text generation tasks. 
-These could include sentence compression, sentence simplification, poetry generation from prose, transforming declarative sentences into questions, etc. 
+These could include text simplification, sentence compression, poetry generation,
+  query expansion,  transforming declarative sentences into questions, deriving hypotheses for textual entailment, etc. 
 Each individual text-to-text application requires that the SMT framework be adapted in several ways:
 \begin{itemize}
 \item A mechanism for extracting synchronous grammar rules (in this paper we argue that pivot-based paraphrasing is widely applicable)
