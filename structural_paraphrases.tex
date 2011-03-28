@@ -247,7 +247,8 @@ informed \emph{ synchronous context-free grammar} (SCFG) that in
 contrast to the Hiero formalism used by \newcite{Madnani2007} allows
 for an arbitrary number of nonterminals.
 
-Formally, a PSCFG $\mathcal{G}$ is defined by specifying
+Formally, a \emph{probabilistic} SCFG $\mathcal{G}$ is defined by
+specifying
 \[
 \mathcal{G} = \langle \mathcal{N}, \mathcal{T}_S, \mathcal{T}_T,
 \mathcal{R}, S \rangle ,
@@ -280,35 +281,41 @@ nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 \label{samt_extraction}
 \end{figure*}
 
-The rule set for an SAMT grammar is extracted from word-aligned
-sentence-parallel corpora where the target language side is annotated
-with syntactic parses. Figure~\ref{samt_extraction} shows an example
-of rules obtained for one phrase pair. To extract a rule, we first
-choose a target span $t$. The left-hand side of the rule is then given
-by the syntactic constituent governing $t$. In addition to single
-constituent nonterminals, SAMT allows for the concatenation of
-constituents as well as for CCG-style nonterminal labels
-\cite{Steedman1999}, which increases the grammar's coverage by
-allowing for non-syntactic phrases in the grammar. The source side of
-the rule, $s$, is obtained by projecting $t$ over the word
-alignment. To introduce nonterminals into the rule's source and
-target sides, we can apply rules extracted over sub-phrases of $t$,
-synchronously substituting the corresponding nonterminal symbol for
-the sub-phrases on both sides. \mnote{Tie this back to $\alpha$ and
-  $\gamma$?} The synchronous substitution applied to $t$ and $s$
-yields the correspondency $\sim$.
+The rule set for our synchronous grammar is extracted from
+word-aligned sentence-parallel corpora where the target language side
+is annotated with syntactic parses. Figure~\ref{samt_extraction} shows
+an example of rules obtained from one sentence pair. To extract a
+rule, we first choose a target span $e$. The left-hand side of the
+rule is then given by the syntactic constituent governing
+$e$. However, in doing so we can only assign left-hand side labels to
+a small portion of the possible phrases in a sentence pair. To allow
+for broader coverage, we rely on the labeling method introduced by
+\newcite{Zollmann2006}: in addition to single constituent
+nonterminals, we allow for the concatenation of constituents as well
+as for CCG-style slashed constituents \cite{Steedman1999}.
 
-Rather than assigning a weight $w$, SAMT stores a number of feature
-values $\varphi_i$ for each rule, which are combined in a log-linear
-model:
+The source side of the rule, $f$, is obtained by projecting $e$ over
+the word alignment. To introduce nonterminals into the rule body, we
+can apply rules extracted over sub-phrases of $e$, synchronously
+substituting the corresponding nonterminal symbol for the sub-phrases
+on both sides. The synchronous substitution applied to $e$ and $f$
+then yields the correspondency $\sim$.
+
+Rather than assigning a weight $w$, we define a number of feature
+functions $\varphi_i$, which are combined in a log-linear model:
 \begin{equation}
   w = \sum_i^N \lambda_i \varphi_i .
 \end{equation}
 For ease of notation, we will refer to $\varphi_1, \ldots ,\varphi_N$
-as $\vec{\varphi}$. The feature set of the SAMT model by default
-consists of 23 feature functions and covers a diverse set of rule
-characteristics. We discuss our task-specific extensions to the SAMT
-feature set in Section~\ref{adaptation}.
+as $\vec{\varphi}$. The feature set of the translation model by
+default consists of the negative lexical translation log-probabilities
+\[
+\varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
+p_{\mathit{lex}}(f | e)\rangle
+\]
+and its phrasal counterpart $\varphi_{\mathit{phrase}}$. We discuss
+task-specific extensions to this feature set in
+Section~\ref{adaptation}.
 
 \section{SCFGs in Paraphrasing} \label{acquisition}
 
@@ -322,10 +329,11 @@ feature set in Section~\ref{adaptation}.
 \end{figure*}
 
 To create a paraphrase grammar from a translation grammar, we extend
-the pivot approach of \newcite{Callison-Burch2005} to the SAMT
-model. For this purpose, we assume a grammar that translates from a
-given foreign language to English. For each pair of translation rules where
-the left-hand side $C$ and foreign string $\gamma$ match
+the syntactically informed pivot approach of
+\newcite{Callison-Burch2008} to the SCFG model. For this purpose, we
+assume a grammar that translates from a given foreign language to
+English. For each pair of translation rules where the left-hand side
+$C$ and foreign string $\gamma$ match
 \begin{eqnarray*}
 C \rightarrow \langle \gamma, \alpha_1, \sim_1, \vec{\varphi}_1 \rangle \\
 C \rightarrow \langle \gamma, \alpha_2, \sim_2, \vec{\varphi}_2 \rangle
@@ -340,45 +348,10 @@ reflect the combined nonterminal alignment
 \sim ~ = ~ \sim_1^{-1} \circ \sim_2 .
 \end{equation*}
 
-\subsection{Feature Computation}
-
-The computation of $\vec{\varphi}$ from $\vec{\varphi}_1$ and
-$\vec{\varphi}_2$ occurs on feature level. For this purpose, the SAMT
-feature set can be roughly partitioned into three groups.
-
-The first group consists of features that depend solely on the rule
-itself. This includes features based on number or nature of terminals
-or nonterminals in $\alpha_1$ or $\alpha_2$, features that indicate
-nonterminal reordering or deletion of punctuation and pseudo-features
-like a glue rule indicator or the application count feature. Since
-none of these features require additional information, their
-computation for $\vec{\varphi}$ is straightforward.
-
-The features in the second group additionally depend on aggregate
-counts over the bitext and thus cannot be computed from the rule
-alone. However, the information contained in $\vec{\varphi}_1$ and
-$\vec{\varphi}_2$ allows us to apply the pivot approach as shown in
-Equation~\ref{paraphrase_prob_eqn} to approxate the real feature value
-for $\vec{\varphi}$. In the SAMT feature set, this group only includes
-the four lexical translation probability features.
-
-The remainder of the feature set falls into the third group. These
-features depend on information that we cannot reconstruct from
-$\vec{\varphi}_1$ and $\vec{\varphi}_2$. Features in this group
-include the rule's probability conditioned on the left-hand-side, its
-source side with and without nonterminal labels as well as rareness
-and unbalancedness penalties. For these we fall back to a black-box
-approach, treating the value for a given features as an indication of
-the rule's quality in some particular aspect. To combine the feature
-values, we multiply for the relative frequencies and add for the
-penalty functions.
-
-In addition to combining $\vec{\varphi}_1$ and $\vec{\varphi}_2$, we
-extend $\vec{\varphi}$ by a paraphrasing-specific boolean feature
-$\varphi_{\mathit{ident}}$, that is $1$ when $\alpha_1 = \alpha_2$ and
-$0$ otherwise. This allows us to tune our system to prefer or
-dis-prefer identity paraphrases.
-
+In the computation of the features $\vec{\varphi}$ from
+$\vec{\varphi}_1$ and $\vec{\varphi}_2$ we follow the approximation in
+Equation~\ref{paraphrase_prob_eqn}, which yields lexical and phrasal
+paraphrase probability features.
 
 \subsection{Grammar Pruning}
 \label{pruning}
@@ -389,31 +362,33 @@ with the multiplicative effect of pivoting, quickly makes the
 resulting paraphrase grammars grow too large too handle.
 
 To keep the grammars at a manageable size while retaining good
-paraphrases, we implement a the following pruning approach. We only
-consider translation rules that have been seen more than a given
-number of times and exceed a given translation probability threshold
-for pivot recombination. In addition to this, we rank the generated
-paraphrases for each pattern according to a combination of translation
-and lexical probablity and only retain the top $n$
-alternatives. \mnote{This is a little wonky, maybe drop the top-$n$
-  pruning?}
+paraphrases, we implement the following pruning approach. We only
+consider translation rules that have been seen more than
+$c_{\mathit{min}}$ times and exceed a given translation probability
+threshold $p_{\mathit{min}}$ for pivot recombination. In addition to
+this, we rank the generated paraphrases for each foreign pivot phrase
+according to a uniformly weighted combination of phrasal and lexical
+paraphrase probabilities and only retain the top $n$ most likely
+alternatives.
 
 The result of this process is a paraphrase grammar with syntactic
 annotations and a feature set which (approximately) mirrors that of
-the initial translation grammar. We now move to estimating the
-feature weights. \mnote{This is awful. Needs better intro into
-  estimation part.}
+the initial translation grammar.
 
 
 \section{Experimental Setup} \label{setup}
 
-\begin{itemize}
-\item The following examples and discussions are based on a paraphrase
-  grammar we extraced from the French-English bitext that is part of
-  EuroParl version 5.
-\item We used the Berkely aligner and The Parser
-\item SAMT pipeline
-\end{itemize}
+For our experiments, we extracted a paraphrase grammar from the
+French-English part of the Europarl version 5 corpus. The bitext was
+aligned using the Berkeley aligner and the English side was parsed
+using Scott's Parser\mnote{needs citations for corpus, aligner, parser
+  and Thrax}. We obtained the inital translation grammar using the
+SAMT toolkit by \newcite{Zollmann2006}. For paraphrase grammar
+extraction, our pruning settings were $c_{\mathit{min}}=3$,
+$p_{\mathit{min}}=10^{-4}$ and $n=25$. We also created a baseline
+Hiero paraphrase grammar. The translation grammar for this was
+generated using the Thrax grammar extraction toolkit, with identical
+pruning settings for the paraphrase grammar extraction.
 
 
 \section{Analysis} \label{analysis}
