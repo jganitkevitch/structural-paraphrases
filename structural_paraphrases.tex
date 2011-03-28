@@ -240,13 +240,12 @@ paraphrases. \mnote{Need better tie-in with the overall theme of
 
 \section{SCFGs in Translation} \label{formalism}
 
-Similar to \newcite{Madnani2007}, our paraphrasing system heavily
-relies on established statistical machine translation
-machinery. \mnote{Spin this towards the section title.} The model we
-use in our approach is \emph{Syntax Augmented Machine Translation} or
-\emph{SAMT} \cite{Zollmann2006}, which is based on the \emph{
-  synchronous context-free grammar} (SCFG) formalism and allows for an
-arbitrary number of nonterminals.
+Similar to \newcite{Madnani2007}, our paraphrasing system borrows from
+established parsing-based statistical machine translation
+machinery. The model we use in our approach is a syntactically
+informed \emph{ synchronous context-free grammar} (SCFG) that in
+contrast to the Hiero formalism used by \newcite{Madnani2007} allows
+for an arbitrary number of nonterminals.
 
 Formally, a PSCFG $\mathcal{G}$ is defined by specifying
 \[
@@ -315,9 +314,11 @@ feature set in Section~\ref{adaptation}.
 
 \begin{figure*}[!t]
 \begin{center}
-\includegraphics[width=0.8\linewidth]{figures/pivot.pdf}
+\includegraphics[width=0.99\linewidth]{figures/example_compression.pdf}
 \end{center}
-\caption{TODO: draw up figure}
+\caption{An example of a synchronous paraphrastic derivation. A few of
+  the rules applied in the parse are show in the second column, with
+  the pivot phrases that gave rise to them in the third.}
 \end{figure*}
 
 To create a paraphrase grammar from a translation grammar, we extend
