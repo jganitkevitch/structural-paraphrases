@@ -207,39 +207,36 @@ nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 0$ is assigned to each rule, reflecting the likelihood of the rule.
 
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.99\linewidth]{figures/example_extraction.pdf}
 \end{center}
 \caption{TODO: write caption}
 \label{example_extraction}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.99\linewidth]{figures/example_translation.pdf}
 \end{center}
 \caption{TODO: write another caption}
 \label{example_translation}
-\end{figure*}
+\end{figure}
 
 \mnote{cite phrase extraction heuristic papers, and say that they were
   extended to parsed parallel corpora, citing GHKM, SAMT} The rule set
 for our synchronous grammar is extracted from word-aligned
 sentence-parallel corpora where the target language side is annotated
 with syntactic parses. Figure~\ref{example_extraction} shows examples
-of rules obtained from a sentence pair. To extract a \mnote{redo Fig 1
-  as we discussed, so that it fits into one column, is for german, and
-  uses lines for alignments instead of a grid.} To extract a rule, we
-first choose a target span $e$. The left-hand side of the rule is then
-given by the syntactic constituent governing $e$. However, in doing so
-we can only assign left-hand side labels to a small portion of the
+of rules obtained from a sentence pair. To extract a rule, we first
+choose a target span $e$. The left-hand side of the rule is then given
+by the syntactic constituent governing $e$. However, in doing so we
+can only assign left-hand side labels to a small portion of the
 possible phrases in a sentence pair. To allow for broader coverage, we
 rely on the labeling method introduced by \newcite{Zollmann2006}: in
 addition to single constituent nonterminals, we allow for the
 concatenation of constituents as well as for CCG-style slashed
-constituents \cite{Steedman1999}.  \mnote{Add an SAMT derivation, and
-  in the text list some of the rules that were applied}.
+constituents \cite{Steedman1999}.
 
 The source side of the rule, $f$, is obtained by projecting $e$ over
 the word alignment. To introduce nonterminals into the rule body, we
