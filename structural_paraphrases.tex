@@ -263,14 +263,14 @@ Section~\ref{adaptation}.
 
 \section{SCFGs in Paraphrasing} \label{acquisition}
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
 \begin{center}
-\includegraphics[width=0.99\linewidth]{figures/example_compression.pdf}
+\includegraphics[width=0.99\linewidth]{figures/example_compression_1col.pdf}
 \end{center}
 \caption{An example of a synchronous paraphrastic derivation. A few of
   the rules applied in the parse are show in the second column, with
   the pivot phrases that gave rise to them in the third.}
-\end{figure*}
+\end{figure}
 
 To create a paraphrase grammar from a translation grammar, we extend
 the syntactically informed pivot approach of
@@ -568,27 +568,43 @@ approaches to paraphrase extraction from bilingual parallel corpora.
 \section{Text-to-Text Applications} \label{adaptation}
 
 The core of many text-to-text generation tasks is sentential
-paraphrasing, augmented with specific constraints or
-goals. Since in our model we are borrowing much of the machinery 
-from statistical machine translation -- a sentential rewriting problem
-itself -- it is straightforward to use our paraphrase grammars to generate new sentences using its decoding and parameter optimization techniques. The SMT framework  can be adapted to 
-many different text-to-text generation tasks. 
-These could include text simplification, sentence compression, poetry generation,
-  query expansion,  transforming declarative sentences into questions, deriving hypotheses for textual entailment, etc. 
-Each individual text-to-text application requires that the SMT framework be adapted in several ways:
+paraphrasing, augmented with specific constraints or goals. Since in
+our model we are borrowing much of the machinery from statistical
+machine translation -- a sentential rewriting problem itself -- it is
+straightforward to use our paraphrase grammars to generate new
+sentences using its decoding and parameter optimization
+techniques. The SMT framework can be adapted to many different
+text-to-text generation tasks.  These could include text
+simplification, sentence compression, poetry generation, query
+expansion, transforming declarative sentences into questions, deriving
+hypotheses for textual entailment, etc.  Each individual text-to-text
+application requires that the SMT framework be adapted in several
+ways:
 \begin{itemize}
-\item A mechanism for extracting synchronous grammar rules (in this paper we argue that pivot-based paraphrasing is widely applicable)
-\item An appropriate set of rule-level features that capture pertinent information about the task
- (i.e.\ whether a rule simplifies a phrase)
-\item An appropriate `objective function' that scores the output of the model.  This is a task-specific equivalent to the Bleu metric in SMT.
-\item A development set with examples of the sentential transformations that we are modeling.  
-%The dev set is used with the objective function to set the weights of the features.
-\item Optionally, a way of injecting task-specific rules that were not extracted automatically.
+\item A mechanism for extracting synchronous grammar rules (in this
+  paper we argue that pivot-based paraphrasing is widely applicable)
+\item An appropriate set of rule-level features that capture pertinent
+  information about the task (i.e.\ whether a rule simplifies a
+  phrase)
+\item An appropriate `objective function' that scores the output of
+  the model.  This is a task-specific equivalent to the Bleu metric in
+  SMT.
+\item A development set with examples of the sentential
+  transformations that we are modeling.
+  % The dev set is used with the objective function to set the weights
+  % of the features.
+\item Optionally, a way of injecting task-specific rules that were not
+  extracted automatically.
 \end{itemize} 
-In the remainder of this section, we illustrate how our bilingually extracted paraphrases can be adapted to perform sentence compression,
-which is the task of reducing the length of sentence while preserving its core
-meaning.  Most previous approaches to sentence compression focused only on the deletion of a subset of words from the sentence \cite{KnightMarcuAI02}.  Our approach follows 
-\newcite{cohn-lapata:2008}, who expand the task to include substitutions, insertions and reorderings that are automatically learned from parallel texts.
+In the remainder of this section, we illustrate how our bilingually
+extracted paraphrases can be adapted to perform sentence compression,
+which is the task of reducing the length of sentence while preserving
+its core meaning.  Most previous approaches to sentence compression
+focused only on the deletion of a subset of words from the sentence
+\cite{KnightMarcuAI02}.  Our approach follows
+\newcite{cohn-lapata:2008}, who expand the task to include
+substitutions, insertions and reorderings that are automatically
+learned from parallel texts.
 
 \subsection{Feature Design}
 In Section~\ref{acquisition} we discussed the phrasal and lexical
@@ -651,31 +667,45 @@ the system's compression performance in parameter estimation.
 
 \subsection{Grammar Injections} \label{injection}
 
-As discussed in Section~\ref{analysis}, the paraphrase grammar we
+As we discussed in Section~\ref{analysis}, the paraphrase grammar we
 induce is capable of representing a wide variety of
 transformations. However, the formalism and extraction method are not
 explicitely geared towards a compression application. For instance,
 the synchronous nature of our grammar does not allow us to perform
 deletions of constituents as done by \newcite{Cohn2007}.  A possible
-way to extend the grammar's capabilities in this direction is by
-injecting additional rules designed to perform particular
-functions. This can include adding rules that allow generic deletions
-of target-side nonterminals\footnote{This renders the SCFG
-  asynchronous and requires appropriate adjustments in the decoding
-  process.}, or generating rules that specifically delete particular
-adjectives from the corpus.
+way to extend the grammar's capabilities towards the requirements of a
+given task is by injecting additional rules designed to capture
+appropriate operations. 
+
+For the compression task, this can include adding rules that allow
+generic deletions of target-side nonterminals\footnote{This renders
+  the SCFG asynchronous and requires appropriate adjustments in the
+  decoding process.}, or generating rules that specifically delete
+particular adjectives from the corpus\footnote{Note that since we do
+  not learn these rules from data, we cannot estimate their cost from
+  translation probabilities or counts. In a discriminative setting
+  each rule will correspond to a feature. We leave the investigation
+  of this to future work. TODO.}:
 \begin{center}
 \begin{tabular}{cc}
  $\mathit{JJ} \rightarrow$ & $\mathit{JJ} \mid \varepsilon$ \\
- $\mathit{JJ} \rightarrow$ & superfluous $\mid \varepsilon$ \\
+ $\mathit{JJ} \rightarrow$ & superfluous $\mid \varepsilon$ . \\
 \end{tabular}
 \end{center}
-In our system, we implemented the injection of rules that improve our
+In our system, we implemented the injection of rules that improve the
 handling of out-of-vocabulary words. Typically an SMT system will
 generate heavily penalized identity translation rules for all words in
 an input sentence, to assure that the OOV rules will only apply when
-there is no translation rule for a particular word.
-
+there is no translation rule for a particular word. For our
+paraphrasing approach however, encountering an unknown word is not
+critical as long as we can assign it the proper syntactic label. To
+enable our system to process unseen words in the input, we allow for
+syntactically parsed input and for every input word $w$ include rules
+of the form $\mathit{T} \rightarrow w \mid w$, where $T$ is the
+part-of-speech tag assigned to $w$ in the input parse. To enable a
+proper inclusion into the paraphrasing model, we add a constant
+penalty feature $\varphi_{\mathit{oov}}$ and include its weight in our
+parameter estimation process.
 
 \subsection{Evaluation} \label{evaluation}
 
@@ -701,6 +731,12 @@ paraphrases from bilingual parallel texts. We discuss the expressive
 power and limitations of our formalism and demonstrate its
 applicability to text-to-text generation on the example of sentence
 compression.
+
+\section*{Acknowledgments}
+
+We would like to thank Trevor Cohn for kindly providing us with access
+to data sets and the T3 compression system and Ben Van Durme for
+helpful discussions.
 
 \bibliographystyle{acl}
 \bibliography{paraphrasing}
