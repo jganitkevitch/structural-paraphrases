@@ -344,12 +344,27 @@ the initial translation grammar.
     $\mathit{NP}_1$ \\
     \hline
     \hline
-    Adverbial phrase move & 
-    $\mathit{S/VP}$ $\rightarrow$ & we $\mathit{VBP}$ $\mathit{ADVP}$
-    & $\mid$ & $\mathit{ADVP}$, we $\mathit{VBP}$ \\
+    \multirow{2}{*}{Adv./adj. phrase move} & 
+    $\mathit{S/VP}$ $\rightarrow$ & $\mathit{ADVP}$ they $\mathit{VBP}$
+    & $\mid$ & they $\mathit{VPB}$ $\mathit{ADVP}$ \\
+    & $\mathit{S}$ $\rightarrow$ & it is $\mathit{ADJP}$ $\mathit{VP}$
+    & $\mid$ & $\mathit{VP}$ is $\mathit{ADJP}$ \\
     \hline
-    Reduced relative clause & $\mathit{SBAR/S}$ $\rightarrow$ &
-    although $\mathit{PRP}$ $\mathit{VBP}$ that & $\mid$ &although $\mathit{PRP}$ $\mathit{VBP}$ \\
+    Verb particle shift & 
+    $\mathit{VP}$ $\rightarrow$ & $\mathit{VB}$ $\mathit{NP}$ up &
+    $\mid$ & $\mathit{VB}$ up $\mathit{NP}$ \\
+    \hline
+    \multirow{2}{*}{Reduced relative clause} & $\mathit{SBAR/S}$ $\rightarrow$ &
+    although $\mathit{PRP}$ $\mathit{VBP}$ that & $\mid$ &although
+    $\mathit{PRP}$ $\mathit{VBP}$ \\
+    & $\mathit{ADJP}$ $\rightarrow$ &
+    very $\mathit{JJ}$ that $\mathit{S}$ & $\mid$ & $\mathit{JJ}$ $\mathit{S}$ \\
+    \hline
+    \multirow{2}{*}{Quantificational variants} & 
+    $\mathit{NP}$ $\rightarrow$ & $\mathit{CD}$ of the $\mathit{NN}$
+    & $\mid$ & $\mathit{CD}$ $\mathit{NN}$ \\
+    & $\mathit{NP}$ $\rightarrow$ & all $\mathit{DT\backslash NP}$
+    & $\mid$ & all of the $\mathit{DT\backslash NP}$ \\
     \hline
     Topicalization  & $\mathit{S}$ $\rightarrow$ & $\mathit{NP}$,
     $\mathit{VP}$ . & $\mid$ & $\mathit{VP}$, $\mathit{NP}$ . \\
@@ -359,8 +374,10 @@ the initial translation grammar.
     $\mathit{SBAR}$ $\rightarrow$ & that $\mathit{NP}$ had
     $\mathit{VBN}$ & $\mid$ & which was $\mathit{VBN}$ by $\mathit{NP}$ \\
     \hline
-    Light verbs & $\mathit{VP}$ $\rightarrow$ & take action $\mathit{ADVP}$ &
+    \multirow{2}{*}{Light verbs} & $\mathit{VP}$ $\rightarrow$ & take action $\mathit{ADVP}$ &
     $\mid$ & to act $\mathit{ADVP}$ \\
+    & $\mathit{VP}$ $\rightarrow$ & $\mathit{TO}$ take a decision $\mathit{PP}$ &
+    $\mid$ & $\mathit{TO}$ decide $\mathit{PP}$ \\
     \hline
 \end{tabular}
 \end{center}
