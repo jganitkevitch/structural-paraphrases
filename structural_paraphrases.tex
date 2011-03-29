@@ -320,19 +320,7 @@ annotations and a feature set which (approximately) mirrors that of
 the initial translation grammar.
 
 
-\section{Experimental Setup} \label{setup}
 
-For our experiments, we extracted a paraphrase grammar from the
-French-English part of the Europarl version 5 corpus. The bitext was
-aligned using the Berkeley aligner and the English side was parsed
-using Scott's Parser\mnote{needs citations for corpus, aligner, parser
-  and Thrax}. We obtained the inital translation grammar using the
-SAMT toolkit by \newcite{Zollmann2006}. For paraphrase grammar
-extraction, our pruning settings were $c_{\mathit{min}}=3$,
-$p_{\mathit{min}}=10^{-4}$ and $n=25$. We also created a baseline
-Hiero paraphrase grammar. The translation grammar for this was
-generated using the Thrax grammar extraction toolkit, with identical
-pruning settings for the paraphrase grammar extraction.
 
 
 \section{Analysis} \label{analysis}
@@ -394,7 +382,8 @@ data.
 
 To put this expectation to the test, we investigate how our grammar
 captures a number of well-known paraphrastic
-transformations. Table~\ref{example_rules} shows the transformations
+transformations.\footnote{For our analysis, we extracted a paraphrase grammar from the French-English Europarl corpus (v5). The bitext was aligned using the Berkeley aligner and the English side was parsed using the Berkeley parser. We obtained the initial translation grammar using the SAMT toolkit. }
+Table~\ref{example_rules} shows the transformations
 along with examples of the generic grammar rules our system learns to
 represent them. When given a transformation to extract a syntactic
 paraphrase for, we want to find rules that neither under- nor
