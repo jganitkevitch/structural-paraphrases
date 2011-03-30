@@ -49,14 +49,14 @@ including passivization, dative shift, topicalization, etc.  We discuss how our 
 
 \section{Introduction} \label{introduction}
 
-Paraphrases are alternative ways of expressing the same information. 
+Paraphrases are alternative ways of expressing the same information \cite{Culicover1968}. 
 Automatically generating and detecting paraphrases is a crucial aspect of many 
 natural language processing tasks.
 In multi-document summarization, paraphrase detection is used
 to collapse redundancies \cite{Barzilay1999,BarzilayThesis}. Paraphrase generation can be used 
 for query expansion in information retrieval and question
 answering systems \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}. 
-Paraphrases allow for more flexible matching of system output against human references for tasks like machine translation and automatic summarization \cite{Zhou2006b,Kauchak2006,Owczarzak2006,Madnani2007,Snover2010}. 
+Finally, paraphrases allow for more flexible matching of system output against human references for tasks like machine translation and automatic summarization \cite{Zhou2006b,Kauchak2006,Owczarzak2006,Madnani2007,Snover2010}. 
 %Paraphrases are used to generate additional reference translations for statistical machine translation \cite{Madnani2007} and for more flexible matching when evaluating MT output or automatically generated summaries  \cite{Zhou2006b,Kauchak2006,Owczarzak2006}.
 
 Coarsely, we can distinguish two forms of paraphrases: \emph{phrasal
@@ -134,9 +134,9 @@ pivoting through foreign language phrases.
 %phrase pairs $(e, f)$ (where the $e$ and $f$ stand for English and
 %foreign phrases, respectively) as well as bi-directional 
 Since many
-paraphrases can be extracted for a phrase, \newcite{Callison-Burch2005} rank them using a paraphrase probability defined in terms of the translation model
+paraphrases can be extracted for a phrase, Bannard and Callison-Burch rank them using a paraphrase probability defined in terms of the translation model
 probabilities $p(f | e)$ and $p(e | f)$: 
-
+\nocite{Callison-Burch2005}
 \begin{eqnarray}
   p(e_2|e_1) &=& \sum_f p(e_2,f|e_1)\\
                   &=& \sum_f p(e_2|f,e_1) p(f|e_1) \\
