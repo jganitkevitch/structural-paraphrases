@@ -88,7 +88,7 @@ a monolingual parallel text, from which paraphrases can be extracted
 by leveraging the fact that the given sentence pairs are perfect
 paraphrases of each other \cite{Barzilay2001,Pang2003}. While rich
 syntactic paraphrases have been learned from such corpora, they suffer
-from very limited data availability and are thus limited by poor
+from very limited data availability and are thus have poor
 coverage.
 
 Other methods strive to obtain paraphrases from raw monolingual text,
@@ -213,7 +213,7 @@ nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 \begin{center}
 \includegraphics[width=0.99\linewidth]{figures/example_extraction.pdf}
 \end{center}
-\caption{TODO: write caption}
+\caption{Synchronous grammar rules for translation are extracted from sentence pairs in a bixtext which have been automatically parsed and word-aligned. Extraction methods vary on whether they extract only minimal rules for phrases dominated by nodes in the parse tree, or more complex rules that include non-constituent phrases.}
 \label{example_extraction}
 \end{figure}
 
@@ -226,21 +226,11 @@ described various heuristics for extracting phrase alignments from the Viterbi w
 
 These phrase extraction heuristics have been extended so that they extract synchronous grammar rules \cite{Galley2004,Chiang2005,Zollmann2006,Liu2006}.  Most of these extraction methods require that one side of the parallel corpus be parsed, typically this is done automatically with a statistical parser.  
 
-\mnote{ccb - todo - tighten this up.}   
-  The rule set
-for our synchronous grammar is extracted from word-aligned
-sentence-parallel corpora where the target language side is annotated
-with syntactic parses. Figure~\ref{example_extraction} shows examples
+
+Figure~\ref{example_extraction} shows examples
 of rules obtained from a sentence pair. To extract a rule, we first
 choose a target span $e$. The left-hand side of the rule is then given
-by the syntactic constituent governing $e$. However, in doing so we
-can only assign left-hand side labels to a small portion of the
-possible phrases in a sentence pair. To allow for broader coverage, we
-rely on the labeling method introduced by \newcite{Zollmann2006}: in
-addition to single constituent nonterminals, we allow for the
-concatenation of constituents as well as for CCG-style slashed
-constituents \cite{Steedman1999}.
-
+by the syntactic constituent governing $e$. 
 The source side of the rule, $f$, is obtained by projecting $e$ over
 the word alignment. To introduce nonterminals into the rule body, we
 can apply rules extracted over sub-phrases of $e$, synchronously
@@ -248,8 +238,13 @@ substituting the corresponding nonterminal symbol for the sub-phrases
 on both sides. The synchronous substitution applied to $e$ and $f$
 then yields the correspondency $\sim$.
 
+One significant differentiating factor between the competing ways of extracting SCFG rules is whether the extraction method generates rules only for constituent phrases that are dominated by a node in the parse tree \cite{Galley2004,cohn-lapata:2008} or whether they include arbitrary phrases, including non-constituent phrases \cite{Zollmann2006,Callison-Burch2008}. 
 
-\paragraph{Feature functions}
+%However, in doing so we can only assign left-hand side labels to a small portion of the possible phrases in a sentence pair. To allow for broader coverage, we rely on the labeling method introduced by : in addition to single constituent nonterminals, we allow for the concatenation of constituents as well as for CCG-style slashed constituents \cite{Steedman1999}.
+
+
+
+\paragraph{Feature Functions}
 
 Rather than assigning a single weight $w$, we define a number of feature
 functions $\varphi_i$, which are combined in a log-linear model:
@@ -262,38 +257,32 @@ The weights $\vec{\lambda}$ of the these feature functions are set to maximize s
 
 Typical features used in statistical machine translation include:\mnote{TODO: list out typical feature functions  -- they can be less formal than this}
 \begin{itemize}
-\item The feature set of the translation model by
-default consists of the negative lexical translation log-probabilities
-\[
+\item Phrase translation probabilities  $\varphi_{\mathit{phrase}}(e | f)$ and $\varphi_{\mathit{phrase}}(f | e)$ which are computed using maximum likelihood estimation over all phrase pairs that are extracted from the parallel corpus.  These are included as negative log probs.
+\item Lexical translation probabilities 
+\[ 
 \varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
 p_{\mathit{lex}}(f | e)\rangle
 \]
-and its phrasal counterpart $\varphi_{\mathit{phrase}}$. 
+\mnote{TODO: describe how the left hand side figures into the FFs}
+%\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$  indicating the number of words on either side of the rule as well as  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -  c_{\mathit{src}}$ and the analoguosly computed difference in the  average word length in characters, $c_{\mathit{davg}}$.
 
-\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
-  indicating the number of words on either side of the rule as well as
-  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
-  c_{\mathit{src}}$ and the analoguosly computed difference in the
-  average word length in characters, $c_{\mathit{davg}}$.
+  
+\item Language model
+
+\item Rule application penalty 
+
 
 \item An incidator for when a rule only contains terminal symbols
   ($\delta_{\mathit{lex}}$) and an indicator for when the source side
   contains terminals, but the target side does not
   ($\delta_{\mathit{del}}$).
-
+  
+  
 %\item Indicators for whether the rule swaps the order of two
 %  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
 %  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
 
-\item A rarity penalty $\varphi_{\mathit{rarity}} =
-  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
-  a rule based on how often we have encountered it in the
-  corpus\footnote{Since we do not have an immediate rule count for a
-    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate
-    its rarity penalty as $\varphi_{\mathit{rarity}}(N
-    \rightarrow e_1 | e_2) = \max_{f} \min
-    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
-    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
+%\item A rarity penalty $\varphi_{\mathit{rarity}} =  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in  a rule based on how often we have encountered it in the  corpus\footnote{Since we do not have an immediate rule count for a    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate    its rarity penalty as $\varphi_{\mathit{rarity}}(N    \rightarrow e_1 | e_2) = \max_{f} \min    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
 \end{itemize}
 
 
@@ -307,6 +296,10 @@ and its phrasal counterpart $\varphi_{\mathit{phrase}}$.
 
 Given an SCFG and an input source sentence, the decoder performs the search for the single most probable or $k$-best translations using the CKY algorithm. 
 
+\mnote{Give an equation for finding the arg max derivation}
+
+Figure \ref{example_translation} shows an example of 
+
 \begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.99\linewidth]{figures/example_translation.pdf}
@@ -318,14 +311,6 @@ Given an SCFG and an input source sentence, the decoder performs the search for 
 
 \section{SCFGs in Paraphrasing} \label{acquisition}
 
-\begin{figure}[!t]
-\begin{center}
-\includegraphics[width=0.99\linewidth]{figures/example_compression_1col.pdf}
-\end{center}
-\caption{An example of a synchronous paraphrastic derivation. A few of
-  the rules applied in the parse are show in the second column, with
-  the pivot phrases that gave rise to them in the third.}
-\end{figure}
 
 To create a paraphrase grammar from a translation grammar, we extend
 the syntactically informed pivot approach of
@@ -347,6 +332,8 @@ reflect the combined nonterminal alignment
 \sim ~ = ~ \sim_1^{-1} \circ \sim_2 .
 \end{equation*}
 
+\paragraph{Feature Functions}
+
 In the computation of the features $\vec{\varphi}$ from
 $\vec{\varphi}_1$ and $\vec{\varphi}_2$ we follow the approximation in
 Equation~\ref{paraphrase_prob_eqn}, which yields lexical and phrasal
@@ -360,9 +347,25 @@ paraphrase probability features.
   nonterminals ($\delta_{\mathit{reorder}}$) 
 \end{itemize}
 
-The other advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{}.
+
+\paragraph{Decoding}
+
+\mnote{cite the equation decoding / modify it for e2 given e1}
+
+Figure \ref{paraphrase_derivaton} shows an example derivation produced as a result of applying our paraphrase rules in the decoding process.
+
+Another advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{}.
 
 
+
+\begin{figure}[!t]
+\begin{center}
+\includegraphics[width=0.99\linewidth]{figures/example_compression_1col.pdf}
+\end{center}
+\caption{An example of a synchronous paraphrastic derivation. A few of
+  the rules applied in the parse are show in the second column, with
+  the pivot phrases that gave rise to them in the third.}\label{paraphrase_derivaton}
+\end{figure}
 
 %\subsection{Grammar Pruning}\label{pruning}
 
@@ -779,13 +782,6 @@ readability metric. For compression, we can intoduce an analoguous
 penalty if the output is significantly longer than the compressed
 reference.
 
-In this work, given that our feature set is well-chosen to cature
-compressions, we use the standard \textsc{Bleu} metric for parameter
-tuning.
-
-As our method of parameter estimation, we chose minimum error rate
-training \cite{Och2003c} using the Z-MERT and the Joshua toolkits
-\cite{Zaidan2009,Joshua-WMT}.
 
 
 
@@ -832,6 +828,8 @@ penalty feature $\varphi_{\mathit{oov}}$ and include its weight in our
 parameter estimation process.
 
 \subsection{Evaluation} \label{evaluation}
+
+
 
 \begin{table*}
 \begin{center}
@@ -884,6 +882,11 @@ This is equivalent in size to the training corpora that
 sentence pairs), and has the advantage of being in-domain with respect
 to our test set.  Both these systems report results that outperform
 previous systems such as \newcite{McDonald2006}.
+
+We use the following software: \mnote{TODO - Juri update this}
+As our method of parameter estimation, we chose minimum error rate
+training \cite{Och2003c} using the Z-MERT and the Joshua toolkits
+\cite{Zaidan2009,Joshua-WMT}.
 
 
 We solicit human judgments of the compressions along two five-point
