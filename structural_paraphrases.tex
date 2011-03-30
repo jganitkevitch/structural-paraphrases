@@ -642,8 +642,8 @@ ways, by specifying:
   information about the task (i.e.\ whether a rule simplifies a
   phrase)
 \item An appropriate `objective function' that scores the output of
-  the model.  This is a task-specific equivalent to the Bleu metric in
-  SMT.
+  the model.  This is a task-specific equivalent to the \textsc{Bleu} metric
+  \cite{Papineni2002} in SMT.
 \item A development set with examples of the sentential
   transformations that we are modeling.
   % The dev set is used with the objective function to set the weights
@@ -668,7 +668,7 @@ $\varphi_{\mathit{phrase}}$. While these features quantify the quality
 of a paraphrase, they do not make any statement on the change in
 language complexity or text length, nor do they bear any information
 on the degree and nature of the transformation that the rule
-effects. To make this infromation available to the decoder, we enhance
+effects. To make this information available to the decoder, we enhance
 our paraphrases with the following features:
 \begin{itemize}
 \item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
@@ -679,23 +679,64 @@ our paraphrases with the following features:
 \end{itemize}
 
 
-\subsection{Development Data and Objective Function}
+\subsection{Development Data}
 \label{dev-data-and-objective-functions}
-To tune the parameters of our paraphrase system to perform sentence
-compression, we have created a corpus of compression
-paraphrases. Beginning with 9570 tuples of parallel English sentences
-obtained from translation references for various machine translation
-tasks, we obtained a parallel compression corpus by selecting the
-longest reference in each tuple as the source sentence and the
-shortest reference as the target sentence and retaining only those
-sentence pairs where the word count ratio $r$ was $0.5 < r \leq
-0.8$. From these, we then randomly selected 936 sentences for the
-development set, as well as 815 sentences for a test set that we later
-use to gauge the performance of our system.
+To tune the parameters of our paraphrase system for sentence
+compression, we need an appropriate corpus of reference
+compressions. Since our model is designed to compress by paraphrasing
+rather than deletion, the commonly used mainly deletion-based
+compression data sets are not suitable for us. We have thus created a
+corpus of compression paraphrases. Beginning with 9570 tuples of
+parallel English sentences obtained from translation references for
+various machine translation tasks, we obtained a parallel compression
+corpus by selecting the longest reference in each tuple as the source
+sentence and the shortest reference as the target sentence and
+retaining only those sentence pairs where the word count ratio $r$ was
+$0.5 < r \leq 0.8$. From these, we then randomly selected 936
+sentences for the development set, as well as 815 sentences for a test
+set that we later use to gauge the performance of our system.
 
-Due to the compressive nature of the resulting corpus, we deemed the
-widely used BLEU metric \cite{Papineni2002} to be sufficient to judge
-the system's compression performance in parameter estimation.
+\subsection{Objective Function}
+
+The choice of an appropriate objective function for a given task is
+closely tied to the choice of features. If the development data
+provides us with suitable examples of the textual transformations we
+intend to perform and the feature set is well-designed to capture the
+nature of these transformations, a similarity/accuracy metric such as
+\textsc{Bleu} can be seen as sufficient. However, for many tasks
+augmenting the objective function to reflect relevant properties can
+be beneficial or even crucial.
+
+The reference expansion task, for instance, requires a paraphrasing
+system to extend a set of reference sentences by paraphrasing them
+into new sentences. To achieve the maximum benefit from the expansion,
+the new references have to be significantly different from the
+input. This can be difficult to enforce when tuning for a similarity
+metric such as \textsc{Bleu}, since the tuning typically is done on
+sets of parallel references that have a very high inter-reference
+\textsc{Bleu} score to begin with. As an example of an adapted
+objective function for the reference expansion task, we define a
+\emph{minimum change} extension of \textsc{Bleu},
+$\textsc{mcBleu}_\lambda$ which takes into account the input $i$ and
+penalizes the system when the changes in the output $o$ are below a
+threshold $\lambda$:
+\begin{eqnarray}
+  \lefteqn{ \textsc{mcBleu}_\lambda(i, o) } \nonumber\\
+  &=& \left\{ \begin{array}{ll}
+      \frac{d_{\mathit{lev}}(i, o)}{\lambda} \cdot \textsc{Bleu}(o) & \textrm{if
+        $d_{\mathit{lev}}(i, o) <\lambda$} \nonumber \\ 
+      \textsc{Bleu}(o) & \textrm{otherwise}
+\end{array} \right.
+\end{eqnarray} 
+It is straightforward to find similar adaptations for other tasks. For
+text simplification, for instance, the penalty term can include a
+readability metric. For compression, we can intoduce an analoguous
+penalty if the output is significantly longer than the compressed
+reference.
+
+In this work, given that our feature set is well-chosen to cature
+compressions, we use the standard \textsc{Bleu} metric for parameter
+tuning.
 
 As our method of parameter estimation, we chose minimum error rate
 training \cite{Och2003c} using the Z-MERT and the Joshua toolkits
