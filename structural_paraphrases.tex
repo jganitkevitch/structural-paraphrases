@@ -60,7 +60,7 @@ answering systems \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}
 Finally, paraphrases allow for more flexible matching of system output against human references for tasks like machine translation and automatic summarization \cite{Zhou2006b,Kauchak2006,Owczarzak2006,Madnani2007,Snover2010}. 
 %Paraphrases are used to generate additional reference translations for statistical machine translation \cite{Madnani2007} and for more flexible matching when evaluating MT output or automatically generated summaries  \cite{Zhou2006b,Kauchak2006,Owczarzak2006}.
 
-Coarsely, we can distinguish two forms of paraphrases: \emph{phrasal
+Broadly, we can distinguish two forms of paraphrases: \emph{phrasal
   paraphrases} denote a set of surface text forms with the same
 meaning:
 \begin{center}
@@ -377,6 +377,7 @@ The other advantage of using the decoder from statistical machine translation is
 
 \begin{table*}[!ht]
   \begin{center}
+\small
   \begin{tabular}{|c|rrcl|}
     \hline
     \multirow{2}{*}{Possessive rule} & $\mathit{NP}$ $\rightarrow$ & the
@@ -430,6 +431,7 @@ The other advantage of using the decoder from statistical machine translation is
     $\mid$ & $\mathit{TO}$ decide $\mathit{PP}$ \\
     \hline
 \end{tabular}
+\normalsize
 \end{center}
 \caption{Examples of meaning-preserving transformations and syntactic
   paraphrases that our system extracts to capture them.}
@@ -832,12 +834,26 @@ parameter estimation process.
 \subsection{Evaluation} \label{evaluation}
 
 To assess our sentence compression system's performance we perform a
-human evaluation on Amazon Mechanical Turk, comparing it to an
-implementation of the ILP-based sentence compression system introduced
-by \newcite{Clarke2008}, \emph{ILP}, and the tree transducer-based
-approach of \newcite{Cohn2007}, \emph{T3}.
+human evaluation comparing it two state-of-the-art sentence
+compression systems.  Specifically, we compare against
+\newcite{Clarke2008}'s compression system which uses a series of
+constrains in an inductive logic programming (ILP) solver, and
+\newcite{Cohn2007}'s tree transducer toolkit (T3) which learns a
+synchronous tree substitution grammar (STSG) from paired monolingual
+sentences.  Unlike SCFGs, the STSG formalism allows changes to the
+tree topology, which Cohn and Lapata argue make it a natural fit for
+tasks like sentence compression, where deletions introduce structural
+mismatches.  We trained the T3
+software\footnote{\url{http://staffwww.dcs.shef.ac.uk/people/T.Cohn/t3/}}
+on the 936 full-compressed sentence pairs that comprise our
+development set.  This is equivalent in size to the training corpora
+that \newcite{Cohn2007} used (their training corpora ranged from
+882--1020 sentence pairs), and has the advantage of being in-domain
+with respect to our test set.  Both these systems report results that
+outperform previous systems such as \newcite{McDonald2006}.
 
-To ensure com
+For a fair comparison, we tie the compression rate of \mnote{ccb - write here}
+
 
 Our method achieves relatively low compression rates (when compared to
 deletion-centric compression approaches such as \newcite{Clarke2008}
@@ -852,16 +868,13 @@ judged by humans) strongly correlates with the compression rate, we
 constrain the ILP implementation to achieve the same compression rate
 for each sentence as our system.
 
-We collect human judgments on the quality of the compressions on
-MTurk.
-
-The results are shown in Table~\ref{human_judgments}.
 
 \begin{table*}
 \begin{center}
+\small
 \begin{tabular}{|c|p{13.5cm}|}
-  \hline
-  & \multicolumn{1}{|c|}{Sentences}  \\
+%  \hline
+%  & \multicolumn{1}{|c|}{Sentences}  \\
   \hline
   Source & he also expected that he would have a role in the future at
   the level of the islamic movement across the palestinian territories
@@ -882,8 +895,9 @@ The results are shown in Table~\ref{human_judgments}.
   T3 & he also expected that he have a role . \\
   \hline
 \end{tabular}
+\normalsize
 \end{center}
-\caption{An example from our test data.}
+\caption{Example compressions produced by the three different systems for an input sentence from our test data.}
 \label{test_examples}
 \end{table*}
 
