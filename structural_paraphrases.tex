@@ -215,15 +215,17 @@ nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 \label{example_extraction}
 \end{figure}
 
-\paragraph{Learning translation rules from bitexts}
+%\paragraph{Extracting rules from bitexts}
+\paragraph{Rule Extraction}
 
-Phrase-based approaches to statistical machine translation (and their successors) extract pairs of $(e, f)$ phrases from automatically word-aligned parallel texts. \newcite{Och2003}
+Phrase-based approaches to statistical machine translation (and their successors) extract pairs of $(e, f)$ phrases from automatically word-aligned parallel sentences. \newcite{Och2003}
 %, \newcite{Koehn2004}, \newcite{Tillmann2003}, and \newcite{Vogel2003} 
 described various heuristics for extracting phrase alignments from the Viterbi word-level alignments that are estimated using \newcite{Brown1993} word-alignment models.  
 
+These phrase extraction heuristics have been extended so that they extract synchronous grammar rules \cite{Galley2004,Chiang2005,Zollmann2006,Liu2006}.  Most of these extraction methods require that one side of the parallel corpus be parsed, typically this is done automatically with a statistical parser.  
 
-\mnote{cite phrase extraction heuristic papers, and say that they were
-  extended to parsed parallel corpora, citing GHKM, SAMT} The rule set
+\mnote{ccb - todo - tighten this up.}   
+  The rule set
 for our synchronous grammar is extracted from word-aligned
 sentence-parallel corpora where the target language side is annotated
 with syntactic parses. Figure~\ref{example_extraction} shows examples
@@ -245,19 +247,26 @@ on both sides. The synchronous substitution applied to $e$ and $f$
 then yields the correspondency $\sim$.
 
 
-\paragraph{Scoring rules with feature functions}
+\paragraph{Feature functions}
 
-Rather than assigning a weight $w$, we define a number of feature
+Rather than assigning a single weight $w$, we define a number of feature
 functions $\varphi_i$, which are combined in a log-linear model:
 \begin{equation}
   w = \sum_i^N \lambda_i \varphi_i .
 \end{equation}
 For ease of notation, we will refer to $\varphi_1, \ldots ,\varphi_N$
 as $\vec{\varphi}$. 
+The weights $\vec{\lambda}$ of the these feature functions are set to maximize some objective function like Bleu \cite{Papineni2002} using a procedure called minimum error rate training \cite{Och2003c}.  MERT iteratively adjusts the weights until the decoder produces output that best matches reference translations in a development set, according to the objective function.  We will examine appropriate objective functions for text-to-text generation tasks in Section \ref{dev-data-and-objective-functions}.
 
-
-Typical features used in statistical machine translation include:
+Typical features used in statistical machine translation include:\mnote{TODO: Juri list out typical feature functions  -- they can be less formal than this}
 \begin{itemize}
+\item The feature set of the translation model by
+default consists of the negative lexical translation log-probabilities
+\[
+\varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
+p_{\mathit{lex}}(f | e)\rangle
+\]
+and its phrasal counterpart $\varphi_{\mathit{phrase}}$. 
 
 \item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
   indicating the number of words on either side of the rule as well as
@@ -270,9 +279,9 @@ Typical features used in statistical machine translation include:
   contains terminals, but the target side does not
   ($\delta_{\mathit{del}}$).
 
-\item Indicators for whether the rule swaps the order of two
-  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
-  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
+%\item Indicators for whether the rule swaps the order of two
+%  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
+%  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
 
 \item A rarity penalty $\varphi_{\mathit{rarity}} =
   e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
@@ -288,25 +297,19 @@ Typical features used in statistical machine translation include:
 
 
 
-The feature set of the translation model by
-default consists of the negative lexical translation log-probabilities
-\[
-\varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
-p_{\mathit{lex}}(f | e)\rangle
-\]
-and its phrasal counterpart $\varphi_{\mathit{phrase}}$. We discuss
-task-specific extensions to this feature set in
-Section~\ref{adaptation}.
+
 
 
 
 \paragraph{Decoding}
 
+Given an SCFG and an input source sentence, the decoder performs the search for the single most probable or $k$-best translations using the CKY algorithm. 
+
 \begin{figure}[t]
 \begin{center}
 \includegraphics[width=0.99\linewidth]{figures/example_translation.pdf}
 \end{center}
-\caption{An example translation produced by a syntactically-informed statistical machine translation.  Although the synchronous trees are unlike the derivations found in the Penn Treebank, their yield is a good English translation of the German input.}
+\caption{An example derivation produced by a syntactic machine translation system.  Although the synchronous trees are unlike the derivations found in the Penn Treebank, their yield is a good translation of the German.}
 \label{example_translation}
 \end{figure}
 
@@ -352,6 +355,8 @@ paraphrase probability features.
 \begin{itemize}
 \item A boolean indicator for whether the rule is an identity
   paraphrase, $\delta_{\mathit{identity}}$.
+  \item Indicators for whether the rule swaps the order of two
+  nonterminals ($\delta_{\mathit{reorder}}$) 
 \end{itemize}
 
 
@@ -672,6 +677,7 @@ our paraphrases with the following features:
 
 
 \subsection{Development Data and Objective Function}
+\label{dev-data-and-objective-functions}
 To tune the parameters of our paraphrase system to perform sentence
 compression, we have created a corpus of compression
 paraphrases. Beginning with 9570 tuples of parallel English sentences
