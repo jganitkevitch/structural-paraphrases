@@ -906,13 +906,12 @@ evaluation on which either of the systems failed to produce an output
 sentence, leaving us with 297 sentence-compresssion pairs. The results
 are shown in Table~\ref{human_judgments}. We observe that, at similar
 compression rates, our paraphrase-based system significantly
-outperforms the ILP system in meaning retention\footnote{The
-  difference is significant at the \ldots .}, while in turn the ILP
-approach beats our system on grammaticality\footnote{The difference is
-  significant at \ldots .}. The T3 system's poor performance in our
-evaluation is due to its significantly higher compression rate, which
-we were unable to adjust to fit the other system for better
-comparability.
+outperforms the ILP system in meaning retention\footnote{This
+  improvement is significant at $p < 0.0001$.}, while the better
+grammaticality score of the ILP system is significant only at $p <
+0.088$. The T3 system's poor performance in our evaluation is due to
+its significantly higher compression rate, which we were unable to
+adjust to fit the other system for better comparability.
 
 Table~\ref{test_examples} shows an example sentence drawn from our
 test set and the compressions produced by the different systems. We
@@ -926,14 +925,16 @@ source sentence more accurately.
   \hline
   & CR & Meaning & Grammar \\
   \hline
-  Reference & 0.73 &  4.30 & 4.31 \\
-  Paraphrase & 0.81 & 3.73 & 3.34 \\
-  ILP & 0.79 & 3.58 & 3.60 \\
-  T3 & 0.49 & 2.21 & 2.36 \\
+  Reference & 0.73 &  4.26 & 4.35 \\
+  Paraphrase & 0.81 & {\bf 3.65} & 3.38 \\
+  ILP & 0.79 & 3.45 & {\bf 3.54} \\
+  T3 & 0.50 & 2.05 & 2.38 \\
+  Random & 0.50 & 1.94 & 1.57 \\
   \hline
 \end{tabular}
 \end{center}
-\caption{Results of the human evaluation}
+\caption{Results of the human evaluation: compression rate (CR),
+  meaning and grammaticality scores}
 \label{human_judgments}
 \end{table}
 
@@ -950,8 +951,7 @@ comparable results to state-of-the-art compression systems.
 
 % \section*{Acknowledgments}
 % We would like to thank Trevor Cohn for kindly providing us with
-% access to data sets and the T3 compression system and Ben Van Durme
-% for helpful discussions.
+% access to data sets and the T3 compression system.
 
 \bibliographystyle{acl}
 \bibliography{paraphrasing}
