@@ -179,7 +179,7 @@ Beyond cementing the ties between paraphrasing and syntactic-based statistical m
 \section{SCFGs in Translation} \label{formalism}
 
 The model we use in our paraphrasing approach is a syntactically
-informed \emph{ synchronous context-free grammar} (SCFG).  The SCFG formalism \cite{Aho1972} \mnote{cite the Aho and Ullman 1970s book Parsing, Translation and Compiling} was re-popularized for statistical machine translation by \newcite{Chiang2005}.  
+informed \emph{ synchronous context-free grammar} (SCFG).  The SCFG formalism \cite{Aho1972}  was re-popularized for statistical machine translation by \newcite{Chiang2005}.  
 Formally, a \emph{probabilistic} SCFG $\mathcal{G}$ is defined by
 specifying
 \[
@@ -244,6 +244,9 @@ substituting the corresponding nonterminal symbol for the sub-phrases
 on both sides. The synchronous substitution applied to $e$ and $f$
 then yields the correspondency $\sim$.
 
+
+\paragraph{Scoring rules with feature functions}
+
 Rather than assigning a weight $w$, we define a number of feature
 functions $\varphi_i$, which are combined in a log-linear model:
 \begin{equation}
@@ -260,6 +263,9 @@ and its phrasal counterpart $\varphi_{\mathit{phrase}}$. We discuss
 task-specific extensions to this feature set in
 Section~\ref{adaptation}.
 
+
+
+\paragraph{Decoding}
 
 \begin{figure}[t]
 \begin{center}
@@ -405,7 +411,7 @@ data.
 
 To put this expectation to the test, we investigate how our grammar
 captures a number of well-known paraphrastic
-transformations.\footnote{For our analysis, we extracted a paraphrase grammar from the French-English Europarl corpus (v5). The bitext was aligned using the Berkeley aligner and the English side was parsed using the Berkeley parser. We obtained the initial translation grammar using the SAMT toolkit. }
+transformations.\footnote{For this analysis, we extracted a paraphrase grammar from the French-English Europarl corpus (v5). The bitext was aligned using the Berkeley aligner and the English side was parsed using the Berkeley parser. We obtained the initial translation grammar using the SAMT toolkit. }
 Table~\ref{example_rules} shows the transformations
 along with examples of the generic grammar rules our system learns to
 represent them. When given a transformation to extract a syntactic
@@ -435,7 +441,7 @@ other verbs are uncommon in one of the forms:
 \end{center}
 Note how our system extracts a dative shift rule for \emph{to give}
 and a rule that both shifts and substitutes a more appropriate verb
-for the new form for \emph{to provide}.
+when paraphrasing \emph{to provide}.
 
 \newcite{Madnani2007} generalize from phrasal paraphrases with the
 Hiero formalism, which uses SCFG rules with a single nonterminal
@@ -591,7 +597,7 @@ simplification, sentence compression, poetry generation, query
 expansion, transforming declarative sentences into questions, deriving
 hypotheses for textual entailment, etc.  Each individual text-to-text
 application requires that the SMT framework be adapted in several
-ways:
+ways, by specifying:
 \begin{itemize}
 \item A mechanism for extracting synchronous grammar rules (in this
   paper we argue that pivot-based paraphrasing is widely applicable)
