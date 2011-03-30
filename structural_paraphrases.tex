@@ -122,7 +122,7 @@ we:
 
 \section{Related Work} \label{related_work}
 
-\newcite{Madnani2010} survey a variety of data-driven paraphrasing techniques, categorizing them based on the type of data that they use.  \mnote{list the different types of corpora here, and give a laundry list}
+\newcite{Madnani2010} survey a variety of data-driven paraphrasing techniques, categorizing them based on the type of data that they use.  These include large monolingual texts \cite{Lin2001,szpektor-EtAl:2004:EMNLP,Bhagat2008}, comparable corpora \cite{Barzilay2003,Dolan2004},  monolingual parallel  corpora \cite{Barzilay2001,Pang2003},  and bilingual parallel corpora \cite{Callison-Burch2005,Madnani2007,Zhao2008}.  We focus on the later type of data.
 %Several research efforts have leveraged parallel monolingual corpora, however they jointly suffer from the scarcity and noisiness of parallel corpora.  \newcite{Dolan2004} work around this issue by extracting parallel sentences from the vast amount of freely available comparable English text and apply machine translation techniques to create a paraphrasing system \cite{Quirk2004}. However, the word-based translation model and monotone decoder they use results in a substantial amount of identity paraphrases or single-word substitutions.
 
 
@@ -877,13 +877,14 @@ sentences.  Unlike SCFGs, the STSG formalism allows changes to the
 tree topology, which Cohn and Lapata argue make it a natural fit for
 tasks like sentence compression, where deletions introduce structural
 mismatches.  We trained the T3
-software\footnote{\url{http://staffwww.dcs.shef.ac.uk/people/T.Cohn/t3/}}
-on the 936 full-compressed sentence pairs that comprise our
-development set.  This is equivalent in size to the training corpora
-that \newcite{Cohn2007} used (their training corpora ranged from
-882--1020 sentence pairs), and has the advantage of being in-domain
-with respect to our test set.  Both these systems report results that
-outperform previous systems such as \newcite{McDonald2006}.
+software\footnote{\url{www.dcs.shef.ac.uk/people/T.Cohn/t3/}} on the
+936 full-compressed sentence pairs that comprise our development set.
+This is equivalent in size to the training corpora that
+\newcite{Cohn2007} used (their training corpora ranged from 882--1020
+sentence pairs), and has the advantage of being in-domain with respect
+to our test set.  Both these systems report results that outperform
+previous systems such as \newcite{McDonald2006}.
+
 
 We solicit human judgments of the compressions along two five-point
 scales: grammaticality and meaning. Judges are instructed to decide
