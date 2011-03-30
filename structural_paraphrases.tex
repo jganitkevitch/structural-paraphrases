@@ -259,7 +259,7 @@ For ease of notation, we will refer to $\varphi_1, \ldots ,\varphi_N$
 as $\vec{\varphi}$. 
 The weights $\vec{\lambda}$ of the these feature functions are set to maximize some objective function like Bleu \cite{Papineni2002} using a procedure called minimum error rate training \cite{Och2003c}.  MERT iteratively adjusts the weights until the decoder produces output that best matches reference translations in a development set, according to the objective function.  We will examine appropriate objective functions for text-to-text generation tasks in Section \ref{dev-data-and-objective-functions}.
 
-Typical features used in statistical machine translation include:\mnote{TODO: Juri list out typical feature functions  -- they can be less formal than this}
+Typical features used in statistical machine translation include:\mnote{TODO: list out typical feature functions  -- they can be less formal than this}
 \begin{itemize}
 \item The feature set of the translation model by
 default consists of the negative lexical translation log-probabilities
@@ -359,7 +359,7 @@ paraphrase probability features.
   nonterminals ($\delta_{\mathit{reorder}}$) 
 \end{itemize}
 
-The other advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{Liang-and-david}.
+The other advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{}.
 
 
 
