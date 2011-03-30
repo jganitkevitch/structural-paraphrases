@@ -882,25 +882,24 @@ MTurk. TODO: expand this with the details.
 \label{test_examples}
 \end{table*}
 
-The results are shown in Table~\ref{human_judgments}. We can see that
-some systems do better than others, hopefully systematically so. With
-any luck, we even manage to hold our ground to the ILP
-implementation. Oh wonder, oh joy. TODO.
+The results are shown in Table~\ref{human_judgments}.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|c|c|}
+\begin{tabular}{|c|c|c|c|}
   \hline
-  System & Compression & Score \\
+  & CR & Meaning & Grammar \\
   \hline
-  Hiero & ?? & ?? \\
-  Syntax & ?? & ?? \\
-  Syntax + Features & ?? & ?? \\
-  ILP & ?? & ?? \\
+  Reference & 0.73 &  4.29 & 4.34 \\
+  Syntax & 0.87 & 3.91 & 3.71 \\
+  ILP & 0.80 & 3.67 & 3.77 \\
+  T3 & 0.38 & 2.32 & 2.49 \\
   \hline
 \end{tabular}
 \end{center}
-\caption{TODO: obtain proper scores}
+\caption{Human evaluation results: Turkers were asked to rate the
+ retention of meaning and grammaticality of the compressions on a
+ scale from 1 to 5.}
 \label{human_judgments}
 \end{table}
 
