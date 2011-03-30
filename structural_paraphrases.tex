@@ -22,7 +22,8 @@
 %\title{Text-to-Text Generation with Syntactic Paraphrases Learned from Bilingual Parallel Corpora}
 \title{Learning Sentential Paraphrases from Bilingual Parallel Corpora \\ for Text-to-Text Generation}
 
-\author{Juri Ganitkevitch \and Chris Callison-Burch\\ 
+\author{Juri Ganitkevitch \and Chris Callison-Burch \and Courtney
+  Napoles \and Benjamin Van Durme\\ 
 Center for Language and Speech Processing\\ 
 Johns Hopkins University}
 
@@ -48,14 +49,14 @@ including passivization, dative shift, topicalization, etc.  We discuss how our 
 
 \section{Introduction} \label{introduction}
 
-Paraphrases are alternative ways of expressing the same information. 
+Paraphrases are alternative ways of expressing the same information \cite{Culicover1968}. 
 Automatically generating and detecting paraphrases is a crucial aspect of many 
 natural language processing tasks.
 In multi-document summarization, paraphrase detection is used
 to collapse redundancies \cite{Barzilay1999,BarzilayThesis}. Paraphrase generation can be used 
 for query expansion in information retrieval and question
 answering systems \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}. 
-Paraphrases allow for more flexible matching of system output against human references for tasks like machine translation and automatic summarization \cite{Zhou2006b,Kauchak2006,Owczarzak2006,Madnani2007,Snover2010}. 
+Finally, paraphrases allow for more flexible matching of system output against human references for tasks like machine translation and automatic summarization \cite{Zhou2006b,Kauchak2006,Owczarzak2006,Madnani2007,Snover2010}. 
 %Paraphrases are used to generate additional reference translations for statistical machine translation \cite{Madnani2007} and for more flexible matching when evaluating MT output or automatically generated summaries  \cite{Zhou2006b,Kauchak2006,Owczarzak2006}.
 
 Coarsely, we can distinguish two forms of paraphrases: \emph{phrasal
@@ -133,9 +134,9 @@ pivoting through foreign language phrases.
 %phrase pairs $(e, f)$ (where the $e$ and $f$ stand for English and
 %foreign phrases, respectively) as well as bi-directional 
 Since many
-paraphrases can be extracted for a phrase, \newcite{Callison-Burch2005} rank them using a paraphrase probability defined in terms of the translation model
+paraphrases can be extracted for a phrase, Bannard and Callison-Burch rank them using a paraphrase probability defined in terms of the translation model
 probabilities $p(f | e)$ and $p(e | f)$: 
-
+\nocite{Callison-Burch2005}
 \begin{eqnarray}
   p(e_2|e_1) &=& \sum_f p(e_2,f|e_1)\\
                   &=& \sum_f p(e_2|f,e_1) p(f|e_1) \\
@@ -158,7 +159,7 @@ Three other papers incorporated linguistic syntax.
 paraphrase patterns that were labeled with part-of-speech tags (but not
 larger syntactic constituents). 
 
-Before the shift to statistical natural language processing, paraphrasing was often treated as syntactic transformations or by parsing and then generating from a semantic representation \cite{mckeown:1979:ACL,Muraki1982,Meteer1988,Shemtov1996,Yamamoto2002}.  Indeed, some work generated paraphrases using (non-probabilistic) synchronous grammars \cite{Shieber1990,Dras1997,Dras1999,Kozlowski2003}.
+Before the shift to statistical natural language processing, paraphrasing was often treated as syntactic transformations or by parsing and then generating from a semantic representation \cite{mckeown:1979:ACL,Muraki1982,Meteer1988,Shemtov1996,Yamamoto2002}.  Indeed, some work generated paraphrases used (non-probabilistic) synchronous grammars \cite{Shieber1990,Dras1997,Dras1999,Kozlowski2003}.
 
 After the rise of statistical machine translation, a number of its techniques were re-purposed for paraphrasing.  These include: sentence alignment \cite{Gale1993,Barzilay2003a}, word alignment and noisy channel decoding \cite{Brown1990,Quirk2004}, phrase-based models \cite{Koehn2003,Callison-Burch2005}, hierarchical phrase-based models \cite{Chiang2005,Madnani2007}, log linear models and minimum error rate training \cite{Och2003c,Madnani2007,Zhao2008b}, and here syntax-based machine translation \cite{Wu1997,Yamada2001,Melamed2004,Quirk2005}.
 
@@ -179,7 +180,7 @@ Beyond cementing the ties between paraphrasing and syntactic-based statistical m
 \section{SCFGs in Translation} \label{formalism}
 
 The model we use in our paraphrasing approach is a syntactically
-informed \emph{ synchronous context-free grammar} (SCFG).  The SCFG formalism \cite{} \mnote{cite the Aho and Ullman 1970s book Parsing, Translation and Compiling} was re-popularized for statistical machine translation by \newcite{Chiang2005}.  
+informed \emph{ synchronous context-free grammar} (SCFG).  The SCFG formalism \cite{Aho1972}  was re-popularized for statistical machine translation by \newcite{Chiang2005}.  
 Formally, a \emph{probabilistic} SCFG $\mathcal{G}$ is defined by
 specifying
 \[
@@ -215,16 +216,17 @@ nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 \label{example_extraction}
 \end{figure}
 
-\begin{figure}[t]
-\begin{center}
-\includegraphics[width=0.99\linewidth]{figures/example_translation.pdf}
-\end{center}
-\caption{TODO: write another caption}
-\label{example_translation}
-\end{figure}
+%\paragraph{Extracting rules from bitexts}
+\paragraph{Rule Extraction}
 
-\mnote{cite phrase extraction heuristic papers, and say that they were
-  extended to parsed parallel corpora, citing GHKM, SAMT} The rule set
+Phrase-based approaches to statistical machine translation (and their successors) extract pairs of $(e, f)$ phrases from automatically word-aligned parallel sentences. \newcite{Och2003}
+%, \newcite{Koehn2004}, \newcite{Tillmann2003}, and \newcite{Vogel2003} 
+described various heuristics for extracting phrase alignments from the Viterbi word-level alignments that are estimated using \newcite{Brown1993} word-alignment models.  
+
+These phrase extraction heuristics have been extended so that they extract synchronous grammar rules \cite{Galley2004,Chiang2005,Zollmann2006,Liu2006}.  Most of these extraction methods require that one side of the parallel corpus be parsed, typically this is done automatically with a statistical parser.  
+
+\mnote{ccb - todo - tighten this up.}   
+  The rule set
 for our synchronous grammar is extracted from word-aligned
 sentence-parallel corpora where the target language side is annotated
 with syntactic parses. Figure~\ref{example_extraction} shows examples
@@ -245,21 +247,73 @@ substituting the corresponding nonterminal symbol for the sub-phrases
 on both sides. The synchronous substitution applied to $e$ and $f$
 then yields the correspondency $\sim$.
 
-Rather than assigning a weight $w$, we define a number of feature
+
+\paragraph{Feature functions}
+
+Rather than assigning a single weight $w$, we define a number of feature
 functions $\varphi_i$, which are combined in a log-linear model:
 \begin{equation}
   w = \sum_i^N \lambda_i \varphi_i .
 \end{equation}
 For ease of notation, we will refer to $\varphi_1, \ldots ,\varphi_N$
-as $\vec{\varphi}$. The feature set of the translation model by
+as $\vec{\varphi}$. 
+The weights $\vec{\lambda}$ of the these feature functions are set to maximize some objective function like Bleu \cite{Papineni2002} using a procedure called minimum error rate training \cite{Och2003c}.  MERT iteratively adjusts the weights until the decoder produces output that best matches reference translations in a development set, according to the objective function.  We will examine appropriate objective functions for text-to-text generation tasks in Section \ref{dev-data-and-objective-functions}.
+
+Typical features used in statistical machine translation include:\mnote{TODO: Juri list out typical feature functions  -- they can be less formal than this}
+\begin{itemize}
+\item The feature set of the translation model by
 default consists of the negative lexical translation log-probabilities
 \[
 \varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
 p_{\mathit{lex}}(f | e)\rangle
 \]
-and its phrasal counterpart $\varphi_{\mathit{phrase}}$. We discuss
-task-specific extensions to this feature set in
-Section~\ref{adaptation}.
+and its phrasal counterpart $\varphi_{\mathit{phrase}}$. 
+
+\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
+  indicating the number of words on either side of the rule as well as
+  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
+  c_{\mathit{src}}$ and the analoguosly computed difference in the
+  average word length in characters, $c_{\mathit{davg}}$.
+
+\item An incidator for when a rule only contains terminal symbols
+  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
+  contains terminals, but the target side does not
+  ($\delta_{\mathit{del}}$).
+
+%\item Indicators for whether the rule swaps the order of two
+%  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
+%  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
+
+\item A rarity penalty $\varphi_{\mathit{rarity}} =
+  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
+  a rule based on how often we have encountered it in the
+  corpus\footnote{Since we do not have an immediate rule count for a
+    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate
+    its rarity penalty as $\varphi_{\mathit{rarity}}(N
+    \rightarrow e_1 | e_2) = \max_{f} \min
+    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
+    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
+\end{itemize}
+
+
+
+
+
+
+
+
+\paragraph{Decoding}
+
+Given an SCFG and an input source sentence, the decoder performs the search for the single most probable or $k$-best translations using the CKY algorithm. 
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.99\linewidth]{figures/example_translation.pdf}
+\end{center}
+\caption{An example derivation produced by a syntactic machine translation system.  Although the synchronous trees are unlike the derivations found in the Penn Treebank, their yield is a good translation of the German.}
+\label{example_translation}
+\end{figure}
+
 
 \section{SCFGs in Paraphrasing} \label{acquisition}
 
@@ -297,27 +351,25 @@ $\vec{\varphi}_1$ and $\vec{\varphi}_2$ we follow the approximation in
 Equation~\ref{paraphrase_prob_eqn}, which yields lexical and phrasal
 paraphrase probability features.
 
-\subsection{Grammar Pruning}
-\label{pruning}
 
-Due to the diverse set of nonterminals allowed in our model, the
-grammars we extract tend to become extremely large. This, combined
-with the multiplicative effect of pivoting, quickly makes the
-resulting paraphrase grammars grow too large too handle.
+\begin{itemize}
+\item A boolean indicator for whether the rule is an identity
+  paraphrase, $\delta_{\mathit{identity}}$.
+  \item Indicators for whether the rule swaps the order of two
+  nonterminals ($\delta_{\mathit{reorder}}$) 
+\end{itemize}
 
-To keep the grammars at a manageable size while retaining good
-paraphrases, we implement the following pruning approach. We only
-consider translation rules that have been seen more than
-$c_{\mathit{min}}$ times and exceed a given translation probability
-threshold $p_{\mathit{min}}$ for pivot recombination. In addition to
-this, we rank the generated paraphrases for each foreign pivot phrase
-according to a uniformly weighted combination of phrasal and lexical
-paraphrase probabilities and only retain the top $n$ most likely
-alternatives.
+The other advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{Liang-and-david}.
 
-The result of this process is a paraphrase grammar with syntactic
-annotations and a feature set which (approximately) mirrors that of
-the initial translation grammar.
+
+
+%\subsection{Grammar Pruning}\label{pruning}
+
+%Due to the diverse set of nonterminals allowed in our model, the grammars we extract tend to become extremely large. This, combined with the multiplicative effect of pivoting, quickly makes the resulting paraphrase grammars grow too large too handle.
+
+%To keep the grammars at a manageable size while retaining good paraphrases, we implement the following pruning approach. We only consider translation rules that have been seen more than $c_{\mathit{min}}$ times and exceed a given translation probability threshold $p_{\mathit{min}}$ for pivot recombination. In addition to this, we rank the generated paraphrases for each foreign pivot phrase according to a uniformly weighted combination of phrasal and lexical paraphrase probabilities and only retain the top $n$ most likely alternatives.
+
+%The result of this process is a paraphrase grammar with syntactic annotations and a feature set which (approximately) mirrors that of the initial translation grammar.
 
 
 \section{Analysis} \label{analysis}
@@ -396,7 +448,7 @@ data.
 
 To put this expectation to the test, we investigate how our grammar
 captures a number of well-known paraphrastic
-transformations.\footnote{For our analysis, we extracted a paraphrase grammar from the French-English Europarl corpus (v5). The bitext was aligned using the Berkeley aligner and the English side was parsed using the Berkeley parser. We obtained the initial translation grammar using the SAMT toolkit. }
+transformations.\footnote{For this analysis, we extracted a paraphrase grammar from the French-English Europarl corpus (v5). The bitext was aligned using the Berkeley aligner and the English side was parsed using the Berkeley parser. We obtained the initial translation grammar using the SAMT toolkit. }
 Table~\ref{example_rules} shows the transformations
 along with examples of the generic grammar rules our system learns to
 represent them. When given a transformation to extract a syntactic
@@ -426,7 +478,7 @@ other verbs are uncommon in one of the forms:
 \end{center}
 Note how our system extracts a dative shift rule for \emph{to give}
 and a rule that both shifts and substitutes a more appropriate verb
-for the new form for \emph{to provide}.
+when paraphrasing \emph{to provide}.
 
 \newcite{Madnani2007} generalize from phrasal paraphrases with the
 Hiero formalism, which uses SCFG rules with a single nonterminal
@@ -582,7 +634,7 @@ simplification, sentence compression, poetry generation, query
 expansion, transforming declarative sentences into questions, deriving
 hypotheses for textual entailment, etc.  Each individual text-to-text
 application requires that the SMT framework be adapted in several
-ways:
+ways, by specifying:
 \begin{itemize}
 \item A mechanism for extracting synchronous grammar rules (in this
   paper we argue that pivot-based paraphrasing is widely applicable)
@@ -619,37 +671,16 @@ on the degree and nature of the transformation that the rule
 effects. To make this infromation available to the decoder, we enhance
 our paraphrases with the following features:
 \begin{itemize}
-\item A boolean indicator for whether the rule is an identity
-  paraphrase, $\delta_{\mathit{identity}}$.
-
 \item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
   indicating the number of words on either side of the rule as well as
   two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
   c_{\mathit{src}}$ and the analoguosly computed difference in the
   average word length in characters, $c_{\mathit{davg}}$.
-
-\item An incidator for when a rule only contains terminal symbols
-  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
-  contains terminals, but the target side does not
-  ($\delta_{\mathit{del}}$).
-
-\item Indicators for whether the rule swaps the order of two
-  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
-  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
-
-\item A rarity penalty $\varphi_{\mathit{rarity}} =
-  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
-  a rule based on how often we have encountered it in the
-  corpus\footnote{Since we do not have an immediate rule count for a
-    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate
-    its rarity penalty as $\varphi_{\mathit{rarity}}(N
-    \rightarrow e_1 | e_2) = \max_{f} \min
-    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
-    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
 \end{itemize}
 
 
 \subsection{Development Data and Objective Function}
+\label{dev-data-and-objective-functions}
 To tune the parameters of our paraphrase system to perform sentence
 compression, we have created a corpus of compression
 paraphrases. Beginning with 9570 tuples of parallel English sentences
