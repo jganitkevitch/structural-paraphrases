@@ -253,7 +253,42 @@ functions $\varphi_i$, which are combined in a log-linear model:
   w = \sum_i^N \lambda_i \varphi_i .
 \end{equation}
 For ease of notation, we will refer to $\varphi_1, \ldots ,\varphi_N$
-as $\vec{\varphi}$. The feature set of the translation model by
+as $\vec{\varphi}$. 
+
+
+Typical features used in statistical machine translation include:
+\begin{itemize}
+
+\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
+  indicating the number of words on either side of the rule as well as
+  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
+  c_{\mathit{src}}$ and the analoguosly computed difference in the
+  average word length in characters, $c_{\mathit{davg}}$.
+
+\item An incidator for when a rule only contains terminal symbols
+  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
+  contains terminals, but the target side does not
+  ($\delta_{\mathit{del}}$).
+
+\item Indicators for whether the rule swaps the order of two
+  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
+  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
+
+\item A rarity penalty $\varphi_{\mathit{rarity}} =
+  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
+  a rule based on how often we have encountered it in the
+  corpus\footnote{Since we do not have an immediate rule count for a
+    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate
+    its rarity penalty as $\varphi_{\mathit{rarity}}(N
+    \rightarrow e_1 | e_2) = \max_{f} \min
+    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
+    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
+\end{itemize}
+
+
+
+
+The feature set of the translation model by
 default consists of the negative lexical translation log-probabilities
 \[
 \varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
@@ -312,27 +347,21 @@ $\vec{\varphi}_1$ and $\vec{\varphi}_2$ we follow the approximation in
 Equation~\ref{paraphrase_prob_eqn}, which yields lexical and phrasal
 paraphrase probability features.
 
-\subsection{Grammar Pruning}
-\label{pruning}
 
-Due to the diverse set of nonterminals allowed in our model, the
-grammars we extract tend to become extremely large. This, combined
-with the multiplicative effect of pivoting, quickly makes the
-resulting paraphrase grammars grow too large too handle.
 
-To keep the grammars at a manageable size while retaining good
-paraphrases, we implement the following pruning approach. We only
-consider translation rules that have been seen more than
-$c_{\mathit{min}}$ times and exceed a given translation probability
-threshold $p_{\mathit{min}}$ for pivot recombination. In addition to
-this, we rank the generated paraphrases for each foreign pivot phrase
-according to a uniformly weighted combination of phrasal and lexical
-paraphrase probabilities and only retain the top $n$ most likely
-alternatives.
+\begin{itemize}
+\item A boolean indicator for whether the rule is an identity
+  paraphrase, $\delta_{\mathit{identity}}$.
+\end{itemize}
 
-The result of this process is a paraphrase grammar with syntactic
-annotations and a feature set which (approximately) mirrors that of
-the initial translation grammar.
+
+%\subsection{Grammar Pruning}\label{pruning}
+
+%Due to the diverse set of nonterminals allowed in our model, the grammars we extract tend to become extremely large. This, combined with the multiplicative effect of pivoting, quickly makes the resulting paraphrase grammars grow too large too handle.
+
+%To keep the grammars at a manageable size while retaining good paraphrases, we implement the following pruning approach. We only consider translation rules that have been seen more than $c_{\mathit{min}}$ times and exceed a given translation probability threshold $p_{\mathit{min}}$ for pivot recombination. In addition to this, we rank the generated paraphrases for each foreign pivot phrase according to a uniformly weighted combination of phrasal and lexical paraphrase probabilities and only retain the top $n$ most likely alternatives.
+
+%The result of this process is a paraphrase grammar with syntactic annotations and a feature set which (approximately) mirrors that of the initial translation grammar.
 
 
 \section{Analysis} \label{analysis}
@@ -634,33 +663,11 @@ on the degree and nature of the transformation that the rule
 effects. To make this infromation available to the decoder, we enhance
 our paraphrases with the following features:
 \begin{itemize}
-\item A boolean indicator for whether the rule is an identity
-  paraphrase, $\delta_{\mathit{identity}}$.
-
 \item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
   indicating the number of words on either side of the rule as well as
   two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
   c_{\mathit{src}}$ and the analoguosly computed difference in the
   average word length in characters, $c_{\mathit{davg}}$.
-
-\item An incidator for when a rule only contains terminal symbols
-  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
-  contains terminals, but the target side does not
-  ($\delta_{\mathit{del}}$).
-
-\item Indicators for whether the rule swaps the order of two
-  nonterminals ($\delta_{\mathit{reorder}}$) and whether the two
-  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
-
-\item A rarity penalty $\varphi_{\mathit{rarity}} =
-  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in
-  a rule based on how often we have encountered it in the
-  corpus\footnote{Since we do not have an immediate rule count for a
-    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate
-    its rarity penalty as $\varphi_{\mathit{rarity}}(N
-    \rightarrow e_1 | e_2) = \max_{f} \min
-    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),
-    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
 \end{itemize}
 
 
