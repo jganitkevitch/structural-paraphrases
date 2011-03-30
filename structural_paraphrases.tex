@@ -832,9 +832,12 @@ parameter estimation process.
 \subsection{Evaluation} \label{evaluation}
 
 To assess our sentence compression system's performance we perform a
-human evaluation on Amazon Mechanical Turk, comparing it to both an
-unadapted paraphrase grammar and an implementation of the ILP-based
-sentence compression system introduced by \newcite{Clarke2008}.
+human evaluation on Amazon Mechanical Turk, comparing it to an
+implementation of the ILP-based sentence compression system introduced
+by \newcite{Clarke2008}, \emph{ILP}, and the tree transducer-based
+approach of \newcite{Cohn2007}, \emph{T3}.
+
+To ensure com
 
 Our method achieves relatively low compression rates (when compared to
 deletion-centric compression approaches such as \newcite{Clarke2008}
@@ -850,7 +853,9 @@ constrain the ILP implementation to achieve the same compression rate
 for each sentence as our system.
 
 We collect human judgments on the quality of the compressions on
-MTurk. TODO: expand this with the details.
+MTurk.
+
+The results are shown in Table~\ref{human_judgments}.
 
 \begin{table*}
 \begin{center}
@@ -882,7 +887,7 @@ MTurk. TODO: expand this with the details.
 \label{test_examples}
 \end{table*}
 
-The results are shown in Table~\ref{human_judgments}.
+
 
 \begin{table}
 \begin{center}
@@ -890,10 +895,10 @@ The results are shown in Table~\ref{human_judgments}.
   \hline
   & CR & Meaning & Grammar \\
   \hline
-  Reference & 0.73 &  4.29 & 4.34 \\
-  Syntax & 0.87 & 3.91 & 3.71 \\
-  ILP & 0.80 & 3.67 & 3.77 \\
-  T3 & 0.38 & 2.32 & 2.49 \\
+  Reference & 0.73 &  4.30 & 4.31 \\
+  Syntax & 0.81 & 3.73 & 3.34 \\
+  ILP & 0.79 & 3.58 & 3.60 \\
+  T3 & 0.49 & 2.21 & 2.36 \\
   \hline
 \end{tabular}
 \end{center}
