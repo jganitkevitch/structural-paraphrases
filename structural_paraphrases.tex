@@ -352,13 +352,15 @@ Equation~\ref{paraphrase_prob_eqn}, which yields lexical and phrasal
 paraphrase probability features.
 
 
-
 \begin{itemize}
 \item A boolean indicator for whether the rule is an identity
   paraphrase, $\delta_{\mathit{identity}}$.
   \item Indicators for whether the rule swaps the order of two
   nonterminals ($\delta_{\mathit{reorder}}$) 
 \end{itemize}
+
+The other advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{Liang-and-david}.
+
 
 
 %\subsection{Grammar Pruning}\label{pruning}
