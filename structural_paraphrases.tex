@@ -741,7 +741,9 @@ parameter estimation process.
   \hline
 \end{tabular}
 \end{center}
-\caption{Number and distribution of rules in our paraphrase grammar.}
+\caption{Number and distribution of rules in our paraphrase
+  grammar. Note the significant number of identity paraphrases and
+  rules with complex nonterminal labels.}
 \label{grammar_stats}
 \end{table}
 
@@ -753,7 +755,7 @@ initial translation grammar using the SAMT toolkit.
 The grammars we extract tend to become extremely large and, if not
 pruned, quickly grow too large too handle. To keep their size
 manageable, we only consider translation rules that have been seen
-more than 3 times and whose translation probability exceeds $10^-4$
+more than 3 times and whose translation probability exceeds $10^{-4}$
 for pivot recombination. Additionally, we rank the generated
 paraphrases for each foreign pivot according to a uniformly weighted
 combination of phrasal and lexical paraphrase probabilities and only
