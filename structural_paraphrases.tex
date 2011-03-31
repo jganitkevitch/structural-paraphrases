@@ -229,13 +229,11 @@ These phrase extraction heuristics have been extended so that they extract synch
 
 Figure~\ref{example_extraction} shows examples
 of rules obtained from a sentence pair. To extract a rule, we first
-choose a target span $e$. The left-hand side of the rule is then given
-by the syntactic constituent governing $e$. 
-The source side of the rule, $f$, is obtained by projecting $e$ over
-the word alignment. To introduce nonterminals into the rule body, we
-can apply rules extracted over sub-phrases of $e$, synchronously
+choose a source side span $f$ like {\it das leck}.  Then we use phrase extraction techniques to find  target spans $e$ that are consistent with the word alignment (in this case {\it the leak} is consistent with our $f$). The nonterminal symbol that is the left-hand side of the SCFG rule is then determined by the  syntactic constituent that dominates $e$ (in this case{\it NP}). 
+The is obtained.  To introduce nonterminals into the righthand side of the rule, we
+can apply rules extracted over sub-phrases of $f$, synchronously
 substituting the corresponding nonterminal symbol for the sub-phrases
-on both sides. The synchronous substitution applied to $e$ and $f$
+on both sides. The synchronous substitution applied to $f$ and $e$
 then yields the correspondency $\sim$.
 
 One significant differentiating factor between the competing ways of extracting SCFG rules is whether the extraction method generates rules only for constituent phrases that are dominated by a node in the parse tree \cite{Galley2004,cohn-lapata:2008} or whether they include arbitrary phrases, including non-constituent phrases \cite{Zollmann2006,Callison-Burch2008}. We adopt the extraction for all phrases, including non-constituents, since it allows us to cover a much greater set of phrases, both in translation and paraphrasing. 
