@@ -238,7 +238,7 @@ substituting the corresponding nonterminal symbol for the sub-phrases
 on both sides. The synchronous substitution applied to $e$ and $f$
 then yields the correspondency $\sim$.
 
-One significant differentiating factor between the competing ways of extracting SCFG rules is whether the extraction method generates rules only for constituent phrases that are dominated by a node in the parse tree \cite{Galley2004,cohn-lapata:2008} or whether they include arbitrary phrases, including non-constituent phrases \cite{Zollmann2006,Callison-Burch2008}. 
+One significant differentiating factor between the competing ways of extracting SCFG rules is whether the extraction method generates rules only for constituent phrases that are dominated by a node in the parse tree \cite{Galley2004,cohn-lapata:2008} or whether they include arbitrary phrases, including non-constituent phrases \cite{Zollmann2006,Callison-Burch2008}. We adopt the extraction for all phrases, including non-constituents, since it allows us to cover a much greater set of phrases, both in translation and paraphrasing. 
 
 %However, in doing so we can only assign left-hand side labels to a small portion of the possible phrases in a sentence pair. To allow for broader coverage, we rely on the labeling method introduced by : in addition to single constituent nonterminals, we allow for the concatenation of constituents as well as for CCG-style slashed constituents \cite{Steedman1999}.
 
@@ -253,29 +253,25 @@ functions $\varphi_i$, which are combined in a log-linear model:
 \end{equation}
 For ease of notation, we will refer to $\varphi_1, \ldots ,\varphi_N$
 as $\vec{\varphi}$. 
-The weights $\vec{\lambda}$ of the these feature functions are set to maximize some objective function like Bleu \cite{Papineni2002} using a procedure called minimum error rate training \cite{Och2003c}.  MERT iteratively adjusts the weights until the decoder produces output that best matches reference translations in a development set, according to the objective function.  We will examine appropriate objective functions for text-to-text generation tasks in Section \ref{dev-data-and-objective-functions}.
+The weights $\vec{\lambda}$ of the these feature functions are set to maximize some objective function like Bleu \cite{Papineni2002} using a procedure called minimum error rate training \cite{Och2003c}.  MERT iteratively adjusts the weights until the decoder produces output that best matches reference translations in a development set, according to the objective function.  We will examine appropriate objective functions for text-to-text generation tasks in Section \ref{objective-fn}.
 
-Typical features used in statistical machine translation include:\mnote{TODO: list out typical feature functions  -- they can be less formal than this}
-\begin{itemize}
-\item Phrase translation probabilities  $\varphi_{\mathit{phrase}}(e | f)$ and $\varphi_{\mathit{phrase}}(f | e)$ which are computed using maximum likelihood estimation over all phrase pairs that are extracted from the parallel corpus.  These are included as negative log probs.
-\item Lexical translation probabilities 
-\[ 
-\varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log
-p_{\mathit{lex}}(f | e)\rangle
-\]
-\mnote{TODO: describe how the left hand side figures into the FFs}
+Typical features used in statistical machine translation include: phrase translation probabilities (calculated using maximum likelihood estimation over all phrase pairs that are enumerable in the parallel corpus), word-for-word lexical translation probabilities (which help to smooth the the phrase translation estimates), a `rule application penalty' (which governs the system prefers fewer longer phrases or a greater number of shorter phrases), and a language model probability.
+%\mnote{TODO: list out typical feature functions  -- they can be less formal than this}
+%\begin{itemize}
+%\item Phrase translation probabilities 
+% $\varphi_{\mathit{phrase}}(e | f)$ and $\varphi_{\mathit{phrase}}(f | e)$ which are computed using maximum likelihood estimation over all phrase pairs that are extracted from the parallel corpus.  
+%\item Lexical translation probabilities 
+%\[  \varphi_{\mathit{lex}} = \langle -\log p_{\mathit{lex}}(e | f), -\log p_{\mathit{lex}}(f | e)\rangle \]
+%\mnote{TODO: describe how the left hand side figures into the FFs}
 %\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$  indicating the number of words on either side of the rule as well as  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -  c_{\mathit{src}}$ and the analoguosly computed difference in the  average word length in characters, $c_{\mathit{davg}}$.
-
-  
-\item Language model
-
-\item Rule application penalty 
+%\item Language model probability
+%\item A length penalty 
 
 
-\item An incidator for when a rule only contains terminal symbols
-  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
-  contains terminals, but the target side does not
-  ($\delta_{\mathit{del}}$).
+%\item An incidator for when a rule only contains terminal symbols
+%  ($\delta_{\mathit{lex}}$) and an indicator for when the source side
+%  contains terminals, but the target side does not
+%  ($\delta_{\mathit{del}}$).
   
   
 %\item Indicators for whether the rule swaps the order of two
@@ -283,7 +279,7 @@ p_{\mathit{lex}}(f | e)\rangle
 %  nonterminals are adjacent ($\delta_{\mathit{adj}}$).
 
 %\item A rarity penalty $\varphi_{\mathit{rarity}} =  e^{(1-c_{\mathit{rule}})}$ that quantifies the doubt we may place in  a rule based on how often we have encountered it in the  corpus\footnote{Since we do not have an immediate rule count for a    paraphrase rule $N \rightarrow e_1 | e_2$, we instead estimate    its rarity penalty as $\varphi_{\mathit{rarity}}(N    \rightarrow e_1 | e_2) = \max_{f} \min    \{\varphi_{\mathit{rarity}}(N \rightarrow e_1 | f),    \varphi_{\mathit{rarity}}(N \rightarrow f | e_2) \}$}.
-\end{itemize}
+%\end{itemize}
 
 
 
@@ -300,20 +296,18 @@ Given an SCFG and an input source sentence, the decoder performs the search for 
   \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f))}{p(d,e|f)}\\
              &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)})
 \end{eqnarray}
-
-Derivations are simply successive applications on the SCFG rules such as:
-
-\small
-\begin{tabular}{l}
-$\mathit{NP/NN}$  $\rightarrow$  dem rest des  $|$   the rest of the\\
-$\mathit{VB+JJ}$  $\rightarrow$  gef\"{a}hrlich werden  $|$  be dangerous\\
-$\mathit{NP}$  $\rightarrow$  $\mathit{NP/NN}$ dorfes  $|$  $\mathit{NP/NN}$ village\\
-$\mathit{VP/PP}$  $\rightarrow$  nicht $\mathit{VB+JJ}$ k\"{o}nnen  $|$  can not $\mathit{VB+JJ}$\\
-$\mathit{S}$  $\rightarrow$  sie $\mathit{NP}$ $\mathit{VP/PP}$  $|$  they $\mathit{VP/PP}$ to $\mathit{NP}$\\
-\end{tabular}{l}
-\normalsize
-
- are scored using the log linear model.  Figure \ref{example_translation} shows an example of 
+%
+Derivations are simply successive applications on the SCFG rules such as
+those given in Figure \ref{example_translation}.  
+%\small
+%\begin{tabular}{l}
+%$\mathit{NP/NN}$  $\rightarrow$  dem rest des  $|$   the rest of the\\
+%$\mathit{VB+JJ}$  $\rightarrow$  gef\"{a}hrlich werden  $|$  be dangerous\\
+%$\mathit{NP}$  $\rightarrow$  $\mathit{NP/NN}$ dorfes  $|$  $\mathit{NP/NN}$ village\\
+%$\mathit{VP/PP}$  $\rightarrow$  nicht $\mathit{VB+JJ}$ k\"{o}nnen  $|$  can not $\mathit{VB+JJ}$\\
+%$\mathit{S}$  $\rightarrow$  sie $\mathit{NP}$ $\mathit{VP/PP}$  $|$  they $\mathit{VP/PP}$ to $\mathit{NP}$\\
+%\end{tabular}{l}
+%\normalsize
 
 \begin{figure}[t]
 \begin{center}
@@ -371,7 +365,7 @@ paraphrase probability features.
 
 Figure \ref{paraphrase_derivaton} shows an example derivation produced as a result of applying our paraphrase rules in the decoding process.
 
-Another advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{}.
+Another advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{Huang2007}.
 
 \begin{figure}[!t]
 \begin{center}
@@ -656,6 +650,7 @@ set that we use to gauge the performance of our system.
 % \end{table*}
 
 \subsection{Objective Function}
+\label{objective-fn}
 
 Given the nature of an SMT-based paraphrasing system, the most
 straightforward choice for parameter optimization is to optimize for
