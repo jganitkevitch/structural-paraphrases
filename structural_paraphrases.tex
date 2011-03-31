@@ -46,7 +46,7 @@ x}
   more sophisticated {\it sentential} paraphrases, which are more
   obviously learnable from monolingual parallel corpora.  We extend
   bilingual paraphrase extraction to syntactic paraphrases and
-  demonstrate its ability to learn variety of general paraphrastic
+  demonstrate its ability to learn a variety of general paraphrastic
   transformations, including passivization, dative shift,
   topicalization, etc.  We discuss how our model can be adapted to
   many text generation tasks, by augmenting its feature set,
@@ -191,11 +191,11 @@ a synchronous context free grammar (SCFG) and thus can be thought of
 as a {\it paraphrase grammar}. The paraphrase grammar can paraphrase
 (or ``decode'') input sentences using an SCFG decoder, like the Hiero,
 Joshua or cdec MT systems \cite{Chiang2007,Joshua-WMT,Dyer_etal_2010}.
-Like Hiero, Madnani's model uses only uses a single nonterminal symbol
+Like Hiero, Madnani's model uses only a single nonterminal symbol
 $X$ instead of linguistic non-terminals.
 
 
-Three other papers incorporated linguistic
+Three additional efforts incorporated linguistic
 syntax. \newcite{Callison-Burch2008} introduced syntactic constraints
 by labeling all phrases and paraphrases (even non-constituent phrases)
 with CCG slash categories \cite{Steedman1999}, an approach similar to
@@ -206,8 +206,8 @@ hierarchical rules.  \newcite{cohn-lapata:2008} use the `GHKM'
 extraction method \cite{Galley2004}, which is limited to constituent
 phrases and thus produces a reasonably small set of syntactic rules.
 \newcite{Zhao2008} added slots to bilingually-extracted paraphrase
-patterns that were labeled with part-of-speech tags (but not larger
-syntactic constituents).
+patterns that were labeled with part-of-speech tags, but not larger
+syntactic constituents.
 
 Before the shift to statistical natural language processing,
 paraphrasing was often treated as syntactic transformations, or by
@@ -222,7 +222,7 @@ techniques were re-purposed for paraphrasing.  These include: sentence
 alignment \cite{Gale1993,Barzilay2003a}, word alignment and noisy
 channel decoding \cite{Brown1990,Quirk2004}, phrase-based models
 \cite{Koehn2003,Callison-Burch2005}, hierarchical phrase-based models
-\cite{Chiang2005,Madnani2007}, log linear models and minimum error
+\cite{Chiang2005,Madnani2007}, log-linear models and minimum error
 rate training \cite{Och2003c,Madnani2007,Zhao2008b}, and here
 syntax-based machine translation
 \cite{Wu1997,Yamada2001,Melamed2004,Quirk2005}.
@@ -287,7 +287,7 @@ SCFG $\mathcal{G}$ is defined by specifying
 where $\mathcal{N}$ is a set of nonterminal symbols, $\mathcal{T}_S$
 and $\mathcal{T}_T$ are the source and target language vocabularies,
 $\mathcal{R}$ is a set of rules and $S \in \mathcal{N}$ is the root
-symbol. The rules in $\mathcal{R}$ take the form
+symbol. The rules in $\mathcal{R}$ take the form:
 \begin{equation*}
   C \rightarrow \langle \gamma, \alpha, \sim, w \rangle ,
 \end{equation*}
@@ -295,7 +295,7 @@ where the rule's left-hand side $C \in \mathcal{N}$ is a nonterminal,
 $\gamma \in (\mathcal{N} \cup \mathcal{T}_S)^*$ and $\alpha \in
 (\mathcal{N} \cup \mathcal{T}_T)^*$ are strings of terminal and
 nonterminal symbols with an equal number of nonterminals
-$c_{\mathit{NT}}(\gamma) = c_{\mathit{NT}}(\alpha)$ and 
+$c_{\mathit{NT}}(\gamma) = c_{\mathit{NT}}(\alpha)$ and:
 $$
 \sim : \{1 \ldots c_{\mathit{NT}}(\gamma)\} \rightarrow \{1 \ldots
 c_{\mathit{NT}}(\alpha)\}
@@ -336,14 +336,19 @@ parsed, typically this is done automatically with a statistical
 parser.
 
 
-Figure~\ref{example_extraction} shows examples
-of rules obtained from a sentence pair. To extract a rule, we first
-choose a source side span $f$ like {\it das leck}.  Then we use phrase extraction techniques to find  target spans $e$ that are consistent with the word alignment (in this case {\it the leak} is consistent with our $f$). The nonterminal symbol that is the left-hand side of the SCFG rule is then determined by the  syntactic constituent that dominates $e$ (in this case{\it NP}). 
-The is obtained.  To introduce nonterminals into the righthand side of the rule, we
-can apply rules extracted over sub-phrases of $f$, synchronously
-substituting the corresponding nonterminal symbol for the sub-phrases
-on both sides. The synchronous substitution applied to $f$ and $e$
-then yields the correspondency $\sim$.
+Figure~\ref{example_extraction} shows examples of rules obtained from
+a sentence pair. To extract a rule, we first choose a source side span
+$f$ like {\it das leck}.  Then we use phrase extraction techniques to
+find target spans $e$ that are consistent with the word alignment (in
+this case {\it the leak} is consistent with our $f$). The nonterminal
+symbol that is the left-hand side of the SCFG rule is then determined
+by the syntactic constituent that dominates $e$ (in this case {\it
+  NP}).  {\bf TODO} The is obtained.  To introduce nonterminals into the
+righthand side of the rule, we can apply rules extracted over
+sub-phrases of $f$, synchronously substituting the corresponding
+nonterminal symbol for the sub-phrases on both sides. The synchronous
+substitution applied to $f$ and $e$ then yields the correspondency
+$\sim$.
 
 One significant differentiating factor between the competing ways of
 extracting SCFG rules is whether the extraction method generates rules
@@ -368,17 +373,18 @@ much greater set of phrases, both in translation and paraphrasing.
 Rather than assigning a single weight $w$, we define a set of feature
 functions $\vec{\varphi} = \{\varphi_i\}$ that are combined in a
 log-linear model:
+{\bf TODO}
 \begin{equation}
   w = \sum_i^N \lambda_i \varphi_i .
 \end{equation}
-The weights $\vec{\lambda}$ of the these feature functions are set to
+The weights $\vec{\lambda}$ of these feature functions are set to
 maximize some objective function like \textsc{Bleu}
 \cite{Papineni2002} using a procedure called minimum error rate
-training \cite{Och2003c}.  MERT iteratively adjusts the weights until
-the decoder produces output that best matches reference translations
-in a development set, according to the objective function.  We will
-examine appropriate objective functions for text-to-text generation
-tasks in Section \ref{objective-fn}.
+training (MERT), owing to \newcite{Och2003c}.  MERT iteratively
+adjusts the weights until the decoder produces output that best
+matches reference translations in a development set, according to the
+objective function.  We will examine appropriate objective functions
+for text-to-text generation tasks in Section \ref{objective-fn}.
 
 Typical features used in statistical machine translation include:
 phrase translation probabilities (calculated using maximum likelihood
@@ -430,16 +436,16 @@ greater number of shorter phrases), and a language model probability.
 
 \paragraph{Decoding}
 
-Given an SCFG and an input source sentence, the decoder performs the
-search for the single most probable the CKY algorithm.  In principle
-the best translation should be that English sentence $e$ that is the
-most probable after summing over all $d\in D$ derivations, since many
-derivations yield the same $e$.  In practice, we use a Viterbi
-approximation and return the translation that is the yield of the
-single best derivation:
+Given an SCFG and an input source sentence, the decoder performs a
+search for the single most probable derivation via the CKY algorithm.
+In principle the best translation should be that English sentence $e$
+that is the most probable after summing over all $d\in D$ derivations,
+since many derivations yield the same $e$.  In practice, we use a
+Viterbi approximation and return the translation that is the yield of
+the single best derivation:
 \begin{eqnarray}
   \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f))}{p(d,e|f)}\\
-             &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)})
+             &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)}).
 \end{eqnarray}
 Derivations are simply successive applications on the SCFG rules such
 as those given in Figure \ref{example_translation}.
@@ -475,17 +481,17 @@ the syntactically informed pivot approach of
 \newcite{Callison-Burch2008} to the SCFG model. For this purpose, we
 assume a grammar that translates from a given foreign language to
 English. For each pair of translation rules where the left-hand side
-$C$ and foreign string $\gamma$ match
+$C$ and foreign string $\gamma$ match:
 \begin{eqnarray*}
   C \rightarrow \langle \gamma, \alpha_1, \sim_1, \vec{\varphi}_1 \rangle \\
-  C \rightarrow \langle \gamma, \alpha_2, \sim_2, \vec{\varphi}_2 \rangle
+  C \rightarrow \langle \gamma, \alpha_2, \sim_2, \vec{\varphi}_2 \rangle ,
 \end{eqnarray*}
-we create a paraphrase rule
+we create a paraphrase rule:
 \begin{equation*}
 C \rightarrow \langle \alpha_1, \alpha_2, \sim, \vec{\varphi} \rangle ,
 \end{equation*}
 where the nonterminal correspondency relation $\sim$ has been set to
-reflect the combined nonterminal alignment
+reflect the combined nonterminal alignment:
 \begin{equation*}
 \sim ~ = ~ \sim_1^{-1} \circ \sim_2 .
 \end{equation*}
@@ -593,7 +599,7 @@ already well integrated \cite{Huang2007}.
 
 A key motivation for the use of syntactic paraphrases over their
 phrasal counterparts is their potential to capture meaning-preserving
-linguistic transformations in a general fashion. In many cases a
+linguistic transformations in a more general fashion. In many cases a
 phrasal system will be limited to memorizing the fully lexicalized
 variants of such a transfomation in its paraphrase table, resulting in
 poor generalization capabilities. By contrast, a syntactic
@@ -637,7 +643,7 @@ Note how our system extracts a dative shift rule for \emph{to give}
 and a rule that both shifts and substitutes a more appropriate verb
 when paraphrasing \emph{to provide}.
 
-The use syntactic nonterminals in our paraphrase rules to capture
+The use of syntactic nonterminals in our paraphrase rules to capture
 complex transforms also makes it possible to impose constraints on
 their application. For comparison, as \newcite{Madnani2007} do not
 impose any constraints on how the nonterminal $X$ can be realized,
@@ -651,7 +657,7 @@ overgeneralize:
 \end{center}
 Additional examples of transforms our use of syntax allows us to
 capture are the \emph{adverbial phrase shift}, the \emph{reduction of
-  a relative clause} as well as other phenomena listed in
+  a relative clause}, as well as other phenomena listed in
 Table~\ref{example_rules}.
  
 Unsurprisingly, syntactic information alone is not sufficient to
@@ -670,11 +676,11 @@ manage to learn a rule:
 \begin{center}
 \begin{tabular}{l}
   the radiation that the reactor had \emph{leaked} \\
-  the radiation which \emph{leaked} from the reactor \\
+  the radiation which \emph{leaked} from the reactor .\\
 \end{tabular}
 \end{center}
 Another example of a deficiency in our synchronous grammar models are
-\emph{light verb} constructs such as
+\emph{light verb} constructs such as:
 \begin{center}
 \begin{tabular}{l}
   to take a \emph{walk} \\
@@ -708,10 +714,10 @@ application requires that our framework be adapted in several ways, by
 specifying:
 \begin{itemize}
 \item A mechanism for extracting synchronous grammar rules (in this
-  paper we argue that pivot-based paraphrasing is widely applicable)
+  paper we argue that pivot-based paraphrasing is widely applicable).
 \item An appropriate set of rule-level features that capture
   information pertinent to the task (e.g.\ whether a rule simplifies a
-  phrase)
+  phrase).
 \item An appropriate `objective function' that scores the output of
   the model, i.e.\ a task-specific equivalent to the \textsc{Bleu}
   metric in SMT.
@@ -731,17 +737,17 @@ substitutions, insertions and reorderings that are automatically
 learned from parallel texts.
 
 \subsection{Feature Design}
-In Section~\ref{acquisition} we discussed the phrasal
+In Section~\ref{acquisition} we discussed phrasal
 probabilities. While these help quantify how good a paraphrase is in
 general, they do not make any statement on task-specific things such
 as the change in language complexity or text length. To make this
 information available to the decoder, we enhance our paraphrases with
-four compression-targeted features. We add the count features
+four compression-targeted features. We add the count features:
 $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$, indicating the number of
-words on either side of the rule as well as two difference features,
+words on either side of the rule as well as two difference features:
 $c_{\mathit{dcount}} = c_{\mathit{tgt}} - c_{\mathit{src}}$ and the
 analoguosly computed difference in the average word length in
-characters, $c_{\mathit{davg}}$.
+characters: $c_{\mathit{davg}}$.
 
 
 \subsection{Development Data}
@@ -750,14 +756,14 @@ To tune the parameters of our paraphrase system for sentence
 compression, we need an appropriate corpus of reference
 compressions. Since our model is designed to compress by paraphrasing
 rather than deletion, the commonly used deletion-based compression
-data sets like the Ziff Davis corpus are not suitable for us. We have
+data sets like the Ziff Davis corpus are not suitable. We have
 thus created a corpus of compression paraphrases. Beginning with 9570
 tuples of parallel English-English sentences obtained from multiple
 reference translations for machine translation evaluation, we
 construct a parallel compression corpus by selecting the longest
 reference in each tuple as the source sentence and the shortest
 reference as the target sentence. We further retain only those
-sentence pairs where the compression rate $\mathit{cr}$ is $0.5 <
+sentence pairs where the compression rate $\mathit{cr}$ is: $0.5 <
 \mathit{cr} \leq 0.8$. From these, we then randomly select 936
 sentences for the development set, as well as 560 sentences for a test
 set that we use to gauge the performance of our system.
@@ -812,7 +818,7 @@ towards the requirements of a given task is by injecting additional
 rules designed to capture appropriate operations.
 
 For the compression task, this can include adding rules that allow
-generic deletions of target-side nonterminals. 
+generic deletions of target-side nonterminals:
 \begin{center}
 \begin{tabular}{c}
  $\mathit{JJ} \rightarrow$ $\mathit{JJ} \mid \varepsilon$ \\
@@ -871,7 +877,7 @@ corpus (v5). The bitext was aligned using the Berkeley aligner and the
 English side was parsed with the Berkeley parser. We obtained the
 initial translation grammar using the SAMT toolkit.
 
-The grammars we extract tend to become extremely large.To keep their
+The grammars we extract tend to become extremely large. To keep their
 size manageable, we only consider translation rules that have been
 seen more than 3 times and whose translation probability exceeds
 $10^{-4}$ for pivot recombination. Additionally, we only retain the
@@ -927,14 +933,15 @@ development and test data sets.
 
 To assess the output quality of the resulting sentence compression
 system, we compare it to two state-of-the-art sentence compression
-systems.  Specifically, we compare against \newcite{Clarke2008}'s
-compression system which uses a series of constraints in an integer
-linear programming (ILP) solver, and \newcite{Cohn2007}'s tree
-transducer toolkit (T3) which learns a synchronous tree substitution
-grammar (STSG) from paired monolingual sentences.  Unlike SCFGs, the
-STSG formalism allows changes to the tree topology. Cohn and Lapata
-argue that this is it a natural fit for sentence compression, since
-deletions introduce structural mismatches.  We trained the T3
+systems.  Specifically, we compare against an implementation of
+\newcite{Clarke2008}'s compression model which uses a series of
+constraints in an integer linear programming (ILP) solver, and
+\newcite{Cohn2007}'s tree transducer toolkit (T3) which learns a
+synchronous tree substitution grammar (STSG) from paired monolingual
+sentences.  Unlike SCFGs, the STSG formalism allows changes to the
+tree topology. Cohn and Lapata argue that this is it a natural fit for
+sentence compression, since deletions introduce structural mismatches.
+We trained the T3
 software\footnote{\url{www.dcs.shef.ac.uk/people/T.Cohn/t3/}} on the
 936 $\langle\text{full}, \text{compressed}\rangle$ sentence pairs that
 comprise our development set.  This is equivalent in size to the
@@ -948,9 +955,9 @@ scales: grammaticality and meaning. Judges are instructed to decide
 how much the meaning from a reference translation is retained in the
 compressed sentence, with a score of 5 indicating that all of the
 important information is present, and 1 being that the compression
-does not mean anything what the original sentence meant. Similarly, a
-grammar score of 5 indicates perfect grammaticality, and a grammar
-score of 1 is assigned to sentences that are entirely ungrammatical.
+does not retain any of the original meaning. Similarly, a grammar
+score of 5 indicates perfect grammaticality, and a grammar score of 1
+is assigned to sentences that are entirely ungrammatical.
 
 For a fair comparison, we tie the compression rate of the ILP system
 to the rate achieved by our own system. This is done on the sentence
@@ -967,7 +974,7 @@ see that both the paraphrase and ILP systems produce good quality
 results, with the paraphrase system retaining the meaning of the
 source sentence more accurately.
 
-The results for the human evaluartion are shown in
+The results for the human evaluation are shown in
 Table~\ref{human_judgments}. We observe that, at similar compression
 rates, our paraphrase-based system significantly outperforms the ILP
 system in meaning retention\footnote{This improvement is significant
