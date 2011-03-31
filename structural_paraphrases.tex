@@ -362,17 +362,6 @@ paraphrase probability features.
 
 The other advantage of using the decoder from statistical machine translation is that n-gram language models, which have been shown to be useful in natural language generation \cite{Langkilde1998}, are already well integrated \cite{}.
 
-
-
-%\subsection{Grammar Pruning}\label{pruning}
-
-%Due to the diverse set of nonterminals allowed in our model, the grammars we extract tend to become extremely large. This, combined with the multiplicative effect of pivoting, quickly makes the resulting paraphrase grammars grow too large too handle.
-
-%To keep the grammars at a manageable size while retaining good paraphrases, we implement the following pruning approach. We only consider translation rules that have been seen more than $c_{\mathit{min}}$ times and exceed a given translation probability threshold $p_{\mathit{min}}$ for pivot recombination. In addition to this, we rank the generated paraphrases for each foreign pivot phrase according to a uniformly weighted combination of phrasal and lexical paraphrase probabilities and only retain the top $n$ most likely alternatives.
-
-%The result of this process is a paraphrase grammar with syntactic annotations and a feature set which (approximately) mirrors that of the initial translation grammar.
-
-
 \section{Analysis} \label{analysis}
 
 \begin{table*}[!ht]
@@ -451,16 +440,18 @@ data.
 
 To put this expectation to the test, we investigate how our grammar
 captures a number of well-known paraphrastic
-transformations.\footnote{For this analysis, we extracted a paraphrase grammar from the French-English Europarl corpus (v5). The bitext was aligned using the Berkeley aligner and the English side was parsed using the Berkeley parser. We obtained the initial translation grammar using the SAMT toolkit. }
-Table~\ref{example_rules} shows the transformations
-along with examples of the generic grammar rules our system learns to
-represent them. When given a transformation to extract a syntactic
-paraphrase for, we want to find rules that neither under- nor
-over-generalize. This means that, while replacing the maximum number
-of \emph{syntactic} arguments with nonterminals, the rules ideally
-will both retain enough lexicalization to serve as sufficient evidence
-for the applicability of the transformation and impose constraints on
-the nonterminals to ensure the arguments' well-formedness.
+transformations.\footnote{The data and software used to extract the
+  grammar we draw these examples from is described in
+  Section~\ref{setup}.} Table~\ref{example_rules} shows the
+transformations along with examples of the generic grammar rules our
+system learns to represent them. When given a transformation to
+extract a syntactic paraphrase for, we want to find rules that neither
+under- nor over-generalize. This means that, while replacing the
+maximum number of \emph{syntactic} arguments with nonterminals, the
+rules ideally will both retain enough lexicalization to serve as
+sufficient evidence for the applicability of the transformation and
+impose constraints on the nonterminals to ensure the arguments'
+well-formedness.
 
 The paraphrases implementing the \emph{possessive rule} and the
 \emph{dative shift} shown in Table~\ref{example_rules} are a good
@@ -544,85 +535,6 @@ transformations, far exceeding the expressiveness of previous
 approaches to paraphrase extraction from bilingual parallel corpora.
 
 
-
-% \subsection{Comparison of Paraphrase
-%   Patterns} \label{pattern_comparison}
-
-% To analyze the paraphrase patterns produced by our system, we reduce
-% the grammar to only patterns that apply to an example sentence and
-% take a closer look at the most likely pattern pairs. We contrast our
-% extracted paraphrases with a Hiero-style baseline that mirrors the
-% approach of \newcite{Madnani2007}. 
-
-% \begin{table*}[t]
-% \begin{center}
-% \begin{tabular}{|c|c|rrcl|}
-%   \hline
-%   Input phrase & \multicolumn{5}{c|}{Best extracted paraphrases} \\
-%   \hline
-%   \multirow{6}{*}{the dog's tail} &
-%   \multirow{3}{*}{H}
-%   &
-%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-%   \\
-%   &&
-%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-%   \\
-%   &&
-%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$ \\
-%   \cline{2-6}
-%   & \multirow{3}{*}{S}
-%   &
-%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-%   \\
-%   &&
-%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-%   \\
-%   &&
-%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
-%   $\mathit{NNP}_1$ \\
-%   \hline
-%   \multirow{6}{*}{the dog's tail} &
-%   \multirow{3}{*}{H}
-%   &
-%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-%   \\
-%   &&
-%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$  \\
-%   &&
-%   $\mathit{X}$ $\rightarrow$  & the $\mathit{X}_1$'s
-%   $\mathit{X}_2$ & $\mid$ & the $\mathit{X}_2$ of the $\mathit{X}_1$
-%   \\
-%   \cline{2-6}
-%   & \multirow{3}{*}{S}
-%   &
-%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-%   \\
-%   &&
-%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the $\mathit{NNP}_1$
-%   \\
-%   &&
-%   $\mathit{NP}$ $\rightarrow$  & the $\mathit{NNP}_1$'s
-%   $\mathit{NN}_2$ & $\mid$ & the $\mathit{NN}_2$ of the
-%   $\mathit{NNP}_1$ \\
-%   \hline
-% \end{tabular}
-% \end{center}
-% \caption{This table shows the top paraphrase rules matching an input
-%   phrase as ranked by our (S) and the baseline system (H).}
-% \end{table*}
-
-
 \section{Text-to-Text Applications} \label{adaptation}
 
 The core of many text-to-text generation tasks is sentential
@@ -645,8 +557,8 @@ ways, by specifying:
   information about the task (i.e.\ whether a rule simplifies a
   phrase)
 \item An appropriate `objective function' that scores the output of
-  the model.  This is a task-specific equivalent to the \textsc{Bleu} metric
-  \cite{Papineni2002} in SMT.
+  the model.  This is a task-specific equivalent to the \textsc{Bleu}
+  metric \cite{Papineni2002} in SMT.
 \item A development set with examples of the sentential
   transformations that we are modeling.
   % The dev set is used with the objective function to set the weights
@@ -672,18 +584,16 @@ of a paraphrase, they do not make any statement on the change in
 language complexity or text length, nor do they bear any information
 on the degree and nature of the transformation that the rule
 effects. To make this information available to the decoder, we enhance
-our paraphrases with the following features:
-\begin{itemize}
-\item Count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$
-  indicating the number of words on either side of the rule as well as
-  two difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
-  c_{\mathit{src}}$ and the analoguosly computed difference in the
-  average word length in characters, $c_{\mathit{davg}}$.
-\end{itemize}
+our paraphrases with four compression-targeted features. We add the
+count features $c_{\mathit{src}}$ and $c_{\mathit{tgt}}$, indicating
+the number of words on either side of the rule as well as two
+difference features, $c_{\mathit{dcount}} = c_{\mathit{tgt}} -
+c_{\mathit{src}}$ and the analoguosly computed difference in the
+average word length in characters, $c_{\mathit{davg}}$.
 
 
 \subsection{Development Data}
-\label{dev-data-and-objective-functions}
+\label{dev-data}
 To tune the parameters of our paraphrase system for sentence
 compression, we need an appropriate corpus of reference
 compressions. Since our model is designed to compress by paraphrasing
@@ -697,24 +607,7 @@ sentence and the shortest reference as the target sentence and
 retaining only those sentence pairs where the word count ratio $r$ was
 $0.5 < r \leq 0.8$. From these, we then randomly selected 936
 sentences for the development set, as well as 560 sentences for a test
-set that we later use to gauge the performance of our system.
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|c|r|}
-  \hline
-  Grammar & \multicolumn{1}{c|}{\# Rules} \\
-  \hline
-  total & 42,353,318 \\
-  w/o identity & 23,641,016 \\
-  w/o complex constituents & 6,439,923 \\
-  w/o complex const.\ \& identity & 5,097,250 \\
-  \hline
-\end{tabular}
-\end{center}
-\caption{Number and distribution of rules in our paraphrase grammar.}
-\label{grammar_stats}
-\end{table}
+set that we use to gauge the performance of our system.
 
 % \begin{table*}
 % \begin{center}
@@ -737,36 +630,35 @@ set that we later use to gauge the performance of our system.
 %   \hline
 % \end{tabular}
 % \end{center}
-% \caption{Examples of source-compression pairs from our development set.}
+% \caption{Examples of source-compression pairs from our development
+%  set.}
 % \label{dev_examples}
 % \end{table*}
 
 \subsection{Objective Function}
 
-The choice of an appropriate objective function for a given task is
-closely tied to the choice of features. If the development data
-provides us with suitable examples of the textual transformations we
-intend to perform and the feature set is well-designed to capture the
-nature of these transformations, a similarity/accuracy metric such as
-\textsc{Bleu} can be seen as sufficient. However, for many tasks
-augmenting the objective function to reflect relevant properties can
-be beneficial or even crucial.
+Given the nature of an SMT-based paraphrasing system, the most
+straightforward choice for parameter optimization is to optimize for
+\textsc{Bleu} over a set of paraphrases, for instance parallel English
+reference translations for a machine translation task
+\cite{Madnani2007}. Doing so naively, however, may result in a
+suboptimal system -- parallel reference sets typically have very high
+inter-reference \textsc{Bleu} score and so the system will be heavily
+biased towards producing identity paraphrases. This can severely hurt
+system performance on a task such as reference expansion, where it is
+of interest to produce output that greatly differs from the input
+\footnote{\newcite{Madnani2007} avoid this issue by disallowing
+  identity paraphrases in their grammar. While this is an appropriate
+  choice for their task, for many applications retaining the
+  capability to self-paraphrase where appropriate is crucial.}.
 
-The reference expansion task, for instance, requires a paraphrasing
-system to extend a set of reference sentences by paraphrasing them
-into new sentences. To achieve the maximum benefit from the expansion,
-the new references have to be significantly different from the
-input. This can be difficult to enforce when tuning for a similarity
-metric such as \textsc{Bleu}, since the tuning typically is done on
-sets of parallel references that have a very high inter-reference
-\textsc{Bleu} score to begin with. As an example of an adapted
-objective function for the reference expansion task, we define a
-\emph{minimum change} extension of \textsc{Bleu},
-$\textsc{mcBleu}_\lambda$ which takes into account the input $i$ and
-penalizes the system when the changes in the output $o$ are below a
-threshold $\lambda$:
+As an example of an adapted objective function for the reference
+expansion task, we propose a \emph{minimal required change} extension
+of \textsc{Bleu} -- $\textsc{mrcBleu}_\lambda$ which takes into
+account the input $i$ and penalizes the system when the changes in the
+output $o$ are below a threshold $\lambda$:
 \begin{eqnarray}
-  \lefteqn{ \textsc{mcBleu}_\lambda(i, o) } \nonumber\\
+  \lefteqn{ \textsc{mrcBleu}_\lambda(i, o) } \nonumber\\
   &=& \left\{ \begin{array}{ll}
       \frac{d_{\mathit{lev}}(i, o)}{\lambda} \cdot \textsc{Bleu}(o) & \textrm{if
         $d_{\mathit{lev}}(i, o) <\lambda$} \nonumber \\ 
@@ -775,17 +667,14 @@ threshold $\lambda$:
 \end{eqnarray} 
 It is straightforward to find similar adaptations for other tasks. For
 text simplification, for instance, the penalty term can include a
-readability metric. For compression, we can intoduce an analoguous
-penalty if the output is significantly longer than the compressed
-reference.
+readability metric. For text compression, we can intoduce an
+analoguous penalty if the output is significantly longer than the
+compressed reference.
 
-In this work, given that our feature set is well-chosen to cature
-compressions, we use the standard \textsc{Bleu} metric for parameter
-tuning.
-
-As our method of parameter estimation, we chose minimum error rate
-training \cite{Och2003c} using the Z-MERT and the Joshua toolkits
-\cite{Zaidan2009,Joshua-WMT}.
+In this work, given that our development set consists of examples of
+compressive paraphrases and our feature set is well-chosen to capture
+compressions, we rely on the standard \textsc{Bleu} metric for
+parameter tuning.
 
 
 
@@ -830,6 +719,52 @@ part-of-speech tag assigned to $w$ in the input parse. To enable a
 proper inclusion into the paraphrasing model, we add a constant
 penalty feature $\varphi_{\mathit{oov}}$ and include its weight in our
 parameter estimation process.
+
+\subsection{Experimental Setup}
+\label{setup}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|r|}
+  \hline
+  Grammar & \multicolumn{1}{c|}{\# Rules} \\
+  \hline
+  total & 42,353,318 \\
+  w/o identity & 23,641,016 \\
+  w/o complex constituents & 6,439,923 \\
+  w/o complex const.\ \& identity & 5,097,250 \\
+  \hline
+\end{tabular}
+\end{center}
+\caption{Number and distribution of rules in our paraphrase grammar.}
+\label{grammar_stats}
+\end{table}
+
+We extracted a paraphrase grammar from the French-English Europarl
+corpus (v5). The bitext was aligned using the Berkeley aligner and the
+English side was parsed using the Berkeley parser. We obtained the
+initial translation grammar using the SAMT toolkit. 
+
+The grammars we extract tend to become extremely large and, if not
+pruned, quickly grow too large too handle. To keep their size
+manageable, we only consider translation rules that have been seen
+more than 3 times and whose translation probability exceeds $10^-4$
+for pivot recombination. Additionally, we rank the generated
+paraphrases for each foreign pivot according to a uniformly weighted
+combination of phrasal and lexical paraphrase probabilities and only
+retain the top 25 most likely alternatives.
+
+We tuned the parameters of our model via minimum error rate training
+using the Z-MERT toolkit\cite{Zaidan2009}. Paraphrasing was done using
+the and the Joshua decoder package \cite{Joshua-WMT}. The language
+model used in both our paraphraser and the \newcite{Clarke2008}
+baseline system is a Kneser-Ney discounted 5-gram model estimated on
+the Gigaword corpus using SRILM language modeling toolkit
+\cite{SRILM}.
+
+We intend to make our software for paraphrase grammar extraction,
+along with the grammars and our development and test data publicly
+available.
 
 \subsection{Evaluation} \label{evaluation}
 
@@ -928,14 +863,15 @@ source sentence more accurately.
   \hline
   Reference & 0.73 &  4.26 & 4.35 \\
   Paraphrase & 0.81 & {\bf 3.65} & 3.38 \\
-  ILP & 0.79 & 3.45 & {\bf 3.54} \\
+  ILP & 0.79 & 3.45 & 3.54 \\
   T3 & 0.50 & 2.05 & 2.38 \\
   Random & 0.50 & 1.94 & 1.57 \\
   \hline
 \end{tabular}
 \end{center}
 \caption{Results of the human evaluation: compression rate (CR),
-  meaning and grammaticality scores}
+  meaning and grammaticality scores. Statistically significant
+  differences in bold.}
 \label{human_judgments}
 \end{table}
 
