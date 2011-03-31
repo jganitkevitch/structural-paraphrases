@@ -294,11 +294,26 @@ p_{\mathit{lex}}(f | e)\rangle
 
 \paragraph{Decoding}
 
-Given an SCFG and an input source sentence, the decoder performs the search for the single most probable or $k$-best translations using the CKY algorithm. 
+Given an SCFG and an input source sentence, the decoder performs the search for the single most probable the CKY algorithm.  In principle the best translation should be that English sentence $e$ that is the most probable after summing over all  $d\in D$ derivations, since many derivations yield the same $e$.  In practice, we use a Viterbi approximation and return the translation that is the yield of the single best derivation:
 
-\mnote{Give an equation for finding the arg max derivation}
+\begin{eqnarray}
+  \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f))}{p(d,e|f)}\\
+             &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)})
+\end{eqnarray}
 
-Figure \ref{example_translation} shows an example of 
+Derivations are simply successive applications on the SCFG rules such as:
+
+\small
+\begin{tabular}{l}
+$\mathit{NP/NN}$  $\rightarrow$  dem rest des  $|$   the rest of the\\
+$\mathit{VB+JJ}$  $\rightarrow$  gef\"{a}hrlich werden  $|$  be dangerous\\
+$\mathit{NP}$  $\rightarrow$  $\mathit{NP/NN}$ dorfes  $|$  $\mathit{NP/NN}$ village\\
+$\mathit{VP/PP}$  $\rightarrow$  nicht $\mathit{VB+JJ}$ k\"{o}nnen  $|$  can not $\mathit{VB+JJ}$\\
+$\mathit{S}$  $\rightarrow$  sie $\mathit{NP}$ $\mathit{VP/PP}$  $|$  they $\mathit{VP/PP}$ to $\mathit{NP}$\\
+\end{tabular}{l}
+\normalsize
+
+ are scored using the log linear model.  Figure \ref{example_translation} shows an example of 
 
 \begin{figure}[t]
 \begin{center}
