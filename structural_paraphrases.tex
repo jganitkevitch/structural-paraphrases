@@ -97,15 +97,15 @@ generalization and for capturing interesting paraphrastic transformations.
 
 A variety of different types of corpora (and semantic equivalence
 cues), have been used to automatically induce paraphrase collections
-for English \cite{Madnani2010}. The perhaps most natural type of
-corpus for this task is a monolingual parallel text, from which
-paraphrases can be extracted by leveraging the fact that the given
-sentence pairs are perfect paraphrases of each other
+for English \cite{Madnani2010}. Perhaps the most natural type of
+corpus for this task is a monolingual parallel text, which allow
+sentential paraphrases to be extracted since the
+sentence pairs in such corpora are perfect paraphrases of each other
 \cite{Barzilay2001,Pang2003}. While rich syntactic paraphrases have
-been learned from such corpora, they suffer from very limited data
+been learned from monolingual parallel corpora, they suffer from very limited data
 availability and thus have poor coverage.
 
-Other methods strive to obtain paraphrases from raw monolingual text,
+Other methods obtain paraphrases from raw monolingual text,
 replacing the exact correspondence of sentences in monolingual
 parallel corpora with distributional similarity
 \cite{Lin2001,Bhagat2008}. While vast amounts of data are readily
@@ -164,7 +164,7 @@ Paraphrase extraction using bilingual parallel corpora was proposed by
 \newcite{Callison-Burch2005} who induced paraphrases using techniques
 from {\it phrase-based} statistical machine translation
 \cite{Koehn2003}. After extracting a bilingual phrase table, English
-paraphrases can be obtained by pivoting through foreign language
+paraphrases are obtained by pivoting through foreign language
 phrases.
 % The phrase table contains phrase pairs $(e, f)$ (where the $e$ and
 % $f$ stand for English and foreign phrases, respectively) as well as
@@ -385,7 +385,7 @@ Typical features used in statistical machine translation include:
 phrase translation probabilities (calculated using maximum likelihood
 estimation over all phrase pairs that are enumerable in the parallel
 corpus), word-for-word lexical translation probabilities (which help
-to smooth the the phrase translation estimates), a `rule application
+to smooth the sparser phrase translation estimates), a `rule application
 penalty' (which governs the system prefers fewer longer phrases or a
 greater number of shorter phrases), and a language model probability.
 % \mnote{TODO: list out typical feature functions -- they can be less
