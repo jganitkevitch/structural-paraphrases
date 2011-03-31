@@ -335,7 +335,6 @@ extraction methods require that one side of the parallel corpus be
 parsed, typically this is done automatically with a statistical
 parser.
 
-
 Figure~\ref{example_extraction} shows examples of rules obtained from
 a sentence pair. To extract a rule, we first choose a source side span
 $f$ like {\it das leck}.  Then we use phrase extraction techniques to
@@ -343,12 +342,11 @@ find target spans $e$ that are consistent with the word alignment (in
 this case {\it the leak} is consistent with our $f$). The nonterminal
 symbol that is the left-hand side of the SCFG rule is then determined
 by the syntactic constituent that dominates $e$ (in this case {\it
-  NP}).  {\bf TODO} The is obtained.  To introduce nonterminals into the
-righthand side of the rule, we can apply rules extracted over
-sub-phrases of $f$, synchronously substituting the corresponding
-nonterminal symbol for the sub-phrases on both sides. The synchronous
-substitution applied to $f$ and $e$ then yields the correspondency
-$\sim$.
+  NP}). To introduce nonterminals into the righthand side of the rule,
+we can apply rules extracted over sub-phrases of $f$, synchronously
+substituting the corresponding nonterminal symbol for the sub-phrases
+on both sides. The synchronous substitution applied to $f$ and $e$
+then yields the correspondency $\sim$.
 
 One significant differentiating factor between the competing ways of
 extracting SCFG rules is whether the extraction method generates rules
@@ -373,9 +371,8 @@ much greater set of phrases, both in translation and paraphrasing.
 Rather than assigning a single weight $w$, we define a set of feature
 functions $\vec{\varphi} = \{\varphi_i\}$ that are combined in a
 log-linear model:
-{\bf TODO}
 \begin{equation}
-  w = \sum_i^N \lambda_i \varphi_i .
+  w = -\sum_i^N \lambda_i \log \varphi_i .
 \end{equation}
 The weights $\vec{\lambda}$ of these feature functions are set to
 maximize some objective function like \textsc{Bleu}
@@ -444,7 +441,9 @@ since many derivations yield the same $e$.  In practice, we use a
 Viterbi approximation and return the translation that is the yield of
 the single best derivation:
 \begin{eqnarray}
-  \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f))}{p(d,e|f)}\\
+  \label{decoding_eq}
+  \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f))}{p(d,e|f)}
+  \nonumber \\
              &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)}).
 \end{eqnarray}
 Derivations are simply successive applications on the SCFG rules such
@@ -511,15 +510,16 @@ that require structural reordering.
 
 \paragraph{Decoding}
 
-\mnote{cite the equation decoding / modify it for e2 given e1}
-
-Figure \ref{paraphrase_derivaton} shows an example derivation produced
-as a result of applying our paraphrase rules in the decoding process.
-
-Another advantage of using the decoder from statistical machine
-translation is that n-gram language models, which have been shown to
-be useful in natural language generation \cite{Langkilde1998}, are
-already well integrated \cite{Huang2007}.
+With this, paraphrasing becomes an English-to-English translation
+problem which can be formulated similarly to
+Equation~\ref{decoding_eq} as $\hat{e_2} \approx yield(\arg \max_{d\in
+  D(e_2,e_1))}{p(d,e_2|e_1)})$. Figure~\ref{paraphrase_derivaton}
+shows an example derivation produced as a result of applying our
+paraphrase rules in the decoding process. Another advantage of using
+the decoder from statistical machine translation is that n-gram
+language models, which have been shown to be useful in natural
+language generation \cite{Langkilde1998}, are already well integrated
+\cite{Huang2007}.
 
 \begin{figure}[!t]
 \begin{center}
@@ -970,7 +970,7 @@ decisions. We were unable to set the compression rate for the T3
 system; the resulting unfairly short output did not fare well in the
 evaluation.  Additionally we remove all sentences from the evaluation
 on which either of the systems failed to produce an output sentence,
-leaving us with 297 sentence-compresssion pairs.
+leaving us with 303 sentence-compresssion pairs.
 
 Table~\ref{test_examples} shows an example sentence drawn from our
 test set and the compressions produced by the different systems. We
