@@ -20,18 +20,19 @@
   \itshape\hrule\smallskip\footnotesize{#1}\par\smallskip\hrule}}  
 
 %\title{Text-to-Text Generation with Syntactic Paraphrases Learned from Bilingual Parallel Corpora}
-\title{Learning Sentential Paraphrases from Bilingual Parallel Corpora \\ for Text-to-Text Generation}
+\title{Learning Sentential Paraphrases from Bilingual Parallel Corpora
+  \\ for Text-to-Text Generation}
 
-\author{Juri Ganitkevitch \and Chris Callison-Burch \and Courtney
-  Napoles \and Benjamin Van Durme\\ 
-Center for Language and Speech Processing\\ 
-Johns Hopkins University}
+%\author{Juri Ganitkevitch \and Chris Callison-Burch \and Courtney
+% Napoles \and Benjamin Van Durme\\ 
+%Center for Language and Speech Processing\\ 
+%Johns Hopkins University}
 
 
-\author{X\\ 
-x\\ 
-x\\ 
-x}
+%\author{X\\ 
+%x\\ 
+%x\\ 
+%x}
 
 
 \date{}
@@ -854,6 +855,7 @@ In our setup, it is more straightforward to adopt the latter approach.
 \label{setup}
 
 \begin{table}
+\small
 \begin{center}
 \begin{tabular}{|c|r|}
   \hline
@@ -866,6 +868,7 @@ In our setup, it is more straightforward to adopt the latter approach.
   \hline
 \end{tabular}
 \end{center}
+\normalsize
 \caption{Number and distribution of rules in our paraphrase
   grammar. Note the significant number of identity paraphrases and
   rules with complex nonterminal labels.}
@@ -889,7 +892,7 @@ using the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
 Joshua package \cite{Joshua-WMT}. The language model used in both our
 paraphraser and the \newcite{Clarke2008} baseline system is a
 Kneser-Ney discounted 5-gram model estimated on the Gigaword corpus
-using the SRILM language modeling toolkit \cite{SRILM}.
+using the SRILM toolkit \cite{SRILM}.
 
 With the publication of this paper, we will release our software for
 paraphrase grammar extraction, along with the grammars and our
@@ -963,7 +966,7 @@ For a fair comparison, we tie the compression rate of the ILP system
 to the rate achieved by our own system.\footnote{We have observed that
   evaluation quality correlates linearly with compression rate, and
   therefore the community-accepted practice of not comparing based on
-  a closely tied compression rate is potentially subject to erronous
+  a closely tied compression rate is potentially subject to erroneous
   interpretation.} This is done on the sentence level, leaving the ILP
 system a slack window of 1 token to not overly constrain its
 decisions. We were unable to set the compression rate for the T3
@@ -988,6 +991,7 @@ our framework for text-to-text generation is performing as well as or
 better than specifically tailored state-of-the-art methods.
 
 \begin{table}
+\small
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
   \hline
@@ -1001,6 +1005,7 @@ better than specifically tailored state-of-the-art methods.
   \hline
 \end{tabular}
 \end{center}
+\normalsize
 \caption{Results of the human evaluation: compression rate (CR),
   meaning and grammaticality scores. 
   %Statistically significant differences in bold.
@@ -1018,7 +1023,7 @@ power and limitations of our formalism and outlined straightforward
 adaptation strategies for applications in text-to-text generation. We
 demonstrated our paraphrasing system, adapted to do sentence
 compression, to achieve results outperforming state-of-the-art
-compression systems with only minimal refitting overhead.
+compression systems with only minimal effort.
 
 % \section*{Acknowledgments}
 % We would like to thank Trevor Cohn for kindly providing us with
