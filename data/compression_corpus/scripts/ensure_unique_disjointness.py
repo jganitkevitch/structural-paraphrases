@@ -2,6 +2,10 @@
 
 import random, os, sys, codecs
 
+# after-the-fact script to make sure the sentences in dev and test 
+# sets are unique and don't overlap - with the update to shuffle_and_slice.py 
+# this should be obsolete
+
 def main():
   
   dev_src_file = sys.argv[1]

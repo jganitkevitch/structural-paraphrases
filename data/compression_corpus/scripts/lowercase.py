@@ -1,5 +1,11 @@
 #!/usr/bin/python
 
+# for unknown reasons, the usual Perl lowercaser wouldn't work, 
+# this is a Python version that does the exact same thing:
+
+# lowercases the text; works with parsed input (detects and doesn't 
+# touch the constituent labels)
+
 import random, os, sys, codecs
 
 def main():

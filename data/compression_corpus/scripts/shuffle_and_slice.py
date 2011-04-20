@@ -2,17 +2,24 @@
 
 import random, os, sys, codecs
 
+# used to randomly select a dev and test set from the 
+# parallel slice
+
 def main():
   
   corpus = list()
   corpus_file = codecs.open("long_short_by_words_0.5_0.8", "r", "utf-8")
+  
+  seen = {}
   
   for line in corpus_file:
     line = line.rstrip().lstrip()
     if (line == ""):
       continue
     (ratio, long, short) = line.split("\t")
-    corpus.append((long, short))
+    if (long not in seen):
+      corpus.append((long, short))
+      seen[long] = 1
   
   random.shuffle(corpus)
   

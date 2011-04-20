@@ -1,0 +1,42 @@
+
+This is a README for paraphrase grammar extraction. Commands are 
+approximate (as in: "read the code, adjust paths and file names, 
+make sure to understand what's happening")
+
+We assume that we start with an SAMT (or Hiero) translation grammar 
+in ??-en direction (i.e. English is the target side). The extraction 
+tools are hard-coded to rely on a particular feature set to be present. 
+While that's abysmal, in absence of name-labeled grammars (like Thrax 
+can do), it's pretty much the only thing to do anyway.
+
+We start by sorting the translation grammar in preparation for pivoting:
+
+$ sort_samt.sh 
+(or $ sort_hiero.sh)
+
+Then we do the pivoting thing and extract ourselves a fine paraphrase 
+grammar:
+
+$ extract_paraphrase_grammar.sh
+(or $ extract_paraphrase_hiero_grammar.sh)
+
+The paraphrase grammar needs to be sorted and then aggregated:
+
+$ sort_grammar.sh 
+(for both, the format has been unified to Hiero-style in extraction)
+
+$ aggregate_grammar.sh
+(or $ aggregate_grammar_hiero.sh)
+
+Then filtering the grammar to a test set is in order:
+
+$ filter_grammar.sh
+
+Additionaly, there's postfiltering - removes a few grabarge rules that 
+crop up, can drop features, identity rules and wildcard NT rules ([_X]):
+
+$ zcat <your_grammar> | postfilter_grammar.py | gzip > <your_new_grammar>
+
+
+##########################################################################
+

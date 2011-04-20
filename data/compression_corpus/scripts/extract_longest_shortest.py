@@ -2,6 +2,9 @@
 
 import os, sys, codecs
 
+# processes a tab-delimited set of multi-refs and extracts longest-shortest 
+# pairs (plus CR achieved)
+
 def main():
 
   for line in sys.stdin:
