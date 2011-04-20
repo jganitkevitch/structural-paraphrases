@@ -1,7 +1,9 @@
 
+##########################################################################
+
 This is a README for paraphrase grammar extraction. Commands are 
 approximate (as in: "read the code, adjust paths and file names, 
-make sure to understand what's happening")
+make sure to understand what's happening").
 
 We assume that we start with an SAMT (or Hiero) translation grammar 
 in ??-en direction (i.e. English is the target side). The extraction 

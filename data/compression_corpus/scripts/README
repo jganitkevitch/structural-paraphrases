@@ -1,0 +1,26 @@
+
+##########################################################################
+
+This is a README for building the compression data. Commands are 
+approximate (as in: "read the code, adjust paths and file names, 
+make sure to understand what's happening").
+
+We start with a bunch of tab-delimited multireference files. First,
+we extract pairs of the longest-shortest parallel sentences and sort 
+by CR:
+
+$ cat multi_ref | extract_longest_shortest.py | sort -k 1,1 -n > long_short_sent
+
+Then we slice out a portion of interesting compressions (not too much, 
+which indicates garbage - and not too little, which isn't really that 
+compressive):
+
+$ cat long_short_sent | compression_window.sh > long_short_sent_0.5_0.8
+
+We then pull out the dev and test sets:
+
+$ shuffle_and_slice.py
+
+##########################################################################
+
+
