@@ -1,0 +1,82 @@
+This is a README that gives some pointer for the adaptation of the
+paraphrasing grammar and system to an arbitrary sentential 
+paraphrasing task.
+
+(1) Add task-specific features. There is no infrastructure for this, 
+but as long as your features only pertain to a given rule a simple 
+script should suffice:
+
+zcat grammar.gz | your_script.py | gzip > grammar_with_features.gz
+
+Where your script computes new feature values for each rule and 
+adds the to the feature set. The current paraphrase grammar comes 
+with compression features in it, so you probably should drop those 
+first (using postfilter.py and the feature key in this directory).
+
+(2) Find a dev set. There is some infrastructure to induce parallel 
+dev and test sets from translation references, but the resulting 
+quality is debatable and there's likely existing, better sets out 
+there for your task. Find them, use them. Make sure they are 
+tokenized properly (using penn-treebank-tokenizer.perl) and lower-
+cased, to match how the grammar was built.
+
+(3) Decide on an objective function. There's an excellent tutorial 
+on how to add new metrics to ZMERT (which is the optimizer we used), 
+it's easy to find via Google. If your objective will be built on top 
+of BLEU and require knowledge of the input, you can use 
+CompressionBLEU or MinimumRequiredChangeBLEU as examples. 
+
+In brief:
+  (a) You decide how many additional configuration parameters your 
+      metric needs (you'll still be taking the 2 for BLEU plus yours).
+      This is declared in EvaluationMetric and processed in the 
+      constuctors for your metric.
+  (b) You decide what statistics you need for a candidate (and the 
+      associated input and/or reference) and you add that number to 
+      the statistics already needed for BLEU in initialize().
+  (c) You add your statistics computation to suffStats(). I strived 
+      to not mess up the storage order BLEU uses, hence the strange 
+      indexing.
+  (d) You add your computations to score() and whatever output you 
+      want to generate to printDetailedScore_fromStats().
+
+(4) You set up MERT (take a look at the Joshua or MERT documentation 
+for more details). I tend to avoid the mert/ subdirectory stuff and 
+just store everything in one folder. You'll need a joshua.conf, a 
+mert.conf a decoder_command and a params.txt:
+
+joshua.conf - the config that will be used for the MERT run. if you 
+use special decoding options or pruning settings, these go here. Make 
+sure to link to the right grammars and LM files. The parameter values 
+do not matter at all, but make sure the paramters are all declared and 
+match (a) the number of features in your grammar (more is fine) and 
+(b) the features defined in params.txt (exactly)
+
+params.txt - this is the definitive listing of all features and what 
+you want MERT to do with them. A few notes:
+  - all your features go in here. while your grammar can contain a 
+  "prefix" of features (i.e. you only specify the first 5 for most 
+  rules, but there's actually 7), params.txt (and the joshua.conf) 
+  needs to know about all of them.
+  - you can choose not to optimize a feature or to restrict it to 
+  certain values, but that doesn't matter too much; MERT will likely 
+  normalize the value to something you didn't want it to be anyway.
+  - if you have penalty features (feature value is 1, feature weight 
+  determines penalty), set them to something reasonable here (~100)
+
+mert.conf - main MERT configuration file. Link your other files in 
+here. If you need the input for your metric, disguise it as a 
+reference, remember to set the number of references one higher and 
+pass the corresponding index to your metric. MERT works with file 
+prefixes a lot - e.g. if you have references ref.0 and ref.1, declare 
+"ref." as your reference file and 2 as your num_refs.
+
+decoder_command - MERT calls this shell executable to launch a 
+decoder run. Make sure the memory requirements are fine.
+
+(5) Run MERT. If MERT crashes (node goes down, memory issues etc.) 
+you can reuse the decoder outputs from previous runs. Just leave them 
+in the directory (however, delete the ZMERT.temp.* files) and make 
+sure to have specified "-fake dev_output.nbest.ZMERT.it?" where the ?
+is a wildcard for the iteration number in your mert.conf.
+

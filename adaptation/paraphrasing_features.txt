@@ -1,0 +1,18 @@
+0  - glue
+1  - application count / phrase penalty
+2  - identity
+3  - -log p(e1 | e2)
+4  - -log p(e2 | e1)
+5  - -log lex(e1 | e2)
+6  - -log lex(e2 | e1)
+
+7  - src word counter
+8  - tgt word counter
+9  - word difference counter
+10 - lexical rule indicator
+11 - deletion rule indicator
+12 - non-monotonicity indicator
+13 - average terminal length difference
+14 - rarity penalty
+
+15 - adjacent NTs
