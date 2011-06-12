@@ -452,7 +452,7 @@ as those given in Figure \ref{example_translation}.
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=0.99\linewidth]{figures/example_translation.pdf}
+\includegraphics[width=0.99\linewidth]{figures/example_translation-2.pdf}
 \end{center}
 \caption{An example derivation produced by a syntactic machine
   translation system.  Although the synchronous trees are unlike the
@@ -777,16 +777,17 @@ trivial paraphrasing system heavily biased towards producing identity
 %   appropriate choice for their task, for many applications retaining
 %   the capability to self-paraphrase where appropriate is crucial.}.
 
-Instead, we propose an objective function for text compression:
-\textsc{cmpAcc}. For an input sentence $i$ and a compression $o$,
-\textsc{cmpAcc} combines the output quality estimate of \textsc{Bleu}
-with a term penalizing compressions that fail to meet a given target
-compression rate $\theta$\footnote{To prevent the system from
-  producing overly aggressive compressions, we rely on the
-  \textsc{Bleu} brevity penalty. The scaling term $\lambda$ determines
-  how severely we penalize deviations from $\theta$.}:
+Instead, we propose \textsc{cmpAcc}, an objective function tailored to
+the text compression task. For an input sentence $i$ and a compression
+output $o$, \textsc{cmpAcc} combines the accuracy estimate of
+\textsc{Bleu} with a verbosity penalty that is applied to compressions
+that fail to meet a given target compression rate $\theta$\footnote{We
+  rely on the \textsc{Bleu} brevity penalty to prevent the system from
+  producing overly aggressive compressions. The scaling term $\lambda$
+  determines how severely we penalize deviations from $\theta$. In our
+experiments we use $\lambda = 10$.}:
 \begin{eqnarray}
-  \lefteqn{ \textsc{cmpBleu}_{\lambda,\theta} (i, o) } \nonumber \\
+  \lefteqn{ \textsc{cmpAcc}_{\lambda,\theta} (i, o) } \nonumber \\
   &=& \left\{ \begin{array}{ll}
       e^{\lambda (\theta - c)} \cdot \textsc{Bleu}(o) & \textrm{if
         $c > \theta$} \nonumber \\ 
