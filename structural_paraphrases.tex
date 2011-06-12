@@ -361,10 +361,10 @@ much greater set of phrases, both in translation and paraphrasing.
 \paragraph{Feature Functions}
 
 Rather than assigning a single weight $w$, we define a set of feature
-functions $\vec{\varphi} = \{\varphi_i ... \varphi_N \}$ that are combined in a
+functions $\vec{\varphi} = \{\varphi_1 ... \varphi_N \}$ that are combined in a
 log-linear model:
 \begin{equation}
-  w = -\sum_i^N \lambda_i \log \varphi_i .
+  w = -\sum_{i=1}^N \lambda_i \log \varphi_i .
 \end{equation}
 The weights $\vec{\lambda}$ of these feature functions are set to
 maximize some objective function like \textsc{Bleu}
