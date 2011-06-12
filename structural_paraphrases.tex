@@ -23,7 +23,7 @@
   \\ for Text-to-Text Generation}
 
  \author{Juri Ganitkevitch, Chris Callison-Burch, Courtney
-   Napoles, \\ {\bf and Benjamin Van Durme}\\
+   Napoles, \and Benjamin Van Durme\\
    Center for Language and Speech Processing\\
    Johns Hopkins University}
 
@@ -45,7 +45,7 @@
   many text generation tasks, by augmenting its feature set,
   development data and parameter estimation routine.  We illustrate
   this adaptation by using our paraphrase model for the task of
-  sentence compression and achieve results that improve on
+  sentence compression and achieve results comparable to
   state-of-the-art compression systems.
 \end{abstract}
 
@@ -59,10 +59,10 @@ summarization, paraphrase detection is used to collapse redundancies
 for query expansion in information retrieval and question answering
 systems
 \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}.
-Finally, paraphrases allow for more flexible matching of system output
+Paraphrases allow for more flexible matching of system output
 against human references for tasks like MT and
 automatic summarization
-\cite{Zhou2006b,Kauchak2006,Madnani2007,Snover2010}.\nocite{Owczarzak2006}
+\cite{Zhou2006b,Kauchak2006,Madnani2007,Snover2010}.
 % Paraphrases are used to generate additional reference translations
 % for statistical machine translation \cite{Madnani2007} and for more
 % flexible matching when evaluating MT output or automatically
@@ -124,12 +124,12 @@ from bitexts. In this paper we:
 \item Perform a thorough analysis of the types of paraphrases we
   obtain, and discuss the paraphrastic transformations we are capable
   of capturing.
-\item Describe how design and training paradigms for
+\item Describe how training paradigms for
   syntactic/sentential paraphrase models should be tailored to
   different text-to-text generation tasks.
 \item Demonstrate our framework's suitability for a variety of
-  text-to-text generation tasks on the example of sentence
-  compression, obtaining state-of-the-art results.
+  text-to-text generation tasks by obtaining state-of-the-art results on the example task of sentence
+  compression.
 \end{itemize}
 
 
@@ -190,7 +190,7 @@ $X$ instead of linguistic non-terminals.
 Three additional efforts incorporated linguistic
 syntax. \newcite{Callison-Burch2008} introduced syntactic constraints
 by labeling all phrases and paraphrases (even non-constituent phrases)
-with CCG slash categories \cite{Steedman1999}, an approach similar to
+with CCG-inspired slash categories \cite{Steedman2011}, an approach similar to
 \newcite{Zollmann2006}'s syntax-augmented machine translation
 (SAMT). Callison-Burch did not formally define a synchronous grammar,
 nor discuss decoding, since his presentation did not include
@@ -324,7 +324,7 @@ These phrase extraction heuristics have been extended so that they
 extract synchronous grammar rules
 \cite{Galley2004,Chiang2005,Zollmann2006,Liu2006}.  Most of these
 extraction methods require that one side of the parallel corpus be
-parsed, typically this is done automatically with a statistical
+parsed. This is typically done automatically with a statistical
 parser.
 
 Figure~\ref{example_extraction} shows examples of rules obtained from
@@ -361,7 +361,7 @@ much greater set of phrases, both in translation and paraphrasing.
 \paragraph{Feature Functions}
 
 Rather than assigning a single weight $w$, we define a set of feature
-functions $\vec{\varphi} = \{\varphi_i\}$ that are combined in a
+functions $\vec{\varphi} = \{\varphi_i ... \varphi_N \}$ that are combined in a
 log-linear model:
 \begin{equation}
   w = -\sum_i^N \lambda_i \log \varphi_i .
@@ -438,7 +438,7 @@ the single best derivation:
   \nonumber \\
              &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)}).
 \end{eqnarray}
-Derivations are simply successive applications on the SCFG rules such
+Derivations are simply successive applications of the SCFG rules such
 as those given in Figure \ref{example_translation}.
 %\small
 %\begin{tabular}{l}
@@ -591,9 +591,9 @@ language generation \cite{Langkilde1998}, are already well integrated
 
 A key motivation for the use of syntactic paraphrases over their
 phrasal counterparts is their potential to capture meaning-preserving
-linguistic transformations in a more general fashion. In many cases a
-phrasal system will be limited to memorizing the fully lexicalized
-variants of such a transfomation in its paraphrase table, resulting in
+linguistic transformations in a more general fashion. A
+phrasal system is limited to memorizing fully lexicalized
+transformations in its paraphrase table, resulting in
 poor generalization capabilities. By contrast, a syntactic
 paraphrasing system intuitively should be able to address this issue
 and learn well-formed and generic patterns that can be easily applied
@@ -1026,7 +1026,7 @@ compression systems with only minimal effort.
 \section*{Acknowledgments}
  We would like to thank Trevor Cohn for kindly providing us with
  access to data sets and the T3 compression system.
- 
+ %
 This research was supported by the NSF under grant IIS-0713448. Opinions, interpretations, and conclusions are the authors' alone.
 
 \bibliographystyle{acl}
