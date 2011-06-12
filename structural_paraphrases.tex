@@ -19,22 +19,13 @@
   \raggedright\footnotesize
   \itshape\hrule\smallskip\footnotesize{#1}\par\smallskip\hrule}}  
 
-% \title{Text-to-Text Generation with Syntactic Paraphrases Learned
-%   from Bilingual Parallel Corpora}
 \title{Learning Sentential Paraphrases from Bilingual Parallel Corpora
   \\ for Text-to-Text Generation}
 
  \author{Juri Ganitkevitch, Chris Callison-Burch, Courtney
-   Napoles \and Benjamin Van Durme\\
+   Napoles, \\ {\bf and Benjamin Van Durme}\\
    Center for Language and Speech Processing\\
    Johns Hopkins University}
-
-
-% \author{X\\
-%   x\\
-%   x\\
-%   x}
-
 
 \date{}
 
@@ -53,7 +44,9 @@
   topicalization, etc.  We discuss how our model can be adapted to
   many text generation tasks, by augmenting its feature set,
   development data and parameter estimation routine.  We illustrate
-  this adaptation by using our paraphrase model for the task of sentence compression and achieve results that improve on state-of-the-art compression systems.
+  this adaptation by using our paraphrase model for the task of
+  sentence compression and achieve results that improve on
+  state-of-the-art compression systems.
 \end{abstract}
 
 \section{Introduction} \label{introduction}
@@ -306,7 +299,7 @@ nonterminals in $\gamma$ and $\alpha$. A non-negative weight $w \geq
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=0.9\linewidth]{figures/example_extraction-2.pdf}
+\includegraphics[width=0.9\linewidth]{figures/example_extraction-3.pdf}
 \end{center}
 \caption{Synchronous grammar rules for translation are extracted from
   sentence pairs in a bixtext which have been automatically parsed and
