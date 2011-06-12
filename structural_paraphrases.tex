@@ -23,7 +23,7 @@
   \\ for Text-to-Text Generation}
 
  \author{Juri Ganitkevitch, Chris Callison-Burch, Courtney
-   Napoles, \\ {\bf and Benjamin Van Durme}\\
+   Napoles, \and Benjamin Van Durme\\
    Center for Language and Speech Processing\\
    Johns Hopkins University}
 
@@ -45,7 +45,7 @@
   many text generation tasks, by augmenting its feature set,
   development data and parameter estimation routine.  We illustrate
   this adaptation by using our paraphrase model for the task of
-  sentence compression and achieve results that improve on
+  sentence compression and achieve results comparable to
   state-of-the-art compression systems.
 \end{abstract}
 
@@ -59,7 +59,7 @@ summarization, paraphrase detection is used to collapse redundancies
 for query expansion in information retrieval and question answering
 systems
 \cite{mckeown:1979:ACL,Anick1999,Ravichandran2002,Riezler2007}.
-Finally, paraphrases allow for more flexible matching of system output
+Paraphrases allow for more flexible matching of system output
 against human references for tasks like MT and
 automatic summarization
 \cite{Zhou2006b,Kauchak2006,Madnani2007,Snover2010}.
@@ -124,12 +124,12 @@ from bitexts. In this paper we:
 \item Perform a thorough analysis of the types of paraphrases we
   obtain, and discuss the paraphrastic transformations we are capable
   of capturing.
-\item Describe how design and training paradigms for
+\item Describe how training paradigms for
   syntactic/sentential paraphrase models should be tailored to
   different text-to-text generation tasks.
 \item Demonstrate our framework's suitability for a variety of
-  text-to-text generation tasks on the example of sentence
-  compression, obtaining state-of-the-art results.
+  text-to-text generation tasks by obtaining state-of-the-art results on the example task of sentence
+  compression.
 \end{itemize}
 
 
