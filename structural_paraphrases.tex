@@ -324,7 +324,7 @@ These phrase extraction heuristics have been extended so that they
 extract synchronous grammar rules
 \cite{Galley2004,Chiang2005,Zollmann2006,Liu2006}.  Most of these
 extraction methods require that one side of the parallel corpus be
-parsed, typically this is done automatically with a statistical
+parsed. This is typically done automatically with a statistical
 parser.
 
 Figure~\ref{example_extraction} shows examples of rules obtained from
@@ -361,7 +361,7 @@ much greater set of phrases, both in translation and paraphrasing.
 \paragraph{Feature Functions}
 
 Rather than assigning a single weight $w$, we define a set of feature
-functions $\vec{\varphi} = \{\varphi_i\}$ that are combined in a
+functions $\vec{\varphi} = \{\varphi_i ... \varphi_N \}$ that are combined in a
 log-linear model:
 \begin{equation}
   w = -\sum_i^N \lambda_i \log \varphi_i .
