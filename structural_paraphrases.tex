@@ -777,24 +777,29 @@ trivial paraphrasing system heavily biased towards producing identity
 %   appropriate choice for their task, for many applications retaining
 %   the capability to self-paraphrase where appropriate is crucial.}.
 
-As an example of a suitable objective function for paraphrase
-training, we propose \textsc{mrcBleu}, an extension of \textsc{Bleu}
-which takes into account the input $i$ and penalizes the system when
-the changes in the output $o$ are below a threshold $\lambda$:
+Instead, we propose an objective function for text compression:
+\textsc{cmpAcc}. For an input sentence $i$ and a compression $o$,
+\textsc{cmpAcc} combines the output quality estimate of \textsc{Bleu}
+with a term penalizing compressions that fail to meet a given target
+compression rate $\theta$\footnote{To prevent the system from
+  producing overly aggressive compressions, we rely on the
+  \textsc{Bleu} brevity penalty. The scaling term $\lambda$ determines
+  how severely we penalize deviations from $\theta$.}:
 \begin{eqnarray}
-  \lefteqn{ \textsc{mrcBleu}_\lambda(i, o) } \nonumber\\
+  \lefteqn{ \textsc{cmpBleu}_{\lambda,\theta} (i, o) } \nonumber \\
   &=& \left\{ \begin{array}{ll}
-      \frac{d_{\mathit{lev}}(i, o)}{\lambda} \cdot \textsc{Bleu}(o) & \textrm{if
-        $d_{\mathit{lev}}(i, o) <\lambda$} \nonumber \\ 
+      e^{\lambda (\theta - c)} \cdot \textsc{Bleu}(o) & \textrm{if
+        $c > \theta$} \nonumber \\ 
       \textsc{Bleu}(o) & \textrm{otherwise}
-\end{array} \right. ,
+\end{array} \right.
 \end{eqnarray}
-where $d_{\mathit{lev}}(i, o)$ is the Levenshtein edit rate. It is
-straightforward to find similar adaptations for other tasks. For text
-simplification, for instance, the penalty term can include a
-readability metric. For text compression, we can intoduce an
-analoguous penalty if the output fails to produce the desired
-compression rate.
+
+It is straightforward to find similar adaptations for other tasks. For
+text simplification, for instance, the penalty term can include a
+readability metric. For poetry generation we can analogously penalize
+outputs that break the meter.
+% TODO: could/should cite Courtney and Google's poetry generation
+% paper if they used an adapted metric.
 
 
 \subsection{Grammar Augmentations} \label{injection}
