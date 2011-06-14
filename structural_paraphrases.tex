@@ -46,7 +46,7 @@
   many text generation tasks by augmenting its feature set,
   development data, and parameter estimation routine.  We illustrate
   this adaptation by using our paraphrase model for the task of
-  sentence compression and achieve results comparable to
+  sentence compression and achieve results competitive with
   state-of-the-art compression systems.
 \end{abstract}
 
@@ -63,7 +63,7 @@ systems
 Paraphrases allow for more flexible matching of system output
 against human references for tasks like machine translation and
 automatic summarization
-\cite{Zhou2006b,Kauchak2006,Madnani2007,Snover2010}.
+\cite{Zhou2006b,Kauchak2006,Madnani2007,Snover2010}.\nocite{Owczarzak2006}
 % Paraphrases are used to generate additional reference translations
 % for statistical machine translation \cite{Madnani2007} and for more
 % flexible matching when evaluating MT output or automatically
@@ -710,7 +710,9 @@ expansion, transforming declarative sentences into questions, and deriving
 hypotheses for textual entailment.  Each individual text-to-text
 application requires that our framework be adapted in several ways, by
 specifying:
-\begin{itemize}
+%squeeze the equation onto this page by compressing some stuff
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\begin{itemize}
 \item A mechanism for extracting synchronous grammar rules (in this
   paper we argue that pivot-based paraphrasing is widely applicable).
 \item An appropriate set of rule-level features that capture
@@ -734,6 +736,7 @@ focused only on the deletion of a subset of words from the sentence
 substitutions, insertions and reorderings that are automatically
 learned from parallel texts.
 
+\vspace{-.2cm}
 \subsection{Feature Design}
 In Section~\ref{acquisition} we discussed phrasal
 probabilities. While these help quantify how good a paraphrase is in
@@ -746,7 +749,6 @@ words on either side of the rule as well as two difference features:
 $c_{\mathit{dcount}} = c_{\mathit{tgt}} - c_{\mathit{src}}$ and the
 analogously computed difference in the average word length in
 characters, $c_{\mathit{davg}}$.
-
 
 \subsection{Development Data}
 \label{dev-data}
@@ -784,14 +786,8 @@ trivial paraphrasing system heavily biased towards producing identity
 %   the capability to self-paraphrase where appropriate is crucial.}.
 
 Instead, we propose \textsc{cmpAcc}, an objective function tailored to
-the text compression task. For an input sentence $i$ and a compression
-output $o$, \textsc{cmpAcc} combines the accuracy estimate of
-\textsc{Bleu} with a verbosity penalty that is applied to compressions
-that fail to meet a given target compression rate $\theta$\footnote{We
-  rely on the \textsc{Bleu} brevity penalty to prevent the system from
-  producing overly aggressive compressions. The scaling term $\lambda$
-  determines how severely we penalize deviations from $\theta$. In our
-experiments we use $\lambda = 10$.}:
+the text compression task:
+\vspace{-.2cm}
 \begin{eqnarray}
   \lefteqn{ \textsc{cmpAcc}_{\lambda,\theta} (i, o) } \nonumber \\
   &=& \left\{ \begin{array}{ll}
@@ -800,21 +796,26 @@ experiments we use $\lambda = 10$.}:
       \textsc{Bleu}(o) & \textrm{otherwise}
 \end{array} \right.
 \end{eqnarray}
+For an input sentence $i$ and a compression
+output $o$, \textsc{cmpAcc} combines the accuracy estimate of
+\textsc{Bleu} with a verbosity penalty that is applied to compressions
+that fail to meet a given target compression rate $\theta$.  We
+  rely on the \textsc{Bleu} brevity penalty to prevent the system from
+  producing overly aggressive compressions. The scaling term $\lambda$
+  determines how severely we penalize deviations from $\theta$. In our
+experiments we use $\lambda = 10$.
 
 It is straightforward to find similar adaptations for other tasks. For
 text simplification, for instance, the penalty term can include a
 readability metric. For poetry generation we can analogously penalize
-outputs that break the meter.  \todo{\footnotesize{Could/should cite
-    Courtney and Google's poetry generation paper if they used an
-    adapted metric.}}
-
+outputs that break the meter \cite{Greene2010}.
 
 \subsection{Grammar Augmentations} \label{injection}
 
 As we discussed in Section~\ref{analysis}, the paraphrase grammar we
 induce is capable of representing a wide variety of
 transformations. However, the formalism and extraction method are not
-explicitely geared towards a compression application. For instance,
+explicitly geared towards a compression application. For instance,
 the synchronous nature of our grammar does not allow us to perform
 deletions of constituents as done by \newcite{Cohn2007}'s tree
 transducers.  A possible way to extend the grammar's capabilities
@@ -884,7 +885,7 @@ corpus (v5). The bitext was aligned using the Berkeley aligner and the
 English side was parsed with the Berkeley parser. We obtained the
 initial translation grammar using the SAMT toolkit.
 
-The grammars we extract tend to become extremely large. To keep their
+The grammars we extract tend to be extremely large. To keep their
 size manageable, we only consider translation rules that have been
 seen more than 3 times and whose translation probability exceeds
 $10^{-4}$ for pivot recombination. Additionally, we only retain the
@@ -893,15 +894,15 @@ weighted combination of phrasal and lexical paraphrase probabilities.
 
 We tuned the parameters of our model via minimum error rate training
 using the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
-Joshua package \cite{Joshua-WMT}. The language model used in both our
+Joshua decoder \cite{Joshua-2.0}. The language model used in both our
 paraphraser and the \newcite{Clarke2008} baseline system is a
 Kneser-Ney discounted 5-gram model estimated on the Gigaword corpus
 using the SRILM toolkit \cite{SRILM}.
-\todo{\footnotesize{I don't think you need to change this because the C\&L baseline used a 3-gram Gigaword KN lm, which in theory would be the same as the 5-gram model}}
+%\todo{\footnotesize{I don't think you need to change this because the C\&L baseline used a 3-gram Gigaword KN lm, which in theory would be the same as the 5-gram model}}
 
-With the publication of this paper, we will release our software for
-paraphrase grammar extraction, along with the grammars and our
-development and test data sets.
+%With the publication of this paper, we will release our software for
+%paraphrase grammar extraction, along with the grammars and our
+%development and test data sets. \todo{\footnotesize{Give URL or delete or convert to a footnote}}
 
 
 \subsection{Evaluation} \label{evaluation}
@@ -977,7 +978,7 @@ system a slack window of 1 token to not overly constrain its
 decisions. We were unable to set the compression rate for the T3
 system; the resulting unfairly short output did not fare well in the
 evaluation.  Additionally we remove all sentences from the evaluation
-on which either of the systems failed to produce an output sentence,
+on which any of the systems failed to produce an output sentence,
 leaving us with 303 sentence-compression pairs.
 
 Table~\ref{test_examples} shows an example sentence drawn from our
@@ -989,8 +990,8 @@ source sentence more accurately.
 The results from the human evaluation are shown in
 Table~\ref{human_judgments}. We observe that, at similar compression
 rates, our paraphrase-based system significantly outperforms the ILP
-system in meaning retention\footnote{This improvement is significant
-  at $p < 0.0001$.}, while the better grammaticality score of the ILP
+system in meaning retention.  This improvement is significant
+  at $p < 0.0001$, using the sign test. The better grammaticality score of the ILP
 system is not statistically significant ($p < 0.088$). This means that
 our framework for text-to-text generation is performing as well as or
 better than specifically tailored state-of-the-art methods.
@@ -1026,10 +1027,12 @@ In this work we introduced a method to learn syntactically informed
 paraphrases from bilingual parallel texts. We discussed the expressive
 power and limitations of our formalism and outlined straightforward
 adaptation strategies for applications in text-to-text generation. We
-demonstrated our paraphrasing system, adapted to do sentence
-compression, to achieve results outperforming \todo{\footnotesize{outperforming or competetive with?}}  state-of-the-art
+demonstrated when our paraphrasing system was adapted to do sentence
+compression, it achieves results competitive with state-of-the-art
 compression systems with only minimal effort.
 
+% ccb - added a newpage to make it clear how much space we have left to work with.  Remove this for final submission.
+\newpage
 \section*{Acknowledgments}
  We would like to thank Trevor Cohn for kindly providing us with
  access to data sets and the T3 compression system.
