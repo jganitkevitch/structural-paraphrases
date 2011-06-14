@@ -710,7 +710,9 @@ expansion, transforming declarative sentences into questions, and deriving
 hypotheses for textual entailment.  Each individual text-to-text
 application requires that our framework be adapted in several ways, by
 specifying:
-\begin{itemize}
+%squeeze the equation onto this page by compressing some stuff
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\begin{itemize}
 \item A mechanism for extracting synchronous grammar rules (in this
   paper we argue that pivot-based paraphrasing is widely applicable).
 \item An appropriate set of rule-level features that capture
@@ -734,6 +736,7 @@ focused only on the deletion of a subset of words from the sentence
 substitutions, insertions and reorderings that are automatically
 learned from parallel texts.
 
+\vspace{-.2cm}
 \subsection{Feature Design}
 In Section~\ref{acquisition} we discussed phrasal
 probabilities. While these help quantify how good a paraphrase is in
@@ -746,7 +749,6 @@ words on either side of the rule as well as two difference features:
 $c_{\mathit{dcount}} = c_{\mathit{tgt}} - c_{\mathit{src}}$ and the
 analogously computed difference in the average word length in
 characters, $c_{\mathit{davg}}$.
-
 
 \subsection{Development Data}
 \label{dev-data}
@@ -784,14 +786,8 @@ trivial paraphrasing system heavily biased towards producing identity
 %   the capability to self-paraphrase where appropriate is crucial.}.
 
 Instead, we propose \textsc{cmpAcc}, an objective function tailored to
-the text compression task. For an input sentence $i$ and a compression
-output $o$, \textsc{cmpAcc} combines the accuracy estimate of
-\textsc{Bleu} with a verbosity penalty that is applied to compressions
-that fail to meet a given target compression rate $\theta$\footnote{We
-  rely on the \textsc{Bleu} brevity penalty to prevent the system from
-  producing overly aggressive compressions. The scaling term $\lambda$
-  determines how severely we penalize deviations from $\theta$. In our
-experiments we use $\lambda = 10$.}:
+the text compression task:
+\vspace{-.2cm}
 \begin{eqnarray}
   \lefteqn{ \textsc{cmpAcc}_{\lambda,\theta} (i, o) } \nonumber \\
   &=& \left\{ \begin{array}{ll}
@@ -800,6 +796,14 @@ experiments we use $\lambda = 10$.}:
       \textsc{Bleu}(o) & \textrm{otherwise}
 \end{array} \right.
 \end{eqnarray}
+For an input sentence $i$ and a compression
+output $o$, \textsc{cmpAcc} combines the accuracy estimate of
+\textsc{Bleu} with a verbosity penalty that is applied to compressions
+that fail to meet a given target compression rate $\theta$.  We
+  rely on the \textsc{Bleu} brevity penalty to prevent the system from
+  producing overly aggressive compressions. The scaling term $\lambda$
+  determines how severely we penalize deviations from $\theta$. In our
+experiments we use $\lambda = 10$.
 
 It is straightforward to find similar adaptations for other tasks. For
 text simplification, for instance, the penalty term can include a
