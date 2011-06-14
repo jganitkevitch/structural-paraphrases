@@ -804,7 +804,7 @@ experiments we use $\lambda = 10$.}:
 It is straightforward to find similar adaptations for other tasks. For
 text simplification, for instance, the penalty term can include a
 readability metric. For poetry generation we can analogously penalize
-outputs that break the meter.
+outputs that break the meter \cite{Greene2010}.
 % TODO: could/should cite Courtney and Google's poetry generation
 % paper if they used an adapted metric.
 
@@ -814,7 +814,7 @@ outputs that break the meter.
 As we discussed in Section~\ref{analysis}, the paraphrase grammar we
 induce is capable of representing a wide variety of
 transformations. However, the formalism and extraction method are not
-explicitely geared towards a compression application. For instance,
+explicitly geared towards a compression application. For instance,
 the synchronous nature of our grammar does not allow us to perform
 deletions of constituents as done by \newcite{Cohn2007}'s tree
 transducers.  A possible way to extend the grammar's capabilities
@@ -893,7 +893,7 @@ weighted combination of phrasal and lexical paraphrase probabilities.
 
 We tuned the parameters of our model via minimum error rate training
 using the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
-Joshua package \cite{Joshua-WMT}. The language model used in both our
+Joshua decoder \cite{Joshua-2.0}. The language model used in both our
 paraphraser and the \newcite{Clarke2008} baseline system is a
 Kneser-Ney discounted 5-gram model estimated on the Gigaword corpus
 using the SRILM toolkit \cite{SRILM}.
