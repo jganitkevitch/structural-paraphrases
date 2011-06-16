@@ -1004,9 +1004,14 @@ better than specifically tailored state-of-the-art methods.
   & CR & Meaning & Grammar \\
   \hline
   Reference & 0.73 &  4.26 & 4.35 \\
-  Paraphrase & 0.81 & {\bf 3.65} & 3.38 \\
-  ILP & 0.79 & 3.45 & 3.54 \\
+  \hline
+  \hline
+  Syntax+Feat. & 0.80 & {\bf 3.67} & 3.38 \\
+  ILP & 0.80 & 3.50 & 3.49 \\
+  \hline
+  \hline
   T3 & 0.50 & 2.05 & 2.38 \\
+  \hline
   Random & 0.50 & 1.94 & 1.57 \\
   \hline
 \end{tabular}
@@ -1020,6 +1025,33 @@ better than specifically tailored state-of-the-art methods.
 \end{table}
 
 
+\begin{table}
+\small
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+  \hline
+  & CR & Meaning & Grammar \\
+  \hline
+  Syntax+Aug. & 0.54 & {\bf 2.96} & 2.52 \\
+  Syntax+Feat. & 0.54 & 2.79 & {\bf 2.71} \\
+  \hline
+  \hline
+  Syntax+Feat.& 0.53 & 2.71 & {\bf 2.54} \\
+  Syntax & 0.53 & 2.70 & 2.49 \\
+  \hline
+  \hline
+  Syntax & 0.56 & 2.76 & {\bf 2.67} \\
+  Hiero & 0.56 & 2.57 & 2.35 \\
+  \hline
+\end{tabular}
+\end{center}
+\normalsize
+\caption{Results of the human evaluation: compression rate (CR),
+  meaning and grammaticality scores. 
+  %Statistically significant differences in bold.
+  }
+\label{comparison}
+\end{table}
 
 \section{Conclusion} \label{conclusion}
 

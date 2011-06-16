@@ -1,6 +1,7 @@
-#!/usr/bin/python
+#!/opt/local/bin/python
 
 import os, sys, codecs
+from scipy.stats import binom_test
 
 # Takes MTurk judgement outputs and produces:
 # (a) a list of "good" example sentences
@@ -11,15 +12,26 @@ def main():
   primary = sys.argv[1]
   contrastive = sys.argv[2]
   
+  sent_file_name = sys.argv[3]
+  
   have_compressions = False
   num_files = 0
-  if (len(sys.argv) > 4):
+  if (len(sys.argv) > 5):
     have_compressions = True
-    file_names = sys.argv[3:]
+    file_names = sys.argv[4:]
     num_files = len(file_names)
     num_sent = 0
   else:
-    num_sent = int(sys.argv[3])
+    num_sent = int(sys.argv[4])
+  
+  sent_filter = dict()
+  sent_file = codecs.open(sent_file_name, "r", "utf-8")
+  for line in sent_file:
+    (id, slice) = line.rstrip().lstrip().split("\t")
+    id = int(id)
+    if (slice not in sent_filter):
+      sent_filter[slice] = set()
+    sent_filter[slice].add(id)
   
   cand_lists = list()
   if (have_compressions):
@@ -49,8 +61,9 @@ def main():
     grammar = round(float(f[8]), 1)
     comp = round(float(f[3]), 1)
     
-    name = sys_name + "_" + sys_slice
-    sent_data[id][name] = (comp, meaning, grammar)
+    if (True or id in sent_filter[sys_slice]):
+      name = sys_name + "_" + sys_slice
+      sent_data[id][name] = (comp, meaning, grammar)
   
   total = 0
   booted = 0
@@ -85,6 +98,10 @@ def main():
       continue
     
     if (d[primary][0] == 1.0):
+      booted += 1
+      continue
+    
+    if (abs(d[primary][0] - d[contrastive][0]) > 0.05):
       booted += 1
       continue
     
@@ -144,13 +161,33 @@ def main():
       + str(total - c_equal_meaning - c_better_meaning))
   print(primary + " better_grammar: "
       + str(total - c_equal_grammar - c_better_grammar))
-  
+
+  print "\n"
+  m_p_val = binom_test(total - c_equal_meaning - c_better_meaning,
+      total - c_equal_meaning)
+  if (c_better_meaning > total - c_equal_meaning - c_better_meaning):
+    m_p_val = 1 - m_p_val
+  if (m_p_val > 0.1):
+    print "MEANING OUCH (" + "%5f" % m_p_val  + ")"
+  else:
+    print "MEANING P-VALUE: " + "%5f" % m_p_val
+  g_p_val = binom_test(total - c_equal_grammar - c_better_grammar,
+      total - c_equal_grammar)
+  if (c_better_grammar > total - c_equal_grammar - c_better_grammar):
+    g_p_val = 1 - g_p_val
+  if (g_p_val > 0.1):
+    print "GRAMMAR OUCH (" + "%5f" % g_p_val  + ")"
+  else:
+    print "GRAMMAR P-VALUE: " + "%5f" % g_p_val
+
+
   if (have_compressions):
     print "\n"
     for i,c in enumerate(counts):
       print str(round(float(c)/counts[0], 2)) + "\t" + file_names[i]
   
   print "\n"
+  print "SYSTEM\t\tCR\t\tMEANING\t\tGRAMMAR"
   for c in [primary, contrastive]:
     t = s_counts[c]
     print "\t".join(map(str, [c[:14], compression[c]/t, meaning[c]/t, 
