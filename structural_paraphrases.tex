@@ -120,6 +120,8 @@ paraphrases
 \cite{Madnani2007,Callison-Burch2008,cohn-lapata:2008,Zhao2008}, it is
 not yet clear to what extent sentential paraphrases can be induced
 from bitexts. In this paper we:
+% Squeeze some space
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
 \begin{itemize}
 \item Extend the bilingual pivoting approach to paraphrase induction
   to produce rich syntactic paraphrases.
@@ -185,8 +187,8 @@ a synchronous context-free grammar (SCFG) and thus can be thought of
 as a {\it paraphrase grammar}. The paraphrase grammar can paraphrase
 (or ``decode'') input sentences using an SCFG decoder, like the Hiero,
 Joshua or cdec MT systems \cite{Chiang2007,Joshua-WMT,Dyer_etal_2010}.
-Like Hiero, Madnani's model uses only a single nonterminal symbol
-$X$ instead of linguistic non-terminals.
+Like Hiero, Madnani's model uses just one nonterminal
+$X$ instead of linguistic nonterminals.
 
 
 Three additional efforts incorporated linguistic
@@ -818,19 +820,18 @@ transformations. However, the formalism and extraction method are not
 explicitly geared towards a compression application. For instance,
 the synchronous nature of our grammar does not allow us to perform
 deletions of constituents as done by \newcite{Cohn2007}'s tree
-transducers.  A possible way to extend the grammar's capabilities
+transducers.  One way to extend the grammar's capabilities
 towards the requirements of a given task is by injecting additional
 rules designed to capture appropriate operations.
 
-For the compression task, this can include adding rules that allow
-generic deletions of target-side nonterminals:
+For the compression task, this could include adding rules to delete target-side nonterminals:
 \begin{center}
 \begin{tabular}{c}
  $\mathit{JJ} \rightarrow$ $\mathit{JJ} \mid \varepsilon$ \\
 \end{tabular}
 \end{center}
-This, however, renders the grammar asynchronous and requires
-appropriate adjustments in the decoding process. Alternatively, we can
+This would render the grammar asynchronous and require
+adjustments to the decoding process. Alternatively, we can
 generate rules that specifically delete particular adjectives from the
 corpus:
 \begin{center}
