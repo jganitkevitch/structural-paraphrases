@@ -623,9 +623,9 @@ well-formedness.
 The paraphrases implementing the \emph{possessive rule} and the
 \emph{dative shift} shown in Table~\ref{example_rules} are a good
 examples of this: the two noun-phrase arguments to the expressions are
-abstracted to nonterminals while each rule's lexicalization provides an
-appropriate frame of evidence for the transform. This is important for
-a good representation of dative shift, which is a reordering
+abstracted to nonterminals while each rule's lexicalization provides
+an appropriate frame of evidence for the transform. This is important
+for a good representation of dative shift, which is a reordering
 transformation that fully applies to certain ditransitive verbs while
 other verbs are uncommon in one of the forms:
 \begin{center}
@@ -654,8 +654,8 @@ overgeneralize:
 \end{tabular}
 \end{center}
 Additional examples of transforms our use of syntax allows us to
-capture are the \emph{adverbial phrase shift} and the \emph{reduction of
-  a relative clause}, as well as other phenomena listed in
+capture are the \emph{adverbial phrase shift} and the \emph{reduction
+  of a relative clause}, as well as other phenomena listed in
 Table~\ref{example_rules}.
  
 Unsurprisingly, syntactic information alone is not sufficient to
@@ -706,10 +706,10 @@ sentences using SMT's decoding and parameter optimization
 techniques. Our framework can be adapted to many different
 text-to-text generation tasks.  These could include text
 simplification, sentence compression, poetry generation, query
-expansion, transforming declarative sentences into questions, and deriving
-hypotheses for textual entailment.  Each individual text-to-text
-application requires that our framework be adapted in several ways, by
-specifying:
+expansion, transforming declarative sentences into questions, and
+deriving hypotheses for textual entailment.  Each individual
+text-to-text application requires that our framework be adapted in
+several ways, by specifying:
 %squeeze the equation onto this page by compressing some stuff
 \begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
 %\begin{itemize}
@@ -756,15 +756,15 @@ To tune the parameters of our paraphrase system for sentence
 compression, we need an appropriate corpus of reference
 compressions. Since our model is designed to compress by paraphrasing
 rather than deletion, the commonly used deletion-based compression
-data sets like the Ziff Davis corpus are not suitable. We have
-thus created a corpus of compression paraphrases. Beginning with 9570
+data sets like the Ziff Davis corpus are not suitable. We have thus
+created a corpus of compression paraphrases. Beginning with 9570
 tuples of parallel English--English sentences obtained from multiple
 reference translations for machine translation evaluation, we
 construct a parallel compression corpus by selecting the longest
 reference in each tuple as the source sentence and the shortest
 reference as the target sentence. We further retain only those
-sentence pairs where the compression rate $\mathit{cr}$ falls in the range $0.5 <
-\mathit{cr} \leq 0.8$. From these, we randomly select 936
+sentence pairs where the compression rate $\mathit{cr}$ falls in the
+range $0.5 < \mathit{cr} \leq 0.8$. From these, we randomly select 936
 sentences for the development set, as well as 560 sentences for a test
 set that we use to gauge the performance of our system.
 
