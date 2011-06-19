@@ -100,15 +100,14 @@ sentence pairs in such corpora are perfect paraphrases of each other
 been learned from monolingual parallel corpora, they suffer from very limited data
 availability and thus have poor coverage.
 
-Other methods obtain paraphrases from raw monolingual text,
-replacing the exact correspondence of sentences in monolingual
-parallel corpora with distributional similarity \todo{\footnotesize{What do you mean by "replacing the exact correspondence...with distributional similarity"?}}
-\cite{Lin2001,Bhagat2008}. While vast amounts of data are readily
-available for these approaches, the correspondency information they
-employ is weaker \todo{\footnotesize{weaker than what?}}
-and suffers from problems such as mistaking cousin
-expressions or antonyms (such as $\{\mathit{boy}, \mathit{girl}\}$ or
-$\{\mathit{rise}, \mathit{fall}\}$) for paraphrases.
+Other methods obtain paraphrases from raw monolingual text by relying
+on distributional similarity \cite{Lin2001,Bhagat2008}. While vast
+amounts of data are readily available for these approaches, the
+distributional similarity signal they use is noisier than the
+sentence-level correspondency in parallel corpora and additionally
+suffers from problems such as mistaking cousin expressions or antonyms
+(such as $\{\mathit{boy}, \mathit{girl}\}$ or $\{\mathit{rise},
+\mathit{fall}\}$) for paraphrases.
 
 Abundantly available bilingual parallel corpora have been shown to
 address both these issues, obtaining paraphrases via a pivoting step
@@ -132,8 +131,8 @@ from bitexts. In this paper we:
   syntactic/sentential paraphrase models should be tailored to
   different text-to-text generation tasks.
 \item Demonstrate our framework's suitability for a variety of
-  text-to-text generation tasks by obtaining state-of-the-art results on the example task of sentence
-  compression.
+  text-to-text generation tasks by obtaining state-of-the-art results
+  on the example task of sentence compression.
 \end{itemize}
 
 
@@ -438,9 +437,9 @@ Viterbi approximation and return the translation that is the yield of
 the single best derivation:
 \begin{eqnarray}
   \label{decoding_eq}
-  \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f))}{p(d,e|f)}
+  \hat{e} &=& \arg \max_{e\in Trans(f)} \sum_{d\in D(e,f)}{p(d,e|f)}
   \nonumber \\
-             &\approx& yield(\arg \max_{d\in D(e,f))}{p(d,e|f)}).
+             &\approx& \mathit{yield}(\arg \max_{d\in D(e,f)}{p(d,e|f)}).
 \end{eqnarray}
 Derivations are simply successive applications of the SCFG rules such
 as those given in Figure \ref{example_translation}.
@@ -508,10 +507,10 @@ that require structural reordering.
 
 With this, paraphrasing becomes an English-to-English translation
 problem which can be formulated similarly to
-Equation~\ref{decoding_eq} as 
+Equation~\ref{decoding_eq} as: 
 \begin{equation*}
-\hat{e_2} \approx yield(\arg \max_{d\in
-  D(e_2,e_1))}{p(d,e_2|e_1)}).
+\hat{e_2} \approx \mathit{yield}(\arg \max_{d\in
+  D(e_2,e_1)}{p(d,e_2|e_1)}).
   \end{equation*}
  Figure~\ref{paraphrase_derivaton}
 shows an example derivation produced as a result of applying our
@@ -641,7 +640,7 @@ other verbs are uncommon in one of the forms:
 \end{center}
 Note how our system extracts a dative shift rule for \emph{to give}
 and a rule that both shifts and substitutes a more appropriate verb
-when paraphrasing \emph{to provide}.
+for \emph{to provide}.
 
 The use of syntactic nonterminals in our paraphrase rules to capture
 complex transforms also makes it possible to impose constraints on
@@ -778,7 +777,23 @@ Given the nature of an SMT-based paraphrasing system, the most
 straightforward choice for parameter optimization is to optimize for
 \textsc{Bleu} over a set of paraphrases, for instance parallel English
 reference translations for a machine translation task
-\cite{Madnani2007}. Doing so naively, however, will result in a
+\cite{Madnani2007}. For a candidate $C$ and a reference $R$, (with
+lengths $c$ and $r$) \textsc{Bleu} is defined as:\vspace{-0.2cm}
+\begin{eqnarray}
+  \lefteqn{ \textsc{Bleu}_{N} (C,R) } \nonumber \\
+  &=& \left\{ \begin{array}{ll}
+      e^{(1 - c/r)} \cdot
+      e^{\sum_{n=1}^N\log w_n p_n} & \textrm{if
+        $c/r \leq 1$} \nonumber \\ 
+       e^{\sum_{n=1}^N\log w_n p_n} & \textrm{otherwise}
+\end{array} \right. ,
+\end{eqnarray}
+where $p_n$ is the modified $n$-gram precision of $C$ against $R$,
+with typically $N=4$ and $w_n=\frac{1}{N}$. The ``brevity penalty''
+term $e^{(1 - c/r)}$ is added to prevent trivially short candidates
+from achieving perfect scores.
+
+Naively optimizing for \textsc{Bleu}, however, will result in a
 trivial paraphrasing system heavily biased towards producing identity
 ``paraphrases''. This is obviously not what we are looking for.
 
@@ -787,25 +802,24 @@ trivial paraphrasing system heavily biased towards producing identity
 %   appropriate choice for their task, for many applications retaining
 %   the capability to self-paraphrase where appropriate is crucial.}.
 
-Instead, we propose \textsc{cmpAcc}, an objective function tailored to
-the text compression task:
-\vspace{-.2cm}
+Instead, we propose \textsc{Pr\'ecis}, an objective function tailored
+to the text compression task: \vspace{-0.2cm}
 \begin{eqnarray}
-  \lefteqn{ \textsc{cmpAcc}_{\lambda,\theta} (i, o) } \nonumber \\
+  \lefteqn{ \textsc{Pr\'ecis}_{\lambda,\varphi} (I, C, R) } \nonumber \\
   &=& \left\{ \begin{array}{ll}
-      e^{\lambda (\theta - c)} \cdot \textsc{Bleu}(o) & \textrm{if
-        $c > \theta$} \nonumber \\ 
-      \textsc{Bleu}(o) & \textrm{otherwise}
+      e^{\lambda (\varphi - c/i)} \cdot \textsc{Bleu}(C, R) & \textrm{if
+        $c/i \geq \varphi$} \nonumber \\ 
+      \textsc{Bleu}(C, R) & \textrm{otherwise}
 \end{array} \right.
 \end{eqnarray}
-For an input sentence $i$ and a compression
-output $o$, \textsc{cmpAcc} combines the accuracy estimate of
-\textsc{Bleu} with a verbosity penalty that is applied to compressions
-that fail to meet a given target compression rate $\theta$.  We
-  rely on the \textsc{Bleu} brevity penalty to prevent the system from
-  producing overly aggressive compressions. The scaling term $\lambda$
-  determines how severely we penalize deviations from $\theta$. In our
-experiments we use $\lambda = 10$.
+For an input sentence $I$, an output $C$ and reference compression $R$
+(with lengths $i$, $c$ and $r$), \textsc{Pr\'ecis} combines the
+precision estimate of \textsc{Bleu} with a verbosity penalty that is
+applied to compressions that fail to meet a given target compression
+rate $\varphi$.  We rely on the \textsc{Bleu} brevity penalty to
+prevent the system from producing overly aggressive compressions. The
+scaling term $\lambda$ determines how severely we penalize deviations
+from $\varphi$. In our experiments we use $\lambda = 10$.
 
 It is straightforward to find similar adaptations for other tasks. For
 text simplification, for instance, the penalty term can include a
@@ -899,11 +913,14 @@ Joshua decoder \cite{Joshua-2.0}. The language model used in both our
 paraphraser and the \newcite{Clarke2008} baseline system is a
 Kneser-Ney discounted 5-gram model estimated on the Gigaword corpus
 using the SRILM toolkit \cite{SRILM}.
-%\todo{\footnotesize{I don't think you need to change this because the C\&L baseline used a 3-gram Gigaword KN lm, which in theory would be the same as the 5-gram model}}
+% \todo{\footnotesize{I don't think you need to change this because
+%     the C\&L baseline used a 3-gram Gigaword KN lm, which in theory
+%     would be the same as the 5-gram model}}
 
-%With the publication of this paper, we will release our software for
-%paraphrase grammar extraction, along with the grammars and our
-%development and test data sets. \todo{\footnotesize{Give URL or delete or convert to a footnote}}
+% With the publication of this paper, we will release our software for
+% paraphrase grammar extraction, along with the grammars and our
+% development and test data sets. \todo{\footnotesize{Give URL or
+%     delete or convert to a footnote}}
 
 
 \subsection{Evaluation} \label{evaluation}
@@ -1040,29 +1057,29 @@ source sentence more accurately.
        \hline
        & CR & Meaning & Grammar \\
        \hline
-       ILP & 0.52 & 2.83 & {\bf 3.09} \\
+       Hiero & 0.56 & 2.57 & 2.35 \\
+       Syntax & 0.56 & 2.76 & {\bf 2.67} \\
+       \hline
+       \hline
+       Syntax & 0.53 & 2.70 & 2.49 \\
+       Syntax+Feat.& 0.53 & 2.71 & {\bf 2.54} \\
+       \hline
+       \hline
+       Syntax+Feat. & 0.54 & 2.79 & {\bf 2.71} \\
+       Syntax+Aug. & 0.54 & {\bf 2.96} & 2.52 \\
+       \hline
+       \hline
        Syntax+Aug. & 0.52 & 2.87 & 2.40 \\
+       ILP & 0.52 & 2.83 & {\bf 3.09} \\
        \hline
        \hline
        Syntax+Aug. & 0.50 & 2.41 & {\bf 2.20} \\
        T3 & 0.50 & 2.01 & 1.93 \\
        \hline
-       \hline
-       Syntax+Feat. & 0.48 & {\bf 3.05} & {\bf 2.61} \\
-       T3 & 0.48 & 1.93 & 1.75 \\
-       \hline
-       \hline
-       Syntax+Aug. & 0.54 & {\bf 2.96} & 2.52 \\
-       Syntax+Feat. & 0.54 & 2.79 & {\bf 2.71} \\
-       \hline
-       \hline
-       Syntax+Feat.& 0.53 & 2.71 & {\bf 2.54} \\
-       Syntax & 0.53 & 2.70 & 2.49 \\
-       \hline
-       \hline
-       Syntax & 0.56 & 2.76 & {\bf 2.67} \\
-       Hiero & 0.56 & 2.57 & 2.35 \\
-       \hline
+%        \hline
+%        Syntax+Feat. & 0.48 & {\bf 3.05} & {\bf 2.61} \\
+%        T3 & 0.48 & 1.93 & 1.75 \\
+%        \hline
     \end{tabular}
    \end{center}
    \normalsize
@@ -1081,9 +1098,6 @@ demonstrated when our paraphrasing system was adapted to do sentence
 compression, it achieves results competitive with state-of-the-art
 compression systems with only minimal effort.
 
-% ccb - added a newpage to make it clear how much space we have left
-% to work with.  Remove this for final submission.
-\newpage
 \section*{Acknowledgments}
  We would like to thank Trevor Cohn for kindly providing us with
  access to data sets and the T3 compression system.
