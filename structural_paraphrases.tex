@@ -925,38 +925,6 @@ using the SRILM toolkit \cite{SRILM}.
 
 \subsection{Evaluation} \label{evaluation}
 
-\begin{table*}
-\begin{center}
-\small
-\begin{tabular}{|c|p{13.2cm}|}
-%  \hline
-%  & \multicolumn{1}{|c|}{Sentences}  \\
-  \hline
-  Source & he also expected that he would have a role in the future at
-  the level of the islamic movement across the palestinian territories
-  , even if he was not lucky enough to win in the elections . \\
-  \hline
-  Reference & he expects to have a future role in the islamic movement
-  in the palestinian territories if he is not successful in the
-  elections . \\
-  \hline
-  Paraphrase & he also expected that he would have a role in the future
-  of the islamic movement in the palestinian territories , although he
-  was not lucky enough to win elections . \\
-  \hline
-  ILP & he also expected that he would have a role at the level of the
-  islamic movement , even if he was not lucky enough to win in the
-  elections . \\
-  \hline
-\end{tabular}
-\normalsize
-\end{center}
-\caption{Example compressions produced by the two systems in
-  Table~\ref{human_judgments} for an input sentence from our test
-  data.}
-\label{test_examples}
-\end{table*}
-
 To assess the output quality of the resulting sentence compression
 system, we compare it to two state-of-the-art sentence compression
 systems.  Specifically, we compare against an implementation of
@@ -1097,6 +1065,39 @@ adaptation strategies for applications in text-to-text generation. We
 demonstrated when our paraphrasing system was adapted to do sentence
 compression, it achieves results competitive with state-of-the-art
 compression systems with only minimal effort.
+
+\begin{table*}
+\begin{center}
+\small
+\begin{tabular}{|c|p{13.2cm}|}
+%  \hline
+%  & \multicolumn{1}{|c|}{Sentences}  \\
+  \hline
+  Source & he also expected that he would have a role in the future at
+  the level of the islamic movement across the palestinian territories
+  , even if he was not lucky enough to win in the elections . \\
+  \hline
+  Reference & he expects to have a future role in the islamic movement
+  in the palestinian territories if he is not successful in the
+  elections . \\
+  \hline
+  Paraphrase & he also expected that he would have a role in the future
+  of the islamic movement in the palestinian territories , although he
+  was not lucky enough to win elections . \\
+  \hline
+  ILP & he also expected that he would have a role at the level of the
+  islamic movement , even if he was not lucky enough to win in the
+  elections . \\
+  \hline
+\end{tabular}
+\normalsize
+\end{center}
+\caption{Example compressions produced by the two systems in
+  Table~\ref{human_judgments} for an input sentence from our test
+  data.}
+\label{test_examples}
+\end{table*}
+
 
 \section*{Acknowledgments}
  We would like to thank Trevor Cohn for kindly providing us with
