@@ -534,7 +534,7 @@ language generation \cite{Langkilde1998}, are already well integrated
 
 \begin{table*}[!ht]
   \begin{center}
-\small
+\footnotesize
   \begin{tabular}{|c|rrcl|}
     \hline
     \multirow{2}{*}{Possessive rule} & $\mathit{NP}$ $\rightarrow$ & the
@@ -687,14 +687,10 @@ Another example of a deficiency in our synchronous grammar models are
 \end{tabular}
 \end{center}
 Here, a noun is transformed into the corresponding verb -- something
-our synchronous syntactic CFG approach is not able to capture except
+our synchronous syntactic CFGs are not able to capture except
 through memorization.
 
-Overall our survey shows that we are able to extract appropriately
-generic representations for a surprising number of paraphrastic
-transformations, far exceeding the expressiveness of previous
-approaches to paraphrase extraction from bilingual parallel corpora.
-
+Our survey shows that we are able to extract appropriately generic representations for a wide range of paraphrastic transformations.  This is a surprising result that shows that bilingual parallel corpora can be used to learn sentential paraphrases, and that they are a viable alternative to other data sources like monolingual parallel corpora, which more obviously contain sentential paraphrases, but are scarce.
 
 \section{Text-to-Text Applications} \label{adaptation}
 
@@ -773,11 +769,8 @@ set that we use to gauge the performance of our system.
 \subsection{Objective Function}
 \label{objective-fn}
 
-Given the nature of an SMT-based paraphrasing system, the most
-straightforward choice for parameter optimization is to optimize for
-\textsc{Bleu} over a set of paraphrases, for instance parallel English
-reference translations for a machine translation task
-\cite{Madnani2007}. For a candidate $C$ and a reference $R$, (with
+Given our paraphrasing system's connection to SMT, the naive/obvious choice for parameter optimization would be to optimize for \textsc{Bleu} over a set of paraphrases, for instance parallel English reference translations for a machine translation task \cite{Madnani2007}.
+ For a candidate $C$ and a reference $R$, (with
 lengths $c$ and $r$) \textsc{Bleu} is defined as:\vspace{-0.2cm}
 \begin{eqnarray}
   \lefteqn{ \textsc{Bleu}_{N} (C,R) } \nonumber \\
@@ -790,12 +783,10 @@ lengths $c$ and $r$) \textsc{Bleu} is defined as:\vspace{-0.2cm}
 \end{eqnarray}
 where $p_n$ is the modified $n$-gram precision of $C$ against $R$,
 with typically $N=4$ and $w_n=\frac{1}{N}$. The ``brevity penalty''
-term $e^{(1 - c/r)}$ is added to prevent trivially short candidates
+term $e^{(1 - c/r)}$ is added to prevent short candidates
 from achieving perfect scores.
 
-Naively optimizing for \textsc{Bleu}, however, will result in a
-trivial paraphrasing system heavily biased towards producing identity
-``paraphrases''. This is obviously not what we are looking for.
+Naively optimizing for \textsc{Bleu}, however, will result in a trivial paraphrasing system heavily biased towards producing identity ``paraphrases".  This is obviously not what we are looking for. Moreover, \textsc{Bleu} does not provide a mechanism for directly specifying a per-sentence compression rate, which is desirable for the compression task.
 
 % \footnote{\newcite{Madnani2007} avoid this issue by disallowing
 %   identity paraphrases in their grammar. While this is an
@@ -814,7 +805,7 @@ to the text compression task: \vspace{-0.2cm}
 \end{eqnarray}
 For an input sentence $I$, an output $C$ and reference compression $R$
 (with lengths $i$, $c$ and $r$), \textsc{Pr\'ecis} combines the
-precision estimate of \textsc{Bleu} with a verbosity penalty that is
+precision estimate of \textsc{Bleu} with an additional ``verbosity penalty'' that is
 applied to compressions that fail to meet a given target compression
 rate $\varphi$.  We rely on the \textsc{Bleu} brevity penalty to
 prevent the system from producing overly aggressive compressions. The
