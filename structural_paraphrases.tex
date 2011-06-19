@@ -747,25 +747,6 @@ $c_{\mathit{dcount}} = c_{\mathit{tgt}} - c_{\mathit{src}}$ and the
 analogously computed difference in the average word length in
 characters, $c_{\mathit{davg}}$.
 
-\subsection{Development Data}
-\label{dev-data}
-To tune the parameters of our paraphrase system for sentence
-compression, we need an appropriate corpus of reference
-compressions. Since our model is designed to compress by paraphrasing
-rather than deletion, the commonly used deletion-based compression
-data sets like the Ziff Davis corpus are not suitable. We have thus
-created a corpus of compression paraphrases. Beginning with 9570
-tuples of parallel English--English sentences obtained from multiple
-reference translations for machine translation evaluation, we
-construct a parallel compression corpus by selecting the longest
-reference in each tuple as the source sentence and the shortest
-reference as the target sentence. We further retain only those
-sentence pairs where the compression rate $\mathit{cr}$ falls in the
-range $0.5 < \mathit{cr} \leq 0.8$. From these, we randomly select 936
-sentences for the development set, as well as 560 sentences for a test
-set that we use to gauge the performance of our system.
-
-
 \subsection{Objective Function}
 \label{objective-fn}
 
@@ -816,6 +797,27 @@ It is straightforward to find similar adaptations for other tasks. For
 text simplification, for instance, the penalty term can include a
 readability metric. For poetry generation we can analogously penalize
 outputs that break the meter \cite{Greene2010}.
+
+
+\subsection{Development Data}
+\label{dev-data}
+To tune the parameters of our paraphrase system for sentence
+compression, we need an appropriate corpus of reference
+compressions. Since our model is designed to compress by paraphrasing
+rather than deletion, the commonly used deletion-based compression
+data sets like the Ziff Davis corpus are not suitable. We have thus
+created a corpus of compression paraphrases. Beginning with 9570
+tuples of parallel English--English sentences obtained from multiple
+reference translations for machine translation evaluation, we
+construct a parallel compression corpus by selecting the longest
+reference in each tuple as the source sentence and the shortest
+reference as the target sentence. We further retain only those
+sentence pairs where the compression rate $\mathit{cr}$ falls in the
+range $0.5 < \mathit{cr} \leq 0.8$. From these, we randomly select 936
+sentences for the development set, as well as 560 sentences for a test
+set that we use to gauge the performance of our system.
+
+
 
 \subsection{Grammar Augmentations} \label{injection}
 
