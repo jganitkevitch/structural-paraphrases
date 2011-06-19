@@ -941,14 +941,14 @@ discussed above, we also compare to a number of paraphrase-based
 compression systems.
 
 We solicit human judgments of the compressions along two five-point
-scales: grammaticality and meaning.\footnote{Judges are instructed to
+scales: grammaticality and meaning. Judges are instructed to
   decide how much the meaning from a reference translation is retained
   in the compressed sentence, with a score of 5 indicating that all of
   the important information is present, and 1 being that the
   compression does not retain any of the original meaning. Similarly,
   a grammar score of 5 indicates perfect grammaticality, and a grammar
   score of 1 is assigned to sentences that are entirely
-  ungrammatical.} To ensure fairness, we perform pairwise system
+  ungrammatical. To ensure fairness, we perform pairwise system
 comparisons with compression rates strictly tied on the
 sentence-level. For any comparison, a sentence is only included in the
 computation of average scores if the difference between both systems'
@@ -972,11 +972,14 @@ ILP's results in grammaticality.
 In Table~\ref{human_judgments} we compare our system to the ILP
 approach at a modest compression rate of $\approx 0.8$.  Here, we
 significantly outperform ILP in meaning retention while achieving
-comparable results in grammaticality.\footnote{This improvement is
+comparable results in grammaticality.
+%\footnote{
+This improvement is
   significant at $p < 0.0001$, using the sign test, while the better
   grammaticality score of the ILP system is not statistically
-  significant ($p < 0.088$).} These results indicate that, over both
-strong and weak compressions, our framework for text-to-text
+  significant ($p < 0.088$).
+%  } 
+These results indicate that, over a variety of compression rates, our framework for text-to-text
 generation is performing as well as or better than specifically
 tailored state-of-the-art methods.
 
