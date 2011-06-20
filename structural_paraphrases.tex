@@ -6,19 +6,21 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{url}
+\usepackage{array}
 \usepackage{multirow}
 \usepackage{rotating}
 \usepackage{todonotes}
 %\setlength\titlebox{6.5cm}    
 % You can expand the title box if you really have to
 
-
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 \newcommand{\mnote}[1]{\marginpar{%
   \vskip-\baselineskip
   \raggedright\footnotesize
-  \itshape\hrule\smallskip\footnotesize{#1}\par\smallskip\hrule}}  
+  \itshape\hrule\smallskip\footnotesize{#1}\par\smallskip\hrule}}
+
+\addtolength{\abovecaptionskip}{-0.25cm}
 
 \title{Learning Sentential Paraphrases from Bilingual Parallel Corpora
   \\ for Text-to-Text Generation}
@@ -173,7 +175,7 @@ f)$: \nocite{Callison-Burch2005}
 \begin{eqnarray}
   p(e_2|e_1) &=& \sum_f p(e_2,f|e_1)\\
                   &=& \sum_f p(e_2|f,e_1) p(f|e_1) \\
-                  &\approx& \sum_f p(e_2|f) p(f|e_1)
+                  &\approx& \sum_f p(e_2|f) p(f|e_1) .
 \label{paraphrase_prob_eqn}
 \end{eqnarray}
 
@@ -809,7 +811,7 @@ To tune the parameters of our paraphrase system for sentence
 compression, we need an appropriate corpus of reference
 compressions. Since our model is designed to compress by paraphrasing
 rather than deletion, the commonly used deletion-based compression
-data sets like the Ziff Davis corpus are not suitable. We have thus
+data sets like the Ziff-Davis corpus are not suitable. We have thus
 created a corpus of compression paraphrases. Beginning with 9570
 tuples of parallel English--English sentences obtained from multiple
 reference translations for machine translation evaluation, we
@@ -1013,14 +1015,15 @@ source sentence more accurately.
        ILP & 0.80 & 3.50 & 3.49 \\
        \hline
        \hline
-       Random & 0.50 & 1.94 & 1.57 \\
+       Random Deletions & 0.50 & 1.94 & 1.57 \\
        \hline
      \end{tabular}
    \end{center}
    \normalsize
    \caption{Results of the human evaluation on longer compressions:
      pairwise compression rates (CR), meaning and grammaticality scores. 
-     Bold indicates a statistically significance difference at $p < 0.05$. \vspace{-.25cm}}
+     Bold indicates a statistically significance difference at $p <
+     0.05$.}
    \label{human_judgments}
  \end{table}
 
@@ -1059,7 +1062,11 @@ source sentence more accurately.
     \end{tabular}
    \end{center}
    \normalsize
-   \caption{Human evaluation for shorter compressions and for variations of our paraphrase system.  +Feat includes the compression features from Section \ref{feat-design}, +Aug includes optional deletion rules from Section \ref{injection}. \vspace{-.5cm} }
+   \caption{Human evaluation for shorter compressions and for
+     variations of our paraphrase system.  +Feat.\ includes the
+     compression features from Section \ref{feat-design}, +Aug.\
+     includes optional deletion rules from Section
+     \ref{injection}. \vspace{-.5cm}}
    \label{comparison}
  \end{table}
 
@@ -1075,30 +1082,60 @@ demonstrated when our paraphrasing system was adapted to do sentence
 compression, it achieved results competitive with state-of-the-art
 compression systems with only minimal effort.
 
-\begin{table*}
+\begin{table*}[!th]
 \begin{center}
 \small
-\begin{tabular}{|c|p{13.2cm}|}
+{
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|>{\raggedright}m{13.2cm}|}
 %  \hline
 %  & \multicolumn{1}{|c|}{Sentences}  \\
   \hline
   Source & he also expected that he would have a role in the future at
   the level of the islamic movement across the palestinian territories
-  , even if he was not lucky enough to win in the elections . \\
+  , even if he was not lucky enough to win in the elections .\tabularnewline
   \hline
   Reference & he expects to have a future role in the islamic movement
   in the palestinian territories if he is not successful in the
-  elections . \\
+  elections .\tabularnewline
   \hline
-  Paraphrase & he also expected that he would have a role in the future
+  Syntax+Feat. & he also expected that he would have a role in the future
   of the islamic movement in the palestinian territories , although he
-  was not lucky enough to win elections . \\
+  was not lucky enough to win elections .\tabularnewline
   \hline
   ILP & he also expected that he would have a role at the level of the
   islamic movement , even if he was not lucky enough to win in the
-  elections . \\
+  elections .\tabularnewline
+  \hline
+  \hline 
+  Source & in this war which has carried on for the last 12 days ,
+  around 700 palestinians , which include a large number of women and
+  children , have died .\tabularnewline
+  \hline
+  Reference & about 700 palestinians , mostly women and children ,
+  have been killed in the israeli offensive over the last 12 days .\tabularnewline
+  \hline
+  Syntax+Feat. & in this war has done for the last 12 days , around
+  700 palestinians , including women and children , died .\tabularnewline
+  \hline
+  ILP & in this war which has carried for the days palestinians ,
+  which include a number of women and children died .\tabularnewline
+  \hline
+  \hline
+  Source & hala speaks arabic most of the time with her son , taking
+  into consideration that he can speak english with others .\tabularnewline
+  \hline
+  Reference & hala speaks to her son mostly in arabic , as he can
+  speak english to others .\tabularnewline
+  \hline
+  Syntax+Feat. & hala speaks arabic most of the time with her son ,
+  considering that he can speak english with others .\tabularnewline
+  \hline
+  ILP & hala speaks arabic most of the time , taking into
+  consideration that he can speak english with others .\tabularnewline
   \hline
 \end{tabular}
+}
 \normalsize
 \end{center}
 \caption{Example compressions produced by the two systems in
