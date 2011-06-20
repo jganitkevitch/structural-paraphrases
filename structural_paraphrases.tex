@@ -919,7 +919,7 @@ using the SRILM toolkit \cite{SRILM}.
 
 To assess the output quality of the resulting sentence compression
 system, we compare it to two state-of-the-art sentence compression
-systems.  Specifically, we compare against an implementation of
+systems.  Specifically, we compare against our implementation of
 \newcite{Clarke2008}'s compression model which uses a series of
 constraints in an integer linear programming (ILP) solver, and
 \newcite{Cohn2007}'s tree transducer toolkit (T3) which learns a
@@ -936,7 +936,7 @@ ranged from 882--1020 sentence pairs), and has the advantage of being
 in-domain with respect to our test set.  Both these systems reported
 results outperforming previous systems such as
 \newcite{McDonald2006}. To showcase the value of the adaptations
-discussed above, we also compare to a number of paraphrase-based
+discussed above, we also compare variants of our paraphrase-based
 compression systems.
 
 We solicit human judgments of the compressions along two five-point
@@ -951,7 +951,7 @@ scales: grammaticality and meaning. Judges are instructed to
 comparisons with compression rates strictly tied on the
 sentence-level. For any comparison, a sentence is only included in the
 computation of average scores if the difference between both systems'
-compression rates is less than $0.05$.\footnote{Because evaluation
+compression rates is $<0.05$.\footnote{Because evaluation
   quality correlates linearly with compression rate, the
   community-accepted practice of not comparing based on a closely tied
   compression rate is potentially subject to erroneous interpretation
