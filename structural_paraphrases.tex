@@ -733,6 +733,7 @@ focused only on the deletion of a subset of words from the sentence
 substitutions, insertions and reorderings that are automatically
 learned from parallel texts.
 
+% squeeze a little space
 \vspace{-.2cm}
 \subsection{Feature Design}\label{feat-design}
 In Section~\ref{acquisition} we discussed phrasal
@@ -747,6 +748,8 @@ $c_{\mathit{dcount}} = c_{\mathit{tgt}} - c_{\mathit{src}}$ and the
 analogously computed difference in the average word length in
 characters, $c_{\mathit{davg}}$.
 
+% squeeze a little space
+\vspace{-.2cm}
 \subsection{Objective Function}
 \label{objective-fn}
 
@@ -798,7 +801,8 @@ text simplification, for instance, the penalty term can include a
 readability metric. For poetry generation we can analogously penalize
 outputs that break the meter \cite{Greene2010}.
 
-
+% squeeze a little space
+\vspace{-.2cm}
 \subsection{Development Data}
 \label{dev-data}
 To tune the parameters of our paraphrase system for sentence
@@ -818,7 +822,8 @@ sentences for the development set, as well as 560 sentences for a test
 set that we use to gauge the performance of our system.
 
 
-
+% squeeze a little space
+\vspace{-.2cm}
 \subsection{Grammar Augmentations} \label{injection}
 
 As we discussed in Section~\ref{analysis}, the paraphrase grammar we
@@ -863,7 +868,8 @@ adverbs and determiners.
 % proper inclusion into the paraphrasing model, we add a constant
 % penalty feature $\varphi_{\mathit{oov}}$ and include its weight in our
 % parameter estimation process.
-
+% squeeze a little space
+\vspace{-.2cm}
 \subsection{Experimental Setup}
 \label{setup}
 
@@ -914,7 +920,8 @@ using the SRILM toolkit \cite{SRILM}.
 % development and test data sets. \todo{\footnotesize{Give URL or
 %     delete or convert to a footnote}}
 
-
+% squeeze a little space
+\vspace{-.2cm}
 \subsection{Evaluation} \label{evaluation}
 
 To assess the output quality of the resulting sentence compression
@@ -1008,7 +1015,8 @@ source sentence more accurately.
    \end{center}
    \normalsize
    \caption{Results of the human evaluation on longer compressions:
-     pairwise compression rates (CR), meaning and grammaticality scores.}
+     pairwise compression rates (CR), meaning and grammaticality scores. 
+     Bold indicates a statistically significance difference at $p < 0.01$. }
    \label{human_judgments}
  \end{table}
 
