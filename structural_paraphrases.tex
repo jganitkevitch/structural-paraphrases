@@ -946,6 +946,8 @@ results outperforming previous systems such as
 discussed above, we also compare variants of our paraphrase-based
 compression systems: using Hiero instead of syntax, using syntax with or without compression features, using an augmented grammar with optional deletion rules.
 
+
+
 We solicit human judgments of the compressions along two five-point
 scales: grammaticality and meaning. Judges are instructed to
   decide how much the meaning from a reference translation is retained
@@ -975,6 +977,7 @@ syntactic system grammaticality scores drop. While our approach
 significantly outperforms the T3 system, we are not able to match
 ILP's results in grammaticality.
 
+
 In Table~\ref{human_judgments} we compare our system to the ILP
 approach at a modest compression rate of $\approx 0.8$.  Here, we
 significantly outperform ILP in meaning retention while achieving
@@ -994,6 +997,7 @@ test set and the compressions produced by the different systems. We
 see that both the paraphrase and ILP systems produce good quality
 results, with the paraphrase system retaining the meaning of the
 source sentence more accurately.
+
 
  \begin{table}
    \small
@@ -1016,9 +1020,10 @@ source sentence more accurately.
    \normalsize
    \caption{Results of the human evaluation on longer compressions:
      pairwise compression rates (CR), meaning and grammaticality scores. 
-     Bold indicates a statistically significance difference at $p < 0.05$. }
+     Bold indicates a statistically significance difference at $p < 0.05$. \vspace{-.25cm}}
    \label{human_judgments}
  \end{table}
+
 
 
  \begin{table}
@@ -1054,11 +1059,13 @@ source sentence more accurately.
     \end{tabular}
    \end{center}
    \normalsize
-   \caption{Human evaluation for shorter compressions and for variations of our paraphrase system.  +Feat includes the compression features from Section \ref{feat-design}, +Aug includes optional deletion rules from Section \ref{injection}.  }
+   \caption{Human evaluation for shorter compressions and for variations of our paraphrase system.  +Feat includes the compression features from Section \ref{feat-design}, +Aug includes optional deletion rules from Section \ref{injection}. \vspace{-.5cm} }
    \label{comparison}
  \end{table}
 
+\vspace{-.125cm}
 \section{Conclusion} \label{conclusion}
+\vspace{-.125cm}
 
 In this work we introduced a method to learn syntactically informed
 paraphrases from bilingual parallel texts. We discussed the expressive
