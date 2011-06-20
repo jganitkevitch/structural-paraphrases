@@ -197,7 +197,7 @@ with CCG-inspired slash categories \cite{Steedman2011}, an approach similar to
 \newcite{Zollmann2006}'s syntax-augmented machine translation
 (SAMT). Callison-Burch did not formally define a synchronous grammar,
 nor discuss decoding, since his presentation did not include
-hierarchical rules.  \newcite{cohn-lapata:2008} used the ``GHKM"
+hierarchical rules.  \newcite{cohn-lapata:2008} used the GHKM
 extraction method \cite{Galley2004}, which is limited to constituent
 phrases and thus produces a reasonably small set of syntactic rules.
 \newcite{Zhao2008} added slots to bilingually extracted paraphrase
@@ -690,7 +690,7 @@ Here, a noun is transformed into the corresponding verb -- something
 our synchronous syntactic CFGs are not able to capture except
 through memorization.
 
-Our survey shows that we are able to extract appropriately generic representations for a wide range of paraphrastic transformations.  This is a surprising result that shows that bilingual parallel corpora can be used to learn sentential paraphrases, and that they are a viable alternative to other data sources like monolingual parallel corpora, which more obviously contain sentential paraphrases, but are scarce.
+Our survey shows that we are able to extract appropriately generic representations for a wide range of paraphrastic transformations.  This is a surprising result which shows that bilingual parallel corpora can be used to learn sentential paraphrases, and that they are a viable alternative to other data sources like monolingual parallel corpora, which more obviously contain sentential paraphrases, but are scarce.
 
 \section{Text-to-Text Applications} \label{adaptation}
 
@@ -906,7 +906,7 @@ $10^{-4}$ for pivot recombination. Additionally, we only retain the
 top 25 most likely paraphrases of each phrase, ranked by a uniformly
 weighted combination of phrasal and lexical paraphrase probabilities.
 
-We tuned the our model parameters to our \textsc{Pr\'ecis} objective function, implemented in the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
+We tuned the model parameters to our \textsc{Pr\'ecis} objective function, implemented in the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
 Joshua decoder \cite{Joshua-2.0}. The language model used in our
 paraphraser and  the \newcite{Clarke2008} baseline system is a
 Kneser-Ney discounted 5-gram model estimated on the Gigaword corpus
@@ -1072,7 +1072,7 @@ paraphrases from bilingual parallel texts. We discussed the expressive
 power and limitations of our formalism and outlined straightforward
 adaptation strategies for applications in text-to-text generation. We
 demonstrated when our paraphrasing system was adapted to do sentence
-compression, it achieves results competitive with state-of-the-art
+compression, it achieved results competitive with state-of-the-art
 compression systems with only minimal effort.
 
 \begin{table*}
