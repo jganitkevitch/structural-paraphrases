@@ -734,7 +734,7 @@ substitutions, insertions and reorderings that are automatically
 learned from parallel texts.
 
 \vspace{-.2cm}
-\subsection{Feature Design}
+\subsection{Feature Design}\label{feat-design}
 In Section~\ref{acquisition} we discussed phrasal
 probabilities. While these help quantify how good a paraphrase is in
 general, they do not make any statement on task-specific things such
@@ -937,7 +937,7 @@ in-domain with respect to our test set.  Both these systems reported
 results outperforming previous systems such as
 \newcite{McDonald2006}. To showcase the value of the adaptations
 discussed above, we also compare variants of our paraphrase-based
-compression systems.
+compression systems: using Hiero instead of syntax, using syntax with or without compression features, using an augmented grammar with optional deletion rules.
 
 We solicit human judgments of the compressions along two five-point
 scales: grammaticality and meaning. Judges are instructed to
@@ -1046,8 +1046,7 @@ source sentence more accurately.
     \end{tabular}
    \end{center}
    \normalsize
-   \caption{Results of the human evaluation on shorter compressions:
-     pairwise compression rates (CR), meaning and grammaticality scores.}
+   \caption{Human evaluation for shorter compressions and for variations of our paraphrase system.  +Feat includes the compression features from Section \ref{feat-design}, +Aug includes optional deletion rules from Section \ref{injection}.  }
    \label{comparison}
  \end{table}
 
