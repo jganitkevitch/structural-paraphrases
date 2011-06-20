@@ -900,10 +900,9 @@ $10^{-4}$ for pivot recombination. Additionally, we only retain the
 top 25 most likely paraphrases of each phrase, ranked by a uniformly
 weighted combination of phrasal and lexical paraphrase probabilities.
 
-We tuned the parameters of our model via minimum error rate training
-using the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
-Joshua decoder \cite{Joshua-2.0}. The language model used in both our
-paraphraser and the \newcite{Clarke2008} baseline system is a
+We tuned the our model parameters to our \textsc{Pr\'ecis} objective function, implemented in the Z-MERT toolkit \cite{Zaidan2009}. For decoding we used the
+Joshua decoder \cite{Joshua-2.0}. The language model used in our
+paraphraser and  the \newcite{Clarke2008} baseline system is a
 Kneser-Ney discounted 5-gram model estimated on the Gigaword corpus
 using the SRILM toolkit \cite{SRILM}.
 % \todo{\footnotesize{I don't think you need to change this because
