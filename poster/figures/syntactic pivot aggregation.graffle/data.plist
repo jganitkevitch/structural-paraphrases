@@ -7,7 +7,7 @@
 	<key>ApplicationVersion</key>
 	<array>
 		<string>com.omnigroup.OmniGrafflePro</string>
-		<string>138.23.0.152539</string>
+		<string>138.30.0.155892</string>
 	</array>
 	<key>AutoAdjust</key>
 	<true/>
@@ -113,14 +113,14 @@
 				<key>ID</key>
 				<integer>488</integer>
 				<key>Info</key>
-				<integer>2</integer>
+				<integer>1</integer>
 			</dict>
 			<key>ID</key>
 			<integer>494</integer>
 			<key>Points</key>
 			<array>
 				<string>{318.086, 325.5}</string>
-				<string>{328.80301, 296.22549}</string>
+				<string>{328.80301, 316.22549}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -695,7 +695,7 @@
 			<integer>475</integer>
 			<key>Points</key>
 			<array>
-				<string>{374.90799, 345.5}</string>
+				<string>{374.90799, 325.5}</string>
 				<string>{387.134, 316.22549}</string>
 			</array>
 			<key>Style</key>
@@ -716,8 +716,6 @@
 			<dict>
 				<key>ID</key>
 				<integer>434</integer>
-				<key>Info</key>
-				<integer>1</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -2990,8 +2988,8 @@
 			<integer>387</integer>
 			<key>Points</key>
 			<array>
-				<string>{497.54019, 223.38756}</string>
-				<string>{454.90472, 243.38492}</string>
+				<string>{497.54025, 223.38753}</string>
+				<string>{454.45197, 243.59729}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -3265,8 +3263,8 @@
 			<integer>481</integer>
 			<key>Points</key>
 			<array>
-				<string>{494.33643, 440.78171}</string>
-				<string>{459.4621, 429.36649}</string>
+				<string>{494.33646, 440.78171}</string>
+				<string>{458.98688, 429.21094}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -4971,7 +4969,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2011-07-21 04:25:27 +0000</string>
+	<string>2011-10-02 22:09:37 +0000</string>
 	<key>Modifier</key>
 	<string>Juri Ganitkevitch</string>
 	<key>NotesVisible</key>
@@ -5063,14 +5061,16 @@
 		<true/>
 		<key>SidebarWidth</key>
 		<integer>120</integer>
+		<key>VisibleRegion</key>
+		<string>{{346.25, 136.25}, {719.37488, 458.12494}}</string>
 		<key>Zoom</key>
-		<real>1</real>
+		<real>1.6000000238418579</real>
 		<key>ZoomValues</key>
 		<array>
 			<array>
 				<string>Canvas 1</string>
-				<real>1</real>
-				<real>1</real>
+				<real>1.6000000238418579</real>
+				<real>1.6100000143051147</real>
 			</array>
 		</array>
 	</dict>
