@@ -1,0 +1,49 @@
+Title
+What Are Paraphrases?
+What's Paraphrasing Good For?
+Data-Driven Paraphrase Extraction (General)
+Types of Data for Paraphrase Extraction
+Monolingual Parallel Corpora - Data Characteristics
+Monolingual Parallel Corpora - Prior Work
+Monolingual Comparable Corpora - Data Characteristics
+Monolingual Comparable Corpora - Prior Work
+Monolingual Corpora - Data Characteristics
+Monolingual Corpora - Prior Work
+Bitexts
+
+Interlude: Paraphrasing as a Form of Translation
+MT Models: Extraction
+MT Models: Phrase-Based
+MT Models: SCFGs
+MT Models: Syntactically Informed SCFGs
+MT Software: Thrax & Joshua
+
+Pivoting - Idea
+Pivoting - Phrases
+Pivoting - Phrases with Syntax
+Pivoting - Hiero
+Pivoting - Syntactic SCFGs
+
+Expressiveness - Goals
+Expressiveness - Examples
+Expressiveness - Win
+Expressiveness - Lose
+
+Sentential Text-to-Text as Paraphrasing
+Adaptation: General
+Adapt for Example Application: Sentence Compression
+Sentence Compression: Development Data
+Sentence Compression: Objective Function
+Sentence Compression: Features
+Sentence Compression: Augmentations
+
+Sentence Compression: Evaluation & Baselines
+Sentence Compression: Results
+
+Example Compression - Derivation
+Example Compression - Analysis
+
+Ongoing Work - Integrate Monolingual Corpora Approaches
+Future Work - Cite Pillars & Give Notes on Ideas
+
+Thank You
